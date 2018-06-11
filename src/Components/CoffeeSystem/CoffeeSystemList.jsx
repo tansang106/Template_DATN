@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import CoffeeShopItem from './CoffeeShopItem';
-import CoffeeShopFooter from './CoffeeShopFooter';
-import EmployeeFooter from '../Employee/EmployeeFooter';
-import callApi from '../../Utils/apiCaller';
+import CoffeeSystemItem from './CoffeeSystemItem';
 
 // import $ from 'jquery';
 
-class CoffeeShop extends Component {
+class CoffeeSystemList extends Component {
  
     render() {
 
@@ -15,25 +12,25 @@ class CoffeeShop extends Component {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-body">
-                            <h4 className="card-title">Coffee Shop list</h4>
+                            <h4 className="card-title">Coffee System List</h4>
                             {/* <h6 className="card-subtitle"></h6> */}
                             <div className="table-responsive">
                                 <table id="demo-foo-addrow" className="table m-t-30 table-hover contact-list" data-page-size="10">
                                     <thead>
                                         <tr>
                                             <th className="text_center">No</th>
-                                            <th className="text_center">Name Shop</th>
+                                            <th className="text_center">Name System</th>
                                             {/* <th>Email</th> */}
-                                            <th className="text_center">Phone</th>
-                                            <th className="text_center">Start Date</th>
-                                            <th className="text_center">Expire Date</th>
-                                            <th className="text_center">System</th>
+                                            {/* <th className="text_center">Phone</th> */}
+                                            {/* <th className="text_center">Start Date</th>
+                                            <th className="text_center">Expire Date</th> */}
+                                            <th className="text_center">Address</th>
                                             <th className="text_center">Action</th>
                                         </tr>
                                     </thead>
                                     {/* CoffeeShopItem */}
 
-                                    <CoffeeShopItem></CoffeeShopItem>
+                                    <CoffeeSystemItem></CoffeeSystemItem>
 
                                     {/* End CoffeeShopItem */}
 
@@ -51,4 +48,4 @@ class CoffeeShop extends Component {
     }
 }
 
-export default CoffeeShop;
+export default CoffeeSystemList;

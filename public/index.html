@@ -19,6 +19,8 @@
     <!-- Custom CSS -->
     <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="%PUBLIC_URL%/css/myCss.css">
+    <link href="%PUBLIC_URL%/css/toastr.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/plugins/dropify/dist/css/dropify.min.css">
     <!-- You can change the theme colors from here -->
     <!-- <link href="css/colors/blue.css" id="theme" rel="stylesheet"> -->
     <link href="%PUBLIC_URL%/css/colors/blue-dark.css" id="theme" rel="stylesheet">
@@ -59,6 +61,51 @@
     <!-- Style switcher -->
     <!-- ============================================================== -->
     <script src="%PUBLIC_URL%/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+    <script src="%PUBLIC_URL%/js/toastr.min.js"></script>
+    <!-- jQuery file upload -->
+    <script src="%PUBLIC_URL%/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Basic
+            $('.dropify').dropify();
+
+            // Translated
+            $('.dropify-fr').dropify({
+                messages: {
+                    default: 'Glissez-déposez un fichier ici ou cliquez',
+                    replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                    remove: 'Supprimer',
+                    error: 'Désolé, le fichier trop volumineux'
+                }
+            });
+
+            // Used events
+            var drEvent = $('#input-file-events').dropify();
+
+            drEvent.on('dropify.beforeClear', function (event, element) {
+                return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+            });
+
+            drEvent.on('dropify.afterClear', function (event, element) {
+                alert('File deleted');
+            });
+
+            drEvent.on('dropify.errors', function (event, element) {
+                console.log('Has Errors');
+            });
+
+            var drDestroy = $('#input-file-to-destroy').dropify();
+            drDestroy = drDestroy.data('dropify')
+            $('#toggleDropify').on('click', function (e) {
+                e.preventDefault();
+                if (drDestroy.isDropified()) {
+                    drDestroy.destroy();
+                } else {
+                    drDestroy.init();
+                }
+            })
+        });
+    </script>
 </body>
 
 </html>

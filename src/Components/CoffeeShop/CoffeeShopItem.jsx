@@ -1,298 +1,524 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { actFetchShopRequest, actAddShopResquest, actFetchSystemRequest , actUpdateShopResquest, actFetchAccountRequest } from '../../Actions/index';
+import moment from 'moment';
+import $ from 'jquery'; 
+// import * as dataStorage from '../../Constants/localStorage';
+// dataStorage.DATA_USER.user_shop_id
 
 class CoffeeShopItem extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            shops: [],
+            idShop : '',
+            txtShopName : '',
+            txtShopAddress : '',
+            txtShopAvatar : '',
+            txtShopDayFrom : '',
+            txtShopDayTo : '',
+            txtShopPhone : '',
+            txtShopSystemID : '',
+            txtShopEmail : ''
+        }
+    }
+  
+
+    onChange = (e) => {
+        var target = e.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+            [name]: value
+        });
+    }
+    findObjectByKey(array, key, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][key] == value) {
+                return array[i];
+            }
+        }
+        return null;
+    }
+
+    findElementInObjectOfArray(nameKey, myArray) {
+    for (var i = 0; i < myArray.length; i++) {
+        if (myArray[i].name === nameKey) {
+            return myArray[i];
+        }
+    }
+}
+    
+    //Nút sửa - Nhấn vào lấy đc thông tin shop
+    onGetIdShop = (ev) => {
+        let { shops, systems } = this.props
+        // console.log(ev)
+        var val = ev.target.dataset.value;
+        // console.log(systems);
+        // console.log(shops[0])
+        let dataShop = this.findObjectByKey(shops, 'shop_id', val);
+        let dataSystem = this.findObjectByKey(systems, 'system_id', 1);
+        // console.log('systemdata', dataSystem.system_name)
+        // console.log('log', dataShop.shop_name)
+        console.log('lấy avatar', dataShop.shop_avatar)
+        this.setState({
+            txtShopAddress: dataShop.shop_address,
+            // txtShopAvatar: dataShop.shop_avatar,
+            txtShopDayFrom:  moment(dataShop.shop_dayFrom).format('YYYY-MM-DD'),
+            txtShopDayTo: moment(dataShop.shop_dayTo).format('YYYY-MM-DD'),
+            txtShopEmail: dataShop.shop_email,
+            txtShopName: dataShop.shop_name,
+            txtShopPhone: dataShop.shop_phone,
+            txtShopSystemID: dataShop.shop_system_id,
+            idShop: dataShop.shop_id
+        })
+        console.log(dataShop);
+    }
+
+
+    onSave = (e) => {
+        console.log('click save')
+        e.preventDefault();
+        var { txtShopAddress, txtShopAvatar, txtShopDayFrom, txtShopDayTo, txtShopEmail, txtShopName, txtShopPhone, txtShopSystemID } = this.state;
+        // console.log('xem systemid', txtShopSystemID)
+        // return;
+        var shop = {
+            shop_name: txtShopName,
+            // shop_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
+            shop_address: txtShopAddress,
+            shop_phone: txtShopPhone,
+            // shop_avatar: txtShopAvatar,
+            shop_avatar: 'image.jpg',
+            shop_email: txtShopEmail,
+            shop_dayFrom: txtShopDayFrom,
+            shop_dayTo: txtShopDayTo,
+            //shop_id: this.state.idShop
+        }
+        if (this.state.idShop) {
+            console.log('đang tìm id system', shop.shop_system)
+            shop.shop_system = (this.refs.idSystem) ? this.refs.idSystem.value : '',
+            // let shop = {
+            //     shop_name: txtShopName,
+            //     shop_system_id: (this.refs.idSystem) ? this.refs.idSystem.value : '',
+            //     shop_address: txtShopAddress,
+            //     shop_phone: txtShopPhone,
+            //     shop_avatar: txtShopAvatar,
+            //     shop_email: txtShopEmail,
+            //     shop_dayFrom: txtShopDayFrom,
+            //     shop_dayTo: txtShopDayTo,
+            //     shop_id: this.state.idShop
+            // }
+            shop.shop_id = this.state.idShop
+            console.log('đang kiểm tra tồn tại id', this.state.idShop)
+            this.props.onUpdateShop(shop);
+            this.props.fetchAllShops();
+            this.props.fetchAllSystem();
+            console.log('đã update')
+        }
+        else {
+            console.log('đã k có id')
+            shop.shop_system_id = (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                console.log('log system id', shop.shop_system_id)
+         
+            this.props.onAddShop(shop);
+            console.log(shop)
+
+        }
+            // callApi('shops/create', 'POST', {
+            //     shop_name: txtShopName,
+            //     shop_system_id: txtShopSystemID,
+            //     shop_address: txtShopAddress,
+            //     shop_phone: txtShopPhone,
+            //     shop_avatar: txtShopAvatar,
+            //     shop_email: txtShopEmail,
+            //     shop_dayFrom: txtShopDayFrom,
+            //     shop_dayTo: txtShopDayTo
+            // }, {
+            //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
+            // }).then(res => {
+            //     console.log(res);
+            // })
+       
+    }
+
+    onSetState = () => {
+        this.setState({
+            txtShopName: '',
+            txtShopAddress: '',
+            txtShopPhone: '',
+            txtShopAvatar: '',
+            txtShopEmail: '',
+            txtShopDayFrom: '',
+            txtShopDayTo: '',
+            idShop: ''
+        })
+    }
+    
+
+    componentDidMount() {
+        this.props.fetchAllShops();
+        this.props.fetchAllSystem();
+    }
+
+    onTest = () => {
+        console.log('vào test')
+        var shop = {
+            shop_name: "HardTest",
+            shop_system: "1",
+            shop_address: "HCM",
+            shop_phone: "0985545458",
+            shop_avatar: 'image.png',
+            shop_email: "056565658656",
+            shop_dayFrom: "01/01/2018",
+            shop_dayTo: "01/01/2019",
+        }
+        console.log('log props', this.props)
+        this.props.onAddShop(shop);
+        console.log('chạy add xong')
+
+    }
+    
+    pagination = () => {
+        // Pagination
+        // -----------------------------------------------------------------
+        $('#demo-foo-pagination').footable();
+        $('#demo-show-entries').change(function (e) {
+            e.preventDefault();
+            var pageSize = $(this).val();
+            $('#demo-foo-pagination').data('page-size', pageSize);
+            $('#demo-foo-pagination').trigger('footable_initialized');
+        });
+    }
+
     render() {
-        return (
+        var { shops, systems } = this.props
+        
+        var { txtShopAddress, txtShopAvatar, txtShopDayFrom, txtShopDayTo, txtShopEmail, txtShopName, txtShopPhone, txtShopSystemID } = this.state
+        //Biến shop dùng để đổ ra list shop
+        var shop = shops.map((shop, index) => {
+            // var getNameSystem = this.findObjectByKey(systems, 'system_id', )
+            // if (shop != undefined) {
+
             
-            <tbody>
-                <tr className="text_center">
-                    <td>1</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                            /> Genelia Deshmukh</a>
-                    </td>
-                    {/* <td>genelia@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+            let nameSystems = systems.find(x => x.system_id === shop.shop_system_id)
+            let nameSystem;
+            if (nameSystems != undefined) {
+                nameSystem = nameSystems.system_name
+                
+                // if (dataStorage.DATA_USER.user_shop_id == shop.shop_system_id)
+                // {
+                return (
+                    <tr className="text_center" key={index}>
+                        <td>{index + 1}</td>
+                        <td className="text_left">
+                            <a >
+                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                /> {shop.shop_name}</a>
+                        </td>
+                        {/* <td>genelia@gmail.com</td> */}
+                        <td>{shop.shop_phone}</td>
+                        <td>{moment(shop.shop_dayFrom).format("DD/MM/YYYY")}</td>
+                        <td>{moment(shop.shop_dayTo).format("DD/MM/YYYY")}</td>
+                        <td>{nameSystem}</td>
+                        {/* <td></td> */}
+                        <td>
+                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
                                                 {/* <i className="ti-close" aria-hidden="true"></i> 
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>2</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/5.jpg" alt="user" width="40" className="img-circle"
-                            /> Arijit Singh</a>
-                    </td>
-                    {/* <td>arijit@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>3</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/6.jpg" alt="user" width="40" className="img-circle"
-                            /> Govinda jalan</a>
-                    </td>
-                    {/* <td>govinda@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>4</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/7.jpg" alt="user" width="40" className="img-circle"
-                            /> Hritik Roshan</a>
-                    </td>
-                    {/* <td>hritik@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>5</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/8.jpg" alt="user" width="40" className="img-circle"
-                            /> John Abraham</a>
-                    </td>
-                    {/* <td>john@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>6</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/1.jpg" alt="user" width="40" className="img-circle"
-                            /> Pawandeep kumar</a>
-                    </td>
-                    {/* <td>pawandeep@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>7</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/2.jpg" alt="user" width="40" className="img-circle"
-                            /> Ritesh Deshmukh</a>
-                    </td>
-                    {/* <td>ritesh@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>8</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/2.jpg" alt="user" width="40" className="img-circle"
-                            /> Salman Khan</a>
-                    </td>
-                    {/* <td>salman@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>9</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/3.jpg" alt="user" width="40" className="img-circle"
-                            /> Govinda jalan</a>
-                    </td>
-                    {/* <td>govinda@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>10</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                            /> Sonu Nigam</a>
-                    </td>
-                    {/* <td>sonu@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>11</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/5.jpg" alt="user" width="40" className="img-circle"
-                            /> Varun Dhawan</a>
-                    </td>
-                    {/* <td>varun@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>12</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/6.jpg" alt="user" width="40" className="img-circle"
-                            /> Genelia Deshmukh</a>
-                    </td>
-                    {/* <td>genelia@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>13</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/7.jpg" alt="user" width="40" className="img-circle"
-                            /> Arijit Singh</a>
-                    </td>
-                    {/* <td>arijit@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr className="text_center">
-                    <td>14</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/8.jpg" alt="user" width="40" className="img-circle"
-                            /> Govinda jalan</a>
-                    </td>
-                    {/* <td>govinda@gmail.com</td> */}
-                    <td>+123 456 789</td>
-                    <td>12-10-2014</td>
-                    <td>01-02-2018</td>
-                    <td>Coffee House</td>
-                    <td>
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action">Info</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-primary icon_action">Add</button>
-                            <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>
+                            <div className="button-group text-center">
+                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button>
+                                <button
+                                    type="button"
+                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                    data-toggle="modal"
+                                    data-target="#update-shop"
+                                    data-value={shop.shop_id}
+                                    onClick={this.onGetIdShop}
+                                >Add</button>
+                                <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                )
+            }
+            // }
+        })
+
+        return (
+            <React.Fragment>
+                <tbody>
+                    {shop}
                 </tbody>
-            
+                <tfoot>
+                    <tr>
+                        <td colSpan="2">
+                            <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" onClick={this.onSetState}>Add New Contact</button>
+                        </td>
+                        {/* Modal Add */}
+                        <div id="add-contact" className="modal fade in" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 className="modal-title" id="myModalLabel">Add New Coffee Shop</h4>
+                                    </div>
+                                    <div className="modal-body" onSubmit={this.onSave}>
+                                        <from className="form-horizontal form-material">
+                                            <div className="form-group">
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Type name"
+                                                        name="txtShopName"
+                                                        value={txtShopName}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    {/* <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="System"
+                                                        name="txtShopSystemID"
+                                                        value={txtShopSystemID}
+                                                        onChange={this.onChange} /> */}
+                                                    <select 
+                                                        class="form-control custom-select" 
+                                                        data-placeholder="Choose system" 
+                                                        ref='idSystem'>
+                                                        {this.props.systems.map((system, index) => {
+                                                            return (
+                                                                <option
+                                                                        name="txtShopSystemID"
+                                                                        value={system.system_id}
+                                                                        key={index}>
+                                                                    {system.system_name}
+                                                                </option>
+                                                            )
+                                                        })}
+                                                            {/* <option value="Category 1">Choose system</option>
+                                                            <option value="Category 2">Category 2</option>
+                                                            <option value="Category 3">Category 5</option>
+                                                            <option value="Category 4">Category 4</option> */}
+                                                            
+                                                    </select> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Address"
+                                                        name="txtShopAddress"
+                                                        value={txtShopAddress}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Phone"
+                                                        name="txtShopPhone"
+                                                        value={txtShopPhone}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Email"
+                                                        name="txtShopEmail"
+                                                        value={txtShopEmail}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="date"
+                                                        className="form-control"
+                                                        placeholder="Date start"
+                                                        name="txtShopDayFrom"
+                                                        value={txtShopDayFrom}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="date"
+                                                        className="form-control"
+                                                        placeholder="Date Expire"
+                                                        name="txtShopDayTo"
+                                                        value={txtShopDayTo}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <div className="fileupload btn btn-danger btn-rounded waves-effect waves-light">
+                                                        <span>
+                                                            <i className="ion-upload m-r-5"></i>Upload Shop Image</span>
+                                                        <input
+                                                            type="file"
+                                                            className="upload"
+                                                            name="txtShopAvatar"
+                                                            value={txtShopAvatar}
+                                                            onChange={this.onChange} /> </div>
+                                                </div>
+                                            </div>
+                                        </from>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="submit" className="btn btn-info waves-effect" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                {/* /.modal-content */}
+                            </div>
+                            {/* /.modal-dialog */}
+                        </div>
+                        {/* End Modal Add */}
+
+                        {/* Modal Update */}
+                        <div id="update-shop" className="modal fade in" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 className="modal-title" id="myModalLabel">Add New Coffee Shop</h4>
+                                    </div>
+                                    <div className="modal-body" onSubmit={this.onSave}>
+                                        <from className="form-horizontal form-material">
+                                            <div className="form-group">
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Type name"
+                                                        name="txtShopName"
+                                                        value={txtShopName}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    {/* <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="System"
+                                                        name="txtShopSystemID"
+                                                        value={txtShopSystemID}
+                                                        onChange={this.onChange} /> */}
+                                                    <select
+                                                        class="form-control custom-select"
+                                                        data-placeholder="Choose system"
+                                                        ref='idSystem'>
+                                                        {this.props.systems.map((system, index) => {
+                                                            return (
+                                                                <option
+                                                                    name="txtShopSystemID"
+                                                                    value={system.system_id}
+                                                                    key={index}>
+                                                                    {system.system_name}
+                                                                </option>
+                                                            )
+                                                        })}
+                                                        {/* <option value="Category 1">Choose system</option>
+                                                            <option value="Category 2">Category 2</option>
+                                                            <option value="Category 3">Category 5</option>
+                                                            <option value="Category 4">Category 4</option> */}
+
+                                                    </select> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Address"
+                                                        name="txtShopAddress"
+                                                        value={txtShopAddress}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Phone"
+                                                        name="txtShopPhone"
+                                                        value={txtShopPhone}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Email"
+                                                        name="txtShopEmail"
+                                                        value={txtShopEmail}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="date"
+                                                        className="form-control"
+                                                        placeholder="Date start"
+                                                        name="txtShopDayFrom"
+                                                        value={txtShopDayFrom}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="date"
+                                                        className="form-control"
+                                                        placeholder="Date Expire"
+                                                        name="txtShopDayTo"
+                                                        value={txtShopDayTo}
+                                                        onChange={this.onChange} /> </div>
+                                                <div className="col-md-12 m-b-20">
+                                                    <div className="fileupload btn btn-danger btn-rounded waves-effect waves-light">
+                                                        <span>
+                                                            <i className="ion-upload m-r-5"></i>Upload Shop Image</span>
+                                                        <input
+                                                            type="file"
+                                                            className="upload"
+                                                            name="txtShopAvatar"
+                                                            value={txtShopAvatar}
+                                                            onChange={this.onChange} /> </div>
+                                                </div>
+                                            </div>
+                                        </from>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="submit" className="btn btn-info waves-effect" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                {/* /.modal-content */}
+                            </div>
+                            {/* /.modal-dialog */}
+                        </div>                              
+                        {/* End Modal Update */}
+                        {/* Pagination */}
+                        <td colSpan="7">
+                            <div className="text-right">
+                                <ul className="pagination"> </ul>
+                            </div>
+                        </td>
+                        {/* End Pagination*/}
+                    </tr>
+                </tfoot>
+            </React.Fragment>
+
+
         )
     }
 }
 
-export default CoffeeShopItem;
+const mapStateToProps = state => {
+    return {
+        systems: state.systems,
+        shops: state.shops
+    }
+}
+
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchAllShops : () => {
+            dispatch(actFetchShopRequest());
+        },
+        onAddShop: (shop) => {
+            dispatch(actAddShopResquest(shop));
+        },
+        fetchAllSystem : () => {
+            dispatch(actFetchSystemRequest())
+        },
+        onUpdateShop: (shop) => {
+            dispatch(actUpdateShopResquest(shop));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoffeeShopItem);

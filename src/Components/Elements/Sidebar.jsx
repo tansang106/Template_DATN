@@ -66,10 +66,10 @@ class Sidebar extends Component {
                             <li>
                                 <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="mdi mdi-map-marker"></i><span className="hide-menu">Coffee Shop</span></Link>
                                 <ul aria-expanded="false" className="collapse">
-                                    <li><Link activeStyle={{
+                                    <li><Link activestyle={{
                                         color: "white"
                                     }} to="/coffeegrid">List Shop</Link></li>
-                                    <li><Link activeClassName="active" to="/coffeedetail">Vector Maps</Link></li>
+                                    <li><Link activeclassname="active" to="/coffeedetail">Vector Maps</Link></li>
                                 </ul>
                             </li>
                             {/* <MenuLink label="Coffee Shop" to="/coffeeshop" iClass="mdi mdi-map-marker" spanClass="hide-menu" classN="has-arrow">
@@ -88,7 +88,7 @@ class Sidebar extends Component {
                                     <li>
                                         <a className="has-arrow" href="#" aria-expanded="false">Menu 1.3</a>
                                         <ul aria-expanded="false" className="collapse">
-                                            <li><Link to="/coffeegrid">item 1.3.1</Link></li>
+                                            <li><Link to="/coffeeshop">item 1.3.1</Link></li>
                                             <li><Link to="/coffeedetail">item 1.3.2</Link></li>
                                             <li><Link to="/coffeegrid">item 1.3.3</Link></li>
                                             <li><Link to="/coffeedetail">item 1.3.4</Link></li>

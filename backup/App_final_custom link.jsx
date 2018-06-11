@@ -100,10 +100,10 @@ class App extends Component {
                                         <li>
                                             <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="mdi mdi-map-marker"></i><span className="hide-menu">Coffee Shop</span></Link>
                                             <ul aria-expanded="false" className="collapse">
-                                                <li><Link activeStyle={{
+                                                <li><Link activestyle={{
                                                     color: "white"
                                                 }} to="/coffeegrid">List Shop</Link></li>
-                                                <li><Link activeClassName="active" to="/coffeedetail">Vector Maps</Link></li>
+                                                <li><Link activeclassname="active" to="/coffeedetail">Vector Maps</Link></li>
                                             </ul>
                                         </li>
                                         {/* <MenuLink label="Coffee Shop" to="/coffeeshop" iClass="mdi mdi-map-marker" spanClass="hide-menu" classN="has-arrow">

@@ -3,59 +3,103 @@ import { NavLink, Route } from 'react-router-dom';
 import CoffeeShopDetail from './CoffeeShopDetail';
 import Home from '../Home/Home';
 import CoffeeDetail from './CoffeeDetail';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import callApi from '../../Utils/apiCaller';
 
 class CoffeeShopGrid extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            shops: []
+        }
+    }
+    
+
+    componentDidMount() {
+        callApi('shops/get-list','GET',null, {
+            'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"
+        }).then(res => {
+            console.log('res data', res)
+            this.setState({
+                shops : res.data.shops
+            })
+        })
+    }
     render() {
 
-        var items = [
-            {
-                slug: '1',
-                name: 'Name 1',
-                job: 'Web design',
-                phone: 34958340
-            },
-            {
-                slug: '2',
-                name: 'Name 2',
-                job: 'Web design',
-                phone: 349345340
-            },
-            {
-                slug: '3',
-                name: 'Name 3',
-                job: 'Web design',
-                phone: 34958540
-            },
-        ];
+        // axios({
+        //     method: 'POST',
+        //     url: 'http://108.160.130.103/users/login',
+        //     data: {
+        //         user_password: '2',
+        //         user_email: '2@gmail.com'
+        //     }
+        // }).then(res => {
+        //     console.log(res)
+        // }).catch(err => {
+        //     console.log(err);
+            
+        // })
 
+        var { shops } = this.state
+        console.log(shops)
+       
         var { match } = this.props; // this.props.match
         var url = match.url;
 
-        var result = items.map((item, index) => {
+        var {shopData} = this.props;
+
+        // var result = items.map((item, index) => {
+        //     return (
+        //         <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
+        //                 <div className="card card-body">
+        //                     <div className="row">
+        //                         <div className="col-md-4 col-lg-3 text-center">
+        //                         <NavLink to={`${url}/${item.slug}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
+        //                         </div>
+        //                         <div className="col-md-8 col-lg-9">
+        //                             <h3 className="box-title m-b-0">{item.name}</h3> <small>{item.job}</small>
+        //                             <address>
+        //                                 795 Folsom Ave, Suite 600 San Francisco, CADGE 94107
+        //                                 <br />
+        //                                 <br />
+        //                                 <abbr title="Phone">P:</abbr> {item.phone}
+        //                             </address>
+        //                         </div>
+        //                     </div>
+        //             </div>
+                    
+        //         </div>
+                
+        //     )
+        // }
+        // )
+
+        var result = shops.map((shop, index) => {
             return (
                 <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
                         <div className="card card-body">
                             <div className="row">
                                 <div className="col-md-4 col-lg-3 text-center">
-                                <NavLink to={`${url}/${item.slug}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
+                                <NavLink to={`${url}/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
                                 </div>
                                 <div className="col-md-8 col-lg-9">
-                                    <h3 className="box-title m-b-0">{item.name}</h3> <small>{item.job}</small>
+                                    <h3 className="box-title m-b-0">{shop.shop_name}</h3> <small>{shop.shop_email}</small>
                                     <address>
-                                        795 Folsom Ave, Suite 600 San Francisco, CADGE 94107
+                                       {shop.shop_address}
                                         <br />
                                         <br />
-                                        <abbr title="Phone">P:</abbr> {item.phone}
+                                        <abbr title="Phone">P:</abbr> {shop.shop_phone}
                                     </address>
                                 </div>
                             </div>
                     </div>
-                    
                 </div>
                 
             )
-        }
-        )
+        })
 
         var {location} = this.props;
         console.log(location); 
@@ -299,4 +343,10 @@ class CoffeeShopGrid extends Component {
     }
 }
 
-export default CoffeeShopGrid;
+const mapStateToProps = state => {
+    return {
+        shopData: state.shops
+    }
+}
+
+export default connect(mapStateToProps, null)(CoffeeShopGrid);

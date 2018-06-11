@@ -7,6 +7,11 @@ import NotFound from './Components/404/NotFound';
 import EmployeeList from './Components/Employee/EmployeeList';
 import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
+import Main from './Components/Main';
+import CoffeeSystemList from './Components/CoffeeSystem/CoffeeSystemList';
+import Boss from './Components/Boss/BossList';
+import Staff from './Components/Staff/StaffList';
+import Position from './Components/Position/PositionList';
 
 const routes = [
     {
@@ -29,6 +34,26 @@ const routes = [
         path: '/coffeedetail',
         exact: true,
         main: () => <CoffeeShopDetail />
+    },
+    {
+        path: '/coffeesystem',
+        exact: false,
+        main: () => <CoffeeSystemList />
+    },
+    {
+        path: '/user',
+        exact: false,
+        main: () => <Boss />
+    },
+    {
+        path: '/staff',
+        exact: false,
+        main: () =>  <Staff />
+    },
+    {
+        path: '/position',
+        exact: false,
+        main: () =>  <Position/>
     },
     {
         path: '/invoice',

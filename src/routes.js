@@ -12,6 +12,7 @@ import CoffeeSystemList from './Components/CoffeeSystem/CoffeeSystemList';
 import Boss from './Components/Boss/BossList';
 import Staff from './Components/Staff/StaffList';
 import Position from './Components/Position/PositionList';
+import Drink from './Components/Drink/DrinkList';
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         path: '/staff',
         exact: false,
         main: () =>  <Staff />
+    },
+    {
+        path: '/drink',
+        exact: false,
+        main: () => <Drink/>
     },
     {
         path: '/position',

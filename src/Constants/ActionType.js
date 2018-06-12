@@ -18,7 +18,10 @@ export const FETCH_POSITION = 'FETCH_POSITION';
 export const ADD_POSITION = 'ADD_POSITION';
 export const UPDATE_POSITION = 'UPDATE_POSITION'
 //=================
-//==================
 export const FETCH_STAFF = 'FETCH_STAFF';
 export const ADD_STAFF = 'ADD_STAFF';
 export const UPDATE_STAFF = 'UPDATE_STAFF'
+//================
+export const FETCH_DRINK = 'FETCH_DRINK';
+export const ADD_DRINK = 'ADD_DRINK';
+export const UPDATE_DRINK = 'UPDATE_DRINK'

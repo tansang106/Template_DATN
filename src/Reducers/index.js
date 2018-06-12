@@ -5,6 +5,7 @@ import systems from './systems';
 import users from './users';
 import staffs from './staffs';
 import positions from './positions';
+import drinks from './drinks';
 
 const appReducers = combineReducers({
     login,
@@ -12,7 +13,8 @@ const appReducers = combineReducers({
     systems,
     users,
     staffs,
-    positions
+    positions,
+    drinks
 })
 
 export default appReducers;

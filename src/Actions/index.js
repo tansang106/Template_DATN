@@ -291,10 +291,71 @@ export const actUpdateStaffResquest = (staff) => {
     }
 }
 
-//
 export const actUpdateStaff = (staff) => {
     return {
         type: Types.UPDATE_STAFF,
         staff
+    }
+}
+
+//Drink
+export const actFetchDrinkRequest = () => {
+    console.log('vào act')
+    return (dispatch) => {
+        return callApi('drinks/get', 'POST', {
+            drink_shop_id: dataStorage.DATA_USER.user_shop_id
+        }, {
+                'token': dataStorage.TOKEN
+            }).then(res => {
+                console.log(res)
+                dispatch(actFetchDrink(res.data.drinks))
+            })
+    }
+
+}
+
+export const actFetchDrink = (drinks) => {
+    return {
+        type: Types.FETCH_DRINK,
+        drinks
+    }
+}
+
+
+export const actAddDrinkResquest = (drink) => {
+    return dispatch => {
+        return callApi('drinks/create', 'POST', drink, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            console.log(res)
+            dispatch(actAddDrink(res.data.drink))
+        })
+    }
+}
+
+
+export const actAddDrink = (drink) => {
+    return {
+        type: Types.ADD_DRINK,
+        drink
+    }
+}
+
+
+export const actUpdateDrinkResquest = (drink) => {
+    return dispatch => {
+        return callApi('drinks/update-drink', 'PUT', drink, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            console.log(res)
+            dispatch(actUpdateDrink(res.data.drink))
+        })
+    }
+}
+
+export const actUpdateDrink = (drink) => {
+    return {
+        type: Types.UPDATE_DRINK,
+        drink
     }
 }

@@ -14,6 +14,8 @@ import {
 import moment from 'moment';
 import $ from 'jquery';
 import * as dataStorage from '../../Constants/localStorage';
+import * as Config from '../../Constants/Config';
+import callApi from '../../Utils/apiCaller';
 // dataStorage.DATA_USER.user_shop_id
 //xem lai phan refs dang loi
 
@@ -26,10 +28,19 @@ class DrinkItem extends Component {
             txtDrinkName: '',
             txtDrinkPrice: '',
             txtDrinkAvatar: '',
-       
+            avatarUpload: '',
+            txtAvatarUpload: '',
         }
     }
 
+    getBase64 = (file) => {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+    }
 
     onChange = (e) => {
         var target = e.target;
@@ -39,6 +50,42 @@ class DrinkItem extends Component {
             [name]: value
         });
     }
+
+    onChangeImage = (e) => {
+        // console.log('change')
+        // const files= file[0];
+        const file = e.target.files[0];
+        this.getBase64(file).then(base64 => {
+            // localStorage["fileBase64"] = base64;
+            // console.debug("file stored",base64);
+            console.log(base64);
+        });
+       
+        // console.log('hinh', e.target.files[0].name);
+        this.setState({
+            txtDrinkAvatar: e.target.files[0]
+        })
+    
+        
+    }
+    
+    // onChangeImage = (selectorFiles: FileList) => {
+    //     console.log(selectorFiles);
+    //     // // const files= file[0];
+    //     // const file = e.target.files[0];
+    //     // this.getBase64(file).then(base64 => {
+    //     //     // localStorage["fileBase64"] = base64;
+    //     //     // console.debug("file stored",base64);
+    //     //     console.log(base64);
+    //     // });
+       
+    //     // console.log('hinh', e.target.files[0].name);
+    //     // this.setState({
+    //     //     txtDrinkAvatar: e.target.filses[0]
+    //     // })
+        
+    // }
+
     findObjectByKey(array, key, value) {
         for (var i = 0; i < array.length; i++) {
             if (array[i][key] == value) {
@@ -70,47 +117,69 @@ class DrinkItem extends Component {
         console.log('lấy avatar', dataDrink.drink_avatar)
         this.setState({
             txtDrinkPrice: dataDrink.drink_price,
-            //txtDrinkAvatar: dataDrink.drink_avatar,
+            txtAvatarUpload: dataDrink.drink_avatar,
             txtDrinkName: dataDrink.drink_name,
             idDrink: dataDrink.drink_id
            
         })
         console.log(dataDrink);
+        console.log('hình', this.state.txtAvatarUpload, this.state.txtDrinkPrice)
     }
 
+    uploadFile = async () => {
+        var formData = new FormData();
+        formData.append("avatar", this.state.txtDrinkAvatar);
+        let avatar = await callApi('boss/upload-imgDrink', 'POST', formData, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
 
-    onSave = (e) => {
-        console.log('click save')
-        e.preventDefault();
-        var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
-        console.log('xem avatar', this.refs.refAvatar.value)
-        console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
+            // this.setState({ avatarUpload: res.data.imgDrink })
+            // console.log('res avatar', this.state.avatarUpload)
+            return res.data.imgDrink;
+            })
+        // this.setState({ avatarUpload: avatar})
+        this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
+    }
 
-        //data này trùng với body call tới api
-        
-        var drink = {
-            drink_name: txtDrinkName,
-            drink_price: txtDrinkPrice,
-         
-            // drink_avatar: txtDrinkAvatar,
-            drink_avatar: '5c87d951-48c2-4cbd-bc56-9006db03386a.jpg',
+    onSave = async (e) => {
+        try {
+            console.log('click save')
+            e.preventDefault();
+            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
+            console.log('xem avatar', this.state.
+        console.log('hình', this.state.txtAvatarUpload))
+            console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
+            await this.uploadFile();
+            //data này trùng với body call tới api
+            // console.log('avatar',avatar);
+            var drink = {
+                drink_name: txtDrinkName,
+                drink_price: txtDrinkPrice,
 
-           // drink_position_id: (this.refs.idPosition) ? this.refs.idPosition.value : '',
+                // drink_avatar: txtDrinkAvatar,
+                drink_avatar: this.state.avatarUpload,
+
+                // drink_position_id: (this.refs.idPosition) ? this.refs.idPosition.value : '',
+            }
+            if (idDrink) {
+                drink.drink_id = idDrink
+
+                console.log('đang kiểm tra tồn tại id', idDrink)
+                this.props.onUpdateDrink(drink)
+                console.log('đã update')
+            }
+            else {
+                console.log('đã k có id')
+                console.log('data trước khi add', drink)
+                drink.drink_shop_id = dataStorage.DATA_USER.user_shop_id,
+                    this.props.onAddDrink(drink);
+                console.log(drink)
+
+            }
+        } catch (error) {
+            console.log('Error onSave', error)
         }
-        if (idDrink) {
-            drink.drink_id = idDrink
-
-            console.log('đang kiểm tra tồn tại id', idDrink)
-            this.props.onUpdateDrink(drink)
-            console.log('đã update')
-        }
-        else {
-            console.log('đã k có id')
-            drink.drink_shop_id = dataStorage.DATA_USER.user_shop_id,
-            this.props.onAddDrink(drink);
-            console.log(drink)
-
-        }
+      
     }
 
     onSetState = () => {
@@ -134,6 +203,10 @@ class DrinkItem extends Component {
     }
 
     onTest = () => {
+        console.log('state avtar', this.state.txtDrinkAvatar);
+        let data = {
+            avatar: this.state.txtDrinkAvatar
+        }
         // console.log('vào test')
         // var shop = {
         //     shop_name: "HardTest",
@@ -148,7 +221,14 @@ class DrinkItem extends Component {
         // console.log('log props', this.props)
         // this.props.onAddShop(shop);
         // console.log('chạy add xong')
-
+        console.log(data)
+        var formData = new FormData();
+        formData.append("avatar", this.state.txtDrinkAvatar);
+        callApi('boss/upload-imgDrink', 'POST', formData, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            console.log(res);
+        })
     }
 
     pagination = () => {
@@ -165,10 +245,10 @@ class DrinkItem extends Component {
 
     render() {
         var { drinks, positions } = this.props
-
+        console.log('lấy hình avt',`${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}`)
         console.log(this.props)
         console.log(drinks, positions)
-        var { txtDrinkPrice, txtDrinkAvatar,   txtDrinkName} = this.state;
+        var { txtDrinkPrice, txtDrinkAvatar, txtAvatarUpload,   txtDrinkName} = this.state;
         //Biến shop dùng để đổ ra list shop
         var drink = drinks.map((drink, index) => {
             // var getNameSystem = this.findObjectByKey(systems, 'system_id', )
@@ -188,8 +268,8 @@ class DrinkItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             <a >
-                                <img src="../assets/images/users/4.jpg" alt="drink" width="40" className="img-circle"
-                                /> {drink.drink_name}</a>
+                                <img src={`${Config.API_URL}/uploads/imgDrink/${drink.drink_avatar}`} alt="shop" width="40" className="img-circle" />
+                                {drink.drink_name}</a>
                             {/* <img src={drink.drink_avatar} alt="drink" width="40" className="img-circle"
                                 /> {drink.drink_name}</a> */}
                         </td>
@@ -262,7 +342,11 @@ class DrinkItem extends Component {
                                                                 id="input-file-max-fs"
                                                                 class="dropify"
                                                                 data-max-file-size="2M"
-                                                                ref="refAvatar"
+                                                                // ref="refAvatar"
+                                                                // name="txtDrinkAvatar"
+                                                                // value={txtDrinkAvatar}
+                                                                onChange={this.onChangeImage} 
+                                                                // onchange = {(e) => this.onChangeImage(e.target.value)}
                                                             />
                                                         </div>
                                                     </div>
@@ -337,7 +421,11 @@ class DrinkItem extends Component {
                                                                 id="input-file-max-fs"
                                                                 class="dropify"
                                                                 data-max-file-size="2M"
-                                                                ref="refAvatar"
+                                                                onChange={this.onChangeImage} 
+                                                                // data-default-file="../assets/plugins/dropify/src/images/test-image-1.jpg"
+                                                                // data-default-file={`'${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}'`}
+                                                                data-default-file={this.state.txtAvatarUpload}
+
                                                             />
                                                         </div>
                                                     </div>

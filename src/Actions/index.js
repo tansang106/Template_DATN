@@ -323,6 +323,7 @@ export const actFetchDrink = (drinks) => {
 
 
 export const actAddDrinkResquest = (drink) => {
+    console.log('drink bên index', drink)
     return dispatch => {
         return callApi('drinks/create', 'POST', drink, {
             'token': dataStorage.TOKEN

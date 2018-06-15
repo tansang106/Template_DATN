@@ -1,7 +1,55 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+    
+    actFetchDrinkRequest,
+  
+} from '../../Actions/index';
 
 class Invoice extends Component {
+
+    componentDidMount() {
+        console.log('vào did mount')
+        // this.props.fetchAllDrinks();
+        // this.props.fetchAllSystem();
+        this.props.fetchAllDrink();
+    }
+
+    onClickItem = () => {
+        console.log('click item')
+    }
+
     render() {
+        var { drinks } = this.props;
+        console.log('drinks render', drinks)
+        let drink = drinks.map((drink, index) => {
+            return (
+                <tr>
+                    <td>
+                        <span className="round">
+                            <i className="ti-shopping-cart"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <h6>
+                            <a className="link">{drink.drink_name}</a>
+                        </h6>
+                        <small className="text-muted">Price : {drink.drink_price} </small>
+                    </td>
+                   {/* <td>
+                        <h5>357</h5>
+                    </td> */}
+                    <td>
+                        <h5>{drink.drink_price}</h5>
+                    </td> 
+                    <td>
+                        <span className="round" onClick={this.onClickItem}>
+                            <i className="ti-shopping-cart"></i>
+                        </span>
+                    </td>
+                </tr>
+            )
+        })
         return (
             <div className="row">
                 <div className="col-md-6">
@@ -90,7 +138,7 @@ class Invoice extends Component {
                                 {/*/span*/}
                             </div>
                             <div className="table-responsive">
-                                <table className="table stylish-table">
+                                <table className="table stylish-table pre-scrollable">
                                     <thead>
                                         <tr>
                                             <th style={{ width: "90px" }}></th>
@@ -100,8 +148,9 @@ class Invoice extends Component {
 
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
+                                    <tbody id="slimtest4">
+                                        {drink}
+                                        {/* <tr>
                                             <td>
                                                 <span className="round">
                                                     <i className="ti-shopping-cart"></i>
@@ -196,7 +245,7 @@ class Invoice extends Component {
                                                     <i className="ti-shopping-cart"></i>
                                                 </span>
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
@@ -317,4 +366,23 @@ class Invoice extends Component {
     }
 }
 
-export default Invoice;
+const mapStateToProps = state => {
+    return {
+        //users: state.users,
+        //systems: state.systems,
+        drinks: state.drinks,
+      
+    }
+}
+
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+      
+        fetchAllDrink: () => {
+            dispatch(actFetchDrinkRequest())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

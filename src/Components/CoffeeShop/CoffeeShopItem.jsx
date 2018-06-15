@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { actFetchShopRequest, actAddShopResquest, actFetchSystemRequest , actUpdateShopResquest, actFetchAccountRequest } from '../../Actions/index';
 import moment from 'moment';
-import $ from 'jquery'; 
+import $ from 'jquery';
+import * as Config from '../../Constants/Config';
 // import * as dataStorage from '../../Constants/localStorage';
 // dataStorage.DATA_USER.user_shop_id
 
@@ -212,9 +213,28 @@ class CoffeeShopItem extends Component {
                     <tr className="text_center" key={index}>
                         <td>{index + 1}</td>
                         <td className="text_left">
-                            <a >
-                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                                /> {shop.shop_name}</a>
+                            {/* <a >
+                                <span class="mytooltip tooltip-effect-4 ">
+                                  
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
+                                    <span class="tooltip-content clearfix">
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
+                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                    </span>
+                                </span> 
+                                    {shop.shop_name}
+                            </a> */}
+                             
+                                {/* <span class="mytooltip tooltip-effect-4 "> */}
+                                  
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle"/>
+                                    {/* <span class="tooltip-content clearfix"> */}
+                                    {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
+                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                    {/* </span> */}
+                                {/* </span>  */}
+                                    {shop.shop_name}
+                            
                         </td>
                         {/* <td>genelia@gmail.com</td> */}
                         <td>{shop.shop_phone}</td>

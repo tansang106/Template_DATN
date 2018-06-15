@@ -64,6 +64,7 @@
     <script src="%PUBLIC_URL%/js/toastr.min.js"></script>
     <!-- jQuery file upload -->
     <script src="%PUBLIC_URL%/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+    <!-- Upload Image -->
     <script>
         $(document).ready(function () {
             // Basic
@@ -104,6 +105,22 @@
                     drDestroy.init();
                 }
             })
+        });
+    </script>
+
+    <!-- Print Invoice -->
+    <script src="%PUBLIC_URL%/js/jquery.PrintArea.js" type="text/JavaScript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#print").click(function () {
+                var mode = 'iframe'; //popup
+                var close = mode == "popup";
+                var options = {
+                    mode: mode,
+                    popClose: close
+                };
+                $("div.printableArea").printArea(options);
+            });
         });
     </script>
 </body>

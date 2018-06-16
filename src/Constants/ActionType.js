@@ -25,3 +25,8 @@ export const UPDATE_STAFF = 'UPDATE_STAFF'
 export const FETCH_DRINK = 'FETCH_DRINK';
 export const ADD_DRINK = 'ADD_DRINK';
 export const UPDATE_DRINK = 'UPDATE_DRINK'
+//===============
+export const ADD_TO_CART = "ADD_TO_CART";
+export const DELETE_PRODUCT_IN_CART = "DELETE_PRODUCT_IN_CART";
+export const CHANGE_MESSAGE = "CHANGE_MESSAGE";
+export const UPDATE_PRODUCT_IN_CART = "UPDATE_PRODUCT_IN_CART";

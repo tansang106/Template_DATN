@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    
-    actFetchDrinkRequest,
-  
-} from '../../Actions/index';
-
+import { actFetchDrinkRequest } from '../../Actions/index';
+import Cart from './Cart';
+import DrinkCartContainer from '../../Containers/DrinkCartContainer';
+import CartContainer from '../../Containers/CartContainer';
+import moment from 'moment';
 class Invoice extends Component {
 
-    componentDidMount() {
-        console.log('vào did mount')
-        // this.props.fetchAllDrinks();
-        // this.props.fetchAllSystem();
-        this.props.fetchAllDrink();
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            txtName: '',
+            txtPhone: '',
+            txtAddress: '', 
+        }
     }
 
-    onClickItem = () => {
-        console.log('click item')
+    onChange = (e) => {
+        var target = e.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+            [name]: value
+        });
+    }
+    
+
+    componentDidMount() {
+        this.props.fetchAllDrink();
     }
 
     render() {
         var { drinks } = this.props;
+        var { txtName, txtPhone, txtAddress } = this.state
         console.log('drinks render', drinks)
         let drink = drinks.map((drink, index) => {
             return (
@@ -74,17 +86,37 @@ class Invoice extends Component {
                             <h4 className="card-title">Animated Line Inputs Form With Floating Labels</h4>
                             <form className="floating-labels m-t-40">
                                 <div className="form-group has-success m-b-40">
-                                    <input type="text" className="form-control" id="input11" />
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="input11" 
+                                        name="txtName"
+                                        value={txtName}
+                                        onChange={this.onChange}
+                                    />
                                     <span className="bar"></span>
                                     <label for="input11">Name</label>
                                 </div>
                                 <div className="form-group has-warning m-b-40">
-                                    <input type="text" className="form-control" id="input11" />
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="input11" 
+                                        name="txtPhone"
+                                        value={txtPhone}
+                                        onChange={this.onChange}/>
                                     <span className="bar"></span>
                                     <label for="input11">Phone</label>
                                 </div>
                                 <div className="form-group has-error has-danger m-b-40">
-                                    <input type="text" className="form-control" id="input12" />
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="input12" 
+                                        name="txtAddress"
+                                        value={txtAddress}
+                                        onChange={this.onChange}
+                                    />
                                     <span className="bar"></span>
                                     <label for="input12">Address</label>
                                 </div>
@@ -137,118 +169,7 @@ class Invoice extends Component {
                                 </div>
                                 {/*/span*/}
                             </div>
-                            <div className="table-responsive">
-                                <table className="table stylish-table pre-scrollable">
-                                    <thead>
-                                        <tr>
-                                            <th style={{ width: "90px" }}></th>
-                                            <th style={{ width: "150px" }}>Description</th>
-                                            <th>QTY</th>
-                                            <th>Price</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="slimtest4">
-                                        {drink}
-                                        {/* <tr>
-                                            <td>
-                                                <span className="round">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <h6>
-                                                    <a href="javascript:void(0)" className="link">Apple iPhone 6 Space Grey, 16 GB</a>
-                                                </h6>
-                                                <small className="text-muted">Product id : MI5457 </small>
-                                            </td>
-                                            <td>
-                                                <h5>357</h5>
-                                            </td>
-                                            <td>
-                                                <h5>$435</h5>
-                                            </td>
-                                            <td>
-                                                <span className="round">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span className="round bg-success">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <h6>
-                                                    <a href="javascript:void(0)" className="link">Fossil Marshall For Men Black watch</a>
-                                                </h6>
-                                                <small className="text-muted">Product id : MI5457 </small>
-                                            </td>
-                                            <td>
-                                                <h5>357</h5>
-                                            </td>
-                                            <td>
-                                                <h5>$435</h5>
-                                            </td>
-                                            <td>
-                                                <span className="round">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span className="round bg-danger">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <h6>
-                                                    <a href="javascript:void(0)" className="link">Sony Bravia 80cm</a>
-                                                </h6>
-                                                <small className="text-muted">Product id : MI5457 </small>
-                                            </td>
-                                            <td>
-                                                <h5>357</h5>
-                                            </td>
-                                            <td>
-                                                <h5>$435</h5>
-                                            </td>
-                                            <td>
-                                                <span className="round">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span className="round bg-primary">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <h6>
-                                                    <a href="javascript:void(0)" className="link">Panasonic P75 Champagne Gold</a>
-                                                </h6>
-                                                <small className="text-muted">Product id : MI5457 </small>
-                                            </td>
-                                            <td>
-                                                <h5>357</h5>
-                                            </td>
-                                            <td>
-                                                <h5>$435</h5>
-                                            </td>
-                                            <td>
-                                                <span className="round">
-                                                    <i className="ti-shopping-cart"></i>
-                                                </span>
-                                            </td>
-                                        </tr> */}
-                                    </tbody>
-                                </table>
-                            </div>
+                                <DrinkCartContainer />
                         </div>
 
 
@@ -280,83 +201,23 @@ class Invoice extends Component {
                                 <div className="pull-right text-right">
                                     <address>
                                         <h3>To,</h3>
-                                        <h4 className="font-bold">Gaala & Sons,</h4>
-                                        <p className="text-muted m-l-30">E 104, Dharti-2,
+                                        {/* <h4 className="font-bold">Gaala & Sons,</h4> */}
+                                        <h4 className="font-bold">{txtName},</h4>
+                                        {/* <p className="text-muted m-l-30">E 104, Dharti-2,
                                                 <br /> Nr' Viswakarma Temple,
                                                 <br /> Talaja Road,
-                                                <br /> Bhavnagar - 364002</p>
+                                                <br /> Bhavnagar - 364002</p> */}
+                                         <p className="text-muted m-l-30">{txtAddress}</p>
                                         <p className="m-t-30">
                                             <b>Phone :</b>
-                                            <i className="fa fa-phone"></i> +8456225412</p>
+                                            <i className="fa fa-phone"></i> {txtPhone}</p>
                                         <p>
                                             <b>Invoice Date :</b>
-                                            <i className="fa fa-calendar"></i> 23rd Jan 2017</p>
+                                            <i className="fa fa-calendar"></i> {moment().format('LLL')}</p>
                                     </address>
                                 </div>
                             </div>
-                            <div className="col-md-12">
-                                <div className="table-responsive m-t-40" style={{ clear: "both" }}>
-                                    <table className="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th className="text-center">#</th>
-                                                <th>Description</th>
-                                                <th className="text-right">Quantity</th>
-                                                <th className="text-right">Unit Cost</th>
-                                                <th className="text-right">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="text-center">1</td>
-                                                <td>Milk Powder</td>
-                                                <td className="text-right">2 </td>
-                                                <td className="text-right"> $24 </td>
-                                                <td className="text-right"> $48 </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="text-center">2</td>
-                                                <td>Air Conditioner</td>
-                                                <td className="text-right"> 3 </td>
-                                                <td className="text-right"> $500 </td>
-                                                <td className="text-right"> $1500 </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="text-center">3</td>
-                                                <td>RC Cars</td>
-                                                <td className="text-right"> 20 </td>
-                                                <td className="text-right"> %600 </td>
-                                                <td className="text-right"> $12000 </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="text-center">4</td>
-                                                <td>Down Coat</td>
-                                                <td className="text-right"> 60 </td>
-                                                <td className="text-right">$5 </td>
-                                                <td className="text-right"> $300 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div className="col-md-12">
-                                <div className="pull-right m-t-30 text-right">
-                                    <p>Sub - Total amount: $13,848</p>
-                                    <p>vat (10%) : $138 </p>
-                                    <hr />
-                                    <h3>
-                                        <b>Total :</b> $13,986</h3>
-                                </div>
-                                <div className="clearfix"></div>
-                                <hr />
-                                <div className="text-right">
-                                    <button className="btn btn-danger" type="submit"> Proceed to payment </button>
-                                    <button id="print" className="btn btn-default btn-outline" type="button">
-                                        <span>
-                                            <i className="fa fa-print"></i> Print</span>
-                                    </button>
-                                </div>
-                            </div>
+                                <CartContainer/>
                         </div>
                     </div>
                 </div>

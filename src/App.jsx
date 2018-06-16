@@ -49,7 +49,7 @@ class App extends Component {
 
     render() {
         let render;
-        if (localStorage.getItem("tokenUser")) {
+        if (localStorage.getItem("tokenUser") && localStorage.getItem("dataUser")) {
             // <Router>
             //     return   <Main></Main> 
             // </Router>    

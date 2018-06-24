@@ -7,7 +7,7 @@ import DrinkItem from './DrinkItem';
 class Drink extends Component {
  
     render() {
-
+        var { children } = this.props;
         return (
             <div className="row">
                 <div className="col-12">
@@ -30,6 +30,7 @@ class Drink extends Component {
                                     {/* BossItem */}
 
                                     <DrinkItem></DrinkItem>
+                                    {/* { children } */}
 
                                     {/* End CoffeeShopItem */}
 

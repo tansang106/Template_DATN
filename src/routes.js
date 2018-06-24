@@ -13,6 +13,7 @@ import Boss from './Components/Boss/BossList';
 import Staff from './Components/Staff/StaffList';
 import Position from './Components/Position/PositionList';
 import Drink from './Components/Drink/DrinkList';
+import DinkContainer from './Containers/DrinkContainer';
 
 const routes = [
     {

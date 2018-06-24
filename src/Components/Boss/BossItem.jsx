@@ -3,6 +3,9 @@ import {connect} from 'react-redux';
 import { actFetchShopRequest, actAddShopResquest, actFetchSystemRequest, actUpdateShopResquest, actFetchAccountRequest, actAddUserResquest, actUpdateUserResquest } from '../../Actions/index';
 import moment from 'moment';
 import $ from 'jquery'; 
+import callApi from '../../Utils/apiCaller';
+import * as Config from '../../Constants/Config';
+import * as dataStorage from '../../Constants/localStorage';
 //xem lai phan refs dang loi
 
 class BossItem extends Component {
@@ -21,10 +24,17 @@ class BossItem extends Component {
             txtUserSystemID : '',
             txtUserEmail: '',
             txtUserPassword: '',
-            txtUserIDCard: ''
+            txtUserIDCard: '',
+            avatarUpload: '',
+            txtAvatarUpload: '',
         }
     }
   
+    onChangeImage = (e) => {
+        this.setState({
+            txtUserAvatar: e.target.files[0]
+        })
+    }
 
     onChange = (e) => {
         var target = e.target;
@@ -73,84 +83,116 @@ class BossItem extends Component {
             txtUserPhone: dataUser.user_phone,
             txtUserSystemID: dataUser.user_shop_id,
             idUser: dataUser.user_id,
-            txtUserIDCard: dataUser.user_Idcard
+            txtUserIDCard: dataUser.user_Idcard,
+            txtAvatarUpload: dataUser.user_avatar,
         })
         console.log(dataUser);
     }
 
+    uploadFile = async () => {
+        console.log('vào upload file')
+        var formData = new FormData();
+        formData.append("avatar", this.state.txtUserAvatar);
+        let avatar = await callApi('shop/upload-imgBoss', 'POST', formData, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            return res.data.imgBoss;
+        })
+        this.setState({ avatarUpload: avatar})
+        console.log('đã up ảnh', this.state.avatarUpload)
+        // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
+    }
 
-    onSave = (e) => {
-        console.log('click save')
-        e.preventDefault();
-        var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
-        console.log('xem avatar', this.refs.refAvatar.value)
-        console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard )
+
+    onSave = async (e) => {
+        try {
+            console.log('click save')
+            e.preventDefault();
+            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
+            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard )
+            await this.uploadFile();
+            //data này trùng với body call tới api
+    
+            var user = {
+                boss_name: txtUserName,
+                // boss_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                boss_address: txtUserAddress,
+                boss_phone: txtUserPhone,
+                // boss_avatar: txtUserAvatar,
+                boss_avatar: this.state.avatarUpload,
+                boss_email: txtUserEmail,
+                boss_birthday: txtUserBirthday,
+               
+                boss_active: 'on',
+                boss_Idcard: txtUserIDCard,
+                //boss_id: this.state.idUser
+               
+                
+            }
+            if (this.state.idUser) {
+                user.boss_id = this.state.idUser
+                user.boss_shop= (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                console.log('đang kiểm tra tồn tại id', this.state.idUser)
+                this.props.onUpdateUser(user);
+                console.log('đã update')
+            }
+            else {
+                console.log('đã k có id')
+                user.boss_password = txtUserPassword;
+                user.boss_sex = (this.refs.idSex) ? this.refs.idSex.value : '',
+                user.boss_shop_id = (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                console.log('log system id', user.boss_shop_id)
+             
+                this.props.onAddUser(user);
+                console.log(user)
+    
+            }
+                // callApi('shops/create', 'POST', {
+                //     shop_name: txtShopName,
+                //     shop_system_id: txtShopSystemID,
+                //     shop_address: txtShopAddress,
+                //     shop_phone: txtShopPhone,
+                //     shop_avatar: txtShopAvatar,
+                //     shop_email: txtShopEmail,
+                //     shop_dayFrom: txtShopDayFrom,
+                //     shop_dayTo: txtShopDayTo
+                // }, {
+                //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
+                // }).then(res => {
+                //     console.log(res);
+                // })
+        } catch (error) {
+            console.log('Error onSave', error)
+        }
        
-        //data này trùng với body call tới api
+    }
 
-        var user = {
-            boss_name: txtUserName,
-            // boss_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            boss_address: txtUserAddress,
-            boss_phone: txtUserPhone,
-            // boss_avatar: txtUserAvatar,
-            boss_avatar: '5c87d951-48c2-4cbd-bc56-9006db03386a.jpg',
-            boss_email: txtUserEmail,
-            boss_birthday: txtUserBirthday,
-           
-            boss_active: 'on',
-            boss_Idcard: txtUserIDCard,
-            //boss_id: this.state.idUser
-           
+    onDelete = (e) => {
+        try {
+            console.log('click save')
+            e.preventDefault();
+            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard, txtAvatarUpload } = this.state;
+            console.log('xem avatar', this.refs.refAvatar.value)
+            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard, txtAvatarUpload )
+            var user = {
+                boss_name: txtUserName,
+                boss_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                boss_address: txtUserAddress,
+                boss_phone: txtUserPhone,
+                boss_avatar: txtAvatarUpload,
+                boss_email: txtUserEmail,
+                boss_birthday: txtUserBirthday,
+                boss_active: 'off',
+                boss_Idcard: txtUserIDCard,
+                boss_id: this.state.idUser
             
-        }
-        if (this.state.idUser) {
-            // console.log('đang tìm id system', shop.shop_system)
-            // shop.shop_system = (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            // let shop = {
-            //     shop_name: txtUserName,
-            //     shop_system_id: (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            //     shop_address: txtUserAddress,
-            //     shop_phone: txtUserPhone,
-            //     shop_avatar: txtUserAvatar,
-            //     shop_email: txtUserEmail,
-            //     shop_dayFrom: txtUserDayFrom,
-            //     shop_dayTo: txtUserDayTo,
-            //     shop_id: this.state.idUser
-            // }
-            user.boss_id = this.state.idUser
-            user.boss_shop= (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            console.log('đang kiểm tra tồn tại id', this.state.idUser)
+            }
+            console.log('đang kiểm tra tồn tại id', user)
             this.props.onUpdateUser(user);
-            this.props.fetchAllUsers();
-            this.props.fetchAllSystem();
             console.log('đã update')
+        } catch (error) {
+            console.log('Error onSave', error)
         }
-        else {
-            console.log('đã k có id')
-            user.boss_password = txtUserPassword;
-            user.boss_sex = (this.refs.idSex) ? this.refs.idSex.value : '',
-            user.boss_shop_id = (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            console.log('log system id', user.boss_shop_id)
-         
-            this.props.onAddUser(user);
-            console.log(user)
-
-        }
-            // callApi('shops/create', 'POST', {
-            //     shop_name: txtShopName,
-            //     shop_system_id: txtShopSystemID,
-            //     shop_address: txtShopAddress,
-            //     shop_phone: txtShopPhone,
-            //     shop_avatar: txtShopAvatar,
-            //     shop_email: txtShopEmail,
-            //     shop_dayFrom: txtShopDayFrom,
-            //     shop_dayTo: txtShopDayTo
-            // }, {
-            //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
-            // }).then(res => {
-            //     console.log(res);
-            // })
        
     }
 
@@ -170,12 +212,8 @@ class BossItem extends Component {
         })
     }
     
-    componentWillMount() {
-        
-    }
 
     componentDidMount() {
-        console.log('vào did mount')
         this.props.fetchAllUsers();
         this.props.fetchAllSystem();
         
@@ -212,19 +250,12 @@ class BossItem extends Component {
         });
     }
 
-    render() {
-        var { users, systems } = this.props
-        
-        console.log(this.props)
-        console.log(users)
-        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
-        //Biến shop dùng để đổ ra list shop
-        var user = users.map((user, index) => {
-            // var getNameSystem = this.findObjectByKey(systems, 'system_id', )
-            // if (user != undefined) {
-
-            
-            let nameSystems = systems.find(x => x.system_id === user.user_shop_id)
+    showBoss = (users, systems) => {
+        var result = null;
+        if (users.length > 0) {
+            result = users.map((user, index) => {
+                if (user.user_active == 'on') {
+                    let nameSystems = systems.find(x => x.system_id === user.user_shop_id)
             let nameSystem;
             if (nameSystems != undefined) {
                 nameSystem = nameSystems.system_name
@@ -236,7 +267,7 @@ class BossItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             <a >
-                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                <img src={`${Config.API_URL}/uploads/imgBoss/${user.user_avatar}`} alt="user" width="40" className="img-circle"
                                 /> {user.user_name}</a>
                                 {/* <img src={user.user_avatar} alt="user" width="40" className="img-circle"
                                 /> {user.user_name}</a> */}
@@ -263,19 +294,35 @@ class BossItem extends Component {
                                     data-value={user.user_id}
                                     onClick={this.onGetIdUser}
                                 >Add</button>
-                                <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
+                               <button 
+                                    type="button" 
+                                    className="btn-sm waves-effect waves-light btn-danger"
+                                    data-toggle="modal" 
+                                    data-target="#delete-modal"
+                                    data-value={user.user_id}
+                                    onClick={this.onGetIdUser}
+                                >Delete</button>
                             </div>
                         </td>
                     </tr>
                 )
             }
-            // }
-        })
+                }
+            })
+        }
+        return result;
+    }
 
+    render() {
+        var { users, systems } = this.props
+        
+        console.log(this.props)
+        console.log(users)
+        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
         return (
             <React.Fragment>
                 <tbody>
-                    {user}
+                    {this.showBoss( users, systems)}
                 </tbody>
                 <tfoot>
                     <tr>
@@ -311,7 +358,7 @@ class BossItem extends Component {
                                                             id="input-file-max-fs"
                                                             class="dropify"
                                                             data-max-file-size="2M"
-                                                            ref="refAvatar"
+                                                            onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
@@ -482,9 +529,7 @@ class BossItem extends Component {
                                                             id="input-file-max-fs"
                                                             class="dropify"
                                                             data-max-file-size="2M"
-                                                            name="txtUserAvatar"
-                                                            value={txtUserAvatar}
-                                                            onChange={this.onChange}
+                                                            onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
@@ -604,6 +649,32 @@ class BossItem extends Component {
                             {/* /.modal-dialog  */}
                         </div> 
                         {/* End Modal Update */}
+
+                        {/* Modal Delete */}
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h1 className= "text-danger"> 
+                                                    Are you sure delete?
+                                                </h1>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    onClick={this.onDelete}
+                                                    data-dismiss="modal">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                        {/* End Modal Delete */}
                         {/* Pagination */}
                         <td colSpan="7">
                             <div className="text-right">

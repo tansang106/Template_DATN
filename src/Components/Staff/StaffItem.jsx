@@ -16,6 +16,8 @@ import {
 import moment from 'moment';
 import $ from 'jquery';
 import * as dataStorage from '../../Constants/localStorage';
+import callApi from '../../Utils/apiCaller';
+import * as Config from '../../Constants/Config';
 // dataStorage.DATA_USER.user_shop_id
 //xem lai phan refs dang loi
 
@@ -35,8 +37,16 @@ class BossItem extends Component {
             txtUserPositionID: '',
             txtUserEmail: '',
             txtUserPassword: '',
-            txtUserIDCard: ''
+            txtUserIDCard: '',
+            avatarUpload: '',
+            txtAvatarUpload: '',
         }
+    }
+
+    onChangeImage = (e) => {
+        this.setState({
+            txtUserAvatar: e.target.files[0]
+        })
     }
 
 
@@ -87,53 +97,49 @@ class BossItem extends Component {
             txtUserPhone: dataUser.user_phone,
             txtUserPositionID: dataUser.user_position_id,
             idUser: dataUser.user_id,
-            txtUserIDCard: dataUser.user_Idcard
+            txtUserIDCard: dataUser.user_Idcard,
+            txtAvatarUpload: dataUser.user_avatar,
         })
         console.log(dataUser);
     }
 
+    uploadFile = async () => {
+        var formData = new FormData();
+        formData.append("avatar", this.state.txtUserAvatar);
+        let avatar = await callApi('boss/upload-imgStaff', 'POST', formData, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            return res.data.imgStaff;
+        })
+        this.setState({ avatarUpload: avatar})
+        console.log('đã up ảnh', this.state.avatarUpload)
+        // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
+    }
 
-    onSave = (e) => {
+
+    onSave = async (e) => {
+       try {
         console.log('click save')
         e.preventDefault();
         var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard } = this.state;
-        console.log('xem avatar', this.refs.refAvatar.value)
         console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard)
-
+        await this.uploadFile();
         //data này trùng với body call tới api
-
+        
         var user = {
             staff_name: txtUserName,
-            // staff_system: (this.refs.idPosition) ? this.refs.idPosition.value : '',
             staff_address: txtUserAddress,
             staff_phone: txtUserPhone,
-            // staff_avatar: txtUserAvatar,
-            staff_avatar: '5c87d951-48c2-4cbd-bc56-9006db03386a.jpg',
+            staff_avatar: this.state.avatarUpload,
             staff_email: txtUserEmail,
             staff_birthday: txtUserBirthday,
             staff_active: 'on',
             staff_Idcard: txtUserIDCard,
-            //boss_id: this.state.idUser
-
-
             staff_position_id: (this.refs.idPosition) ? this.refs.idPosition.value : '',
         }
+        console.log('data trước update', user)
         if (this.state.idUser) {
-            // console.log('đang tìm id system', shop.shop_system)
-            // shop.shop_system = (this.refs.idPosition) ? this.refs.idPosition.value : '',
-            // let shop = {
-            //     shop_name: txtUserName,
-            //     shop_system_id: (this.refs.idPosition) ? this.refs.idPosition.value : '',
-            //     shop_address: txtUserAddress,
-            //     shop_phone: txtUserPhone,
-            //     shop_avatar: txtUserAvatar,
-            //     shop_email: txtUserEmail,
-            //     shop_dayFrom: txtUserDayFrom,
-            //     shop_dayTo: txtUserDayTo,
-            //     shop_id: this.state.idUser
-            // }
             user.staff_id = this.state.idUser
-
             console.log('đang kiểm tra tồn tại id', this.state.idUser)
             this.props.onUpdateStaff(user)
             console.log('đã update')
@@ -141,29 +147,47 @@ class BossItem extends Component {
         else {
             console.log('đã k có id')
             user.staff_shop_id = dataStorage.DATA_USER.user_shop_id,
-                user.staff_password = txtUserPassword;
+            user.staff_password = txtUserPassword;
             user.staff_sex = (this.refs.idSex) ? this.refs.idSex.value : '',
-                user.staff_permission = 'staff',
+            user.staff_permission = 'staff',
                 //console.log('log system id', user.boss_shop_id)
                 this.props.onAddStaff(user);
             console.log(user)
 
         }
-        // callApi('shops/create', 'POST', {
-        //     shop_name: txtShopName,
-        //     shop_system_id: txtShopSystemID,
-        //     shop_address: txtShopAddress,
-        //     shop_phone: txtShopPhone,
-        //     shop_avatar: txtShopAvatar,
-        //     shop_email: txtShopEmail,
-        //     shop_dayFrom: txtShopDayFrom,
-        //     shop_dayTo: txtShopDayTo
-        // }, {
-        //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
-        // }).then(res => {
-        //     console.log(res);
-        // })
+       } catch (error) {
+           console.log('Error onSave', error)
+       }
 
+    }
+
+    onDelete = (e) => {
+        try {
+            console.log('click save')
+            e.preventDefault();
+            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard,txtAvatarUpload } = this.state;
+            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard, txtAvatarUpload)
+            
+            
+            var user = {
+                staff_name: txtUserName,
+                staff_address: txtUserAddress,
+                staff_phone: txtUserPhone,
+                staff_avatar: txtAvatarUpload,
+                staff_email: txtUserEmail,
+                staff_birthday: txtUserBirthday,
+                staff_active: 'off',
+                staff_Idcard: txtUserIDCard,
+                staff_position_id: (this.refs.idPosition) ? this.refs.idPosition.value : '',
+                staff_id: this.state.idUser
+            }
+            console.log('data trước upload', user)
+                this.props.onUpdateStaff(user)
+
+            
+           } catch (error) {
+               console.log('Error onDelete', error)
+           }
     }
 
     onSetState = () => {
@@ -185,9 +209,6 @@ class BossItem extends Component {
 
 
     componentDidMount() {
-        console.log('vào did mount')
-        // this.props.fetchAllUsers();
-        // this.props.fetchAllSystem();
         this.props.fetchAllStaff();
         this.props.fetchPosition();
 
@@ -223,20 +244,12 @@ class BossItem extends Component {
         });
     }
 
-    render() {
-        var { staffs, positions } = this.props
-
-        console.log(this.props)
-        console.log(staffs, positions)
-        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard } = this.state;
-        //Biến shop dùng để đổ ra list shop
-        var staff = staffs.map((staff, index) => {
-            // var getNameSystem = this.findObjectByKey(systems, 'system_id', )
-            // if (staff != undefined) {
-
-
-
-            let nameSystems = positions.find(x => x.position_id === staff.user_position_id)
+    showStaffs = (staffs, positions) => {
+        var result = null;
+        if (staffs.length > 0) {
+            result = staffs.map((staff, index) => {
+                if (staff.user_active == 'on') {
+                    let nameSystems = positions.find(x => x.position_id === staff.user_position_id)
             let nameSystem;
             if (nameSystems != undefined) {
                 nameSystem = nameSystems.position_name
@@ -248,7 +261,7 @@ class BossItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             <a >
-                                <img src="../assets/images/users/4.jpg" alt="staff" width="40" className="img-circle"
+                                <img src={`${Config.API_URL}/uploads/imgStaff/${staff.user_avatar}`} alt="staff" width="40" className="img-circle"
                                 /> {staff.user_name}</a>
                             {/* <img src={staff.user_avatar} alt="staff" width="40" className="img-circle"
                                 /> {staff.user_name}</a> */}
@@ -274,20 +287,35 @@ class BossItem extends Component {
                                     data-target="#update-user"
                                     data-value={staff.user_id}
                                     onClick={this.onGetIdUser}
-                                >Add</button>
-                                <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
+                                >Edit</button>
+                                  <button 
+                                    type="button" 
+                                    className="btn-sm waves-effect waves-light btn-danger"
+                                    data-toggle="modal" 
+                                    data-target="#delete-modal"
+                                    data-value={staff.user_id}
+                                    onClick={this.onGetIdUser}
+                                >Delete</button>
                             </div>
                         </td>
                     </tr>
                 )
-                // }
+                
             }
-        })
+                }
+            })
+        }
+        return result;
+    }
 
+    render() {
+        var { staffs, positions } = this.props
+        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard } = this.state;
         return (
             <React.Fragment>
                 <tbody>
-                    {staff}
+                    {/* {staff} */}
+                    {this.showStaffs(staffs, positions)}
                 </tbody>
                 <tfoot>
                     <tr>
@@ -308,22 +336,12 @@ class BossItem extends Component {
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <h4 class="card-title text_center">Avatar</h4>
-                                                        {/* <label for="input-file-max-fs">Upload Avatar</label> */}
-                                                        {/* <input
-                                                            type="file"
-                                                            id="input-file-max-fs"
-                                                            class="dropify"
-                                                            data-max-file-size="2M"
-                                                            name="txtUserAvatar"
-                                                            value={txtUserAvatar}
-                                                            onChange={this.onChange} 
-                                                        /> */}
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
                                                             class="dropify"
                                                             data-max-file-size="2M"
-                                                            ref="refAvatar"
+                                                            onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
@@ -430,7 +448,7 @@ class BossItem extends Component {
                                                                         name="txtShopSystemID"
                                                                         value={position.position_id}
                                                                         key={index}>
-                                                                        {position.position}
+                                                                        {position.position_name}
                                                                     </option>
                                                                 )
                                                             })}
@@ -494,9 +512,7 @@ class BossItem extends Component {
                                                             id="input-file-max-fs"
                                                             class="dropify"
                                                             data-max-file-size="2M"
-                                                            name="txtUserAvatar"
-                                                            value={txtUserAvatar}
-                                                            onChange={this.onChange}
+                                                            onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
@@ -616,6 +632,32 @@ class BossItem extends Component {
                             {/* /.modal-dialog  */}
                         </div>
                         {/* End Modal Update */}
+
+                        {/* Modal Delete */}
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h1 className= "text-danger"> 
+                                                    Are you sure delete?
+                                                </h1>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    onClick={this.onDelete}
+                                                    data-dismiss="modal">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                        {/* End Modal Delete */}
                         {/* Pagination */}
                         <td colSpan="7">
                             <div className="text-right">

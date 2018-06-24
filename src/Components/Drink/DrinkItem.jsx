@@ -132,13 +132,10 @@ class DrinkItem extends Component {
         let avatar = await callApi('boss/upload-imgDrink', 'POST', formData, {
             'token': dataStorage.TOKEN
         }).then(res => {
-
-            // this.setState({ avatarUpload: res.data.imgDrink })
-            // console.log('res avatar', this.state.avatarUpload)
             return res.data.imgDrink;
-            })
-        // this.setState({ avatarUpload: avatar})
-        this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
+        })
+        this.setState({ avatarUpload: avatar})
+        // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
     }
 
     onSave = async (e) => {
@@ -146,9 +143,10 @@ class DrinkItem extends Component {
             console.log('click save')
             e.preventDefault();
             var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
-            console.log('xem avatar', this.state.
-        console.log('hình', this.state.txtAvatarUpload))
+            console.log('hình', this.state.txtAvatarUpload)
+            console.log('avatarupload', this.state.avatarUpload)
             console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
+           
             await this.uploadFile();
             //data này trùng với body call tới api
             // console.log('avatar',avatar);
@@ -243,26 +241,11 @@ class DrinkItem extends Component {
         });
     }
 
-    render() {
-        var { drinks, positions } = this.props
-        console.log('lấy hình avt',`${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}`)
-        console.log(this.props)
-        console.log(drinks, positions)
-        var { txtDrinkPrice, txtDrinkAvatar, txtAvatarUpload,   txtDrinkName} = this.state;
-        //Biến shop dùng để đổ ra list shop
-        var drink = drinks.map((drink, index) => {
-            // var getNameSystem = this.findObjectByKey(systems, 'system_id', )
-            if (drink != undefined) {
 
-
-
-            // let nameSystems = positions.find(x => x.position_id === drink.user_position_id)
-            // let nameSystem;
-            // if (nameSystems != undefined) {
-            //     nameSystem = nameSystems.position_name
-
-                // if (dataStorage.DATA_USER.user_user_id == drink.user_system_id)
-                // {
+    showDrinks = (drinks) => {
+        let result = null
+        if (drinks.length > 0 ){
+            result = drinks.map((drink, index) => {
                 return (
                     <tr className="text_center" key={index}>
                         <td>{index + 1}</td>
@@ -292,20 +275,39 @@ class DrinkItem extends Component {
                                     data-target="#update-drink"
                                     data-value={drink.drink_id}
                                     onClick={this.onGetIdDrink}
-                                >Add</button>
-                                <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
+                                >Edit</button>
+                                <button 
+                                    type="button" 
+                                    className="btn-sm waves-effect waves-light btn-danger"
+                                    data-toggle="modal" 
+                                    data-target="#delete-modal"
+                                    data-value={drink.drink_id}
+                                    onClick={this.onGetIdDrink}
+                                >Delete</button>
+                                
                             </div>
                         </td>
                     </tr>
                 )
-                }
-            // }
-        })
+            }
+        )
+        }
+        return result;
+    }
+
+    render() {
+        var { drinks, positions } = this.props
+        // var { drink } = this.props
+        // console.log('drink từ container')
+        // console.log('lấy hình avt',`${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}`)
+        // console.log(this.props)
+        // console.log(drinks, positions)
+        var { txtDrinkPrice, txtDrinkAvatar, txtAvatarUpload,   txtDrinkName} = this.state;
 
         return (
             <React.Fragment>
                 <tbody>
-                    {drink}
+                    {this.showDrinks(drinks)}
                 </tbody>
                 <tfoot>
                     <tr>
@@ -424,7 +426,7 @@ class DrinkItem extends Component {
                                                                 onChange={this.onChangeImage} 
                                                                 // data-default-file="../assets/plugins/dropify/src/images/test-image-1.jpg"
                                                                 // data-default-file={`'${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}'`}
-                                                                data-default-file={this.state.txtAvatarUpload}
+                                                                data-default-file={`${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}`}
 
                                                             />
                                                         </div>
@@ -469,6 +471,28 @@ class DrinkItem extends Component {
                             {/* /.modal-dialog  */}
                         </div>                         
                         {/* End Modal Update */}
+
+                        {/* Modal Delete */}
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h1 className= "text-danger"> 
+                                                    Are you sure delete?
+                                                </h1>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-danger waves-effect waves-light">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                        {/* End Modal Delete */}
                         {/* Pagination */}
                         <td colSpan="7">
                             <div className="text-right">

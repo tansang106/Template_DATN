@@ -4,8 +4,8 @@ import { actFetchShopRequest, actAddShopResquest, actFetchSystemRequest , actUpd
 import moment from 'moment';
 import $ from 'jquery';
 import * as Config from '../../Constants/Config';
-// import * as dataStorage from '../../Constants/localStorage';
-// dataStorage.DATA_USER.user_shop_id
+import * as dataStorage from '../../Constants/localStorage';
+import callApi from '../../Utils/apiCaller';
 
 class CoffeeShopItem extends Component {
 
@@ -21,10 +21,18 @@ class CoffeeShopItem extends Component {
             txtShopDayTo : '',
             txtShopPhone : '',
             txtShopSystemID : '',
-            txtShopEmail : ''
+            txtShopEmail : '',
+            avatarUpload: '',
+            txtAvatarUpload: '',
         }
     }
   
+    onChangeImage = (e) => {
+        this.setState({
+            txtShopAvatar: e.target.files[0]
+        })
+        console.log('onChangeImage', this.state.txtShopAvatar)
+    }
 
     onChange = (e) => {
         var target = e.target;
@@ -72,25 +80,41 @@ class CoffeeShopItem extends Component {
             txtShopName: dataShop.shop_name,
             txtShopPhone: dataShop.shop_phone,
             txtShopSystemID: dataShop.shop_system_id,
-            idShop: dataShop.shop_id
+            idShop: dataShop.shop_id,
+            txtAvatarUpload: dataShop.shop_avatar,
         })
         console.log(dataShop);
     }
 
+    uploadFile = async () => {
+        console.log('vào upload ảnh', this.state.txtShopAvartar)
+        var formData = new FormData();
+        formData.append("avatar", this.state.txtShopAvatar);
+        let avatar = await callApi('shop/upload-imgshop', 'POST', formData, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            return res.data.imgShop;
+        })
+        this.setState({ avatarUpload: avatar})
+        console.log('đã up ảnh', this.state.avatarUpload)
+        // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
+    }
 
-    onSave = (e) => {
-        console.log('click save')
+
+    onSave = async (e) => {
+        try {
+            console.log('click save')
         e.preventDefault();
-        var { txtShopAddress, txtShopAvatar, txtShopDayFrom, txtShopDayTo, txtShopEmail, txtShopName, txtShopPhone, txtShopSystemID } = this.state;
+        var { txtShopAddress, txtShopAvatar, txtShopDayFrom, txtShopDayTo, txtShopEmail, txtShopName, txtShopPhone, txtShopSystemID, avatarUpload } = this.state;
         // console.log('xem systemid', txtShopSystemID)
+        await this.uploadFile();
         // return;
         var shop = {
             shop_name: txtShopName,
             // shop_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
             shop_address: txtShopAddress,
             shop_phone: txtShopPhone,
-            // shop_avatar: txtShopAvatar,
-            shop_avatar: 'image.jpg',
+            shop_avatar: avatarUpload,
             shop_email: txtShopEmail,
             shop_dayFrom: txtShopDayFrom,
             shop_dayTo: txtShopDayTo,
@@ -99,22 +123,9 @@ class CoffeeShopItem extends Component {
         if (this.state.idShop) {
             console.log('đang tìm id system', shop.shop_system)
             shop.shop_system = (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            // let shop = {
-            //     shop_name: txtShopName,
-            //     shop_system_id: (this.refs.idSystem) ? this.refs.idSystem.value : '',
-            //     shop_address: txtShopAddress,
-            //     shop_phone: txtShopPhone,
-            //     shop_avatar: txtShopAvatar,
-            //     shop_email: txtShopEmail,
-            //     shop_dayFrom: txtShopDayFrom,
-            //     shop_dayTo: txtShopDayTo,
-            //     shop_id: this.state.idShop
-            // }
             shop.shop_id = this.state.idShop
             console.log('đang kiểm tra tồn tại id', this.state.idShop)
             this.props.onUpdateShop(shop);
-            this.props.fetchAllShops();
-            this.props.fetchAllSystem();
             console.log('đã update')
         }
         else {
@@ -140,6 +151,9 @@ class CoffeeShopItem extends Component {
             // }).then(res => {
             //     console.log(res);
             // })
+        } catch (error) {
+            console.log('Error onSave', error)
+        }
        
     }
 
@@ -191,6 +205,77 @@ class CoffeeShopItem extends Component {
             $('#demo-foo-pagination').trigger('footable_initialized');
         });
     }
+
+    showShops = (shops, systems) => {
+        var result = null;
+        if (shops.length > 0) {
+            result = shops.map((shop, index) => {
+                let nameSystems = systems.find(x => x.system_id === shop.shop_system_id)
+            let nameSystem;
+            if (nameSystems != undefined) {
+                nameSystem = nameSystems.system_name
+                
+                // if (dataStorage.DATA_USER.user_shop_id == shop.shop_system_id)
+                // {
+                return (
+                    <tr className="text_center" key={index}>
+                        <td>{index + 1}</td>
+                        <td className="text_left">
+                            {/* <a >
+                                <span class="mytooltip tooltip-effect-4 ">
+                                  
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
+                                    <span class="tooltip-content clearfix">
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
+                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                    </span>
+                                </span> 
+                                    {shop.shop_name}
+                            </a> */}
+                             
+                                {/* <span class="mytooltip tooltip-effect-4 "> */}
+                                  
+                                    <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle"/>
+                                    {/* <span class="tooltip-content clearfix"> */}
+                                    {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
+                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                    {/* </span> */}
+                                {/* </span>  */}
+                                    {shop.shop_name}
+                            
+                        </td>
+                        {/* <td>genelia@gmail.com</td> */}
+                        <td>{shop.shop_phone}</td>
+                        <td>{moment(shop.shop_dayFrom).format("DD/MM/YYYY")}</td>
+                        <td>{moment(shop.shop_dayTo).format("DD/MM/YYYY")}</td>
+                        <td>{nameSystem}</td>
+                        {/* <td></td> */}
+                        <td>
+                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+                                                {/* <i className="ti-close" aria-hidden="true"></i> 
+                                                <i className="fa fa-info-circle" aria-hidden="true"></i>
+                                            </button> */}
+                            <div className="button-group text-center">
+                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button>
+                                <button
+                                    type="button"
+                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                    data-toggle="modal"
+                                    data-target="#update-shop"
+                                    data-value={shop.shop_id}
+                                    onClick={this.onGetIdShop}
+                                >Add</button>
+                                <button type="button" className="btn-sm waves-effect waves-light btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                )
+            }
+            })
+        }
+        return result;
+    } 
 
     render() {
         var { shops, systems } = this.props
@@ -270,7 +355,8 @@ class CoffeeShopItem extends Component {
         return (
             <React.Fragment>
                 <tbody>
-                    {shop}
+                    {/* {shop} */}
+                    {this.showShops(shops, systems)}
                 </tbody>
                 <tfoot>
                     <tr>
@@ -288,6 +374,19 @@ class CoffeeShopItem extends Component {
                                     <div className="modal-body" onSubmit={this.onSave}>
                                         <from className="form-horizontal form-material">
                                             <div className="form-group">
+                                            <div className="col-md-12 m-b-20">
+                                                            <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                        <input
+                                                            type="file"
+                                                            id="input-file-max-fs"
+                                                            class="dropify"
+                                                            data-max-file-size="2M"
+                                                            onChange={this.onChangeImage}
+                                                        />
+                                                    </div>
+                                                </div>
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
@@ -364,16 +463,7 @@ class CoffeeShopItem extends Component {
                                                         name="txtShopDayTo"
                                                         value={txtShopDayTo}
                                                         onChange={this.onChange} /> </div>
-                                                <div className="col-md-12 m-b-20">
-                                                    <div className="fileupload btn btn-danger btn-rounded waves-effect waves-light">
-                                                        <span>
-                                                            <i className="ion-upload m-r-5"></i>Upload Shop Image</span>
-                                                        <input
-                                                            type="file"
-                                                            className="upload"
-                                                            name="txtShopAvatar"
-                                                            value={txtShopAvatar}
-                                                            onChange={this.onChange} /> </div>
+                                                
                                                 </div>
                                             </div>
                                         </from>
@@ -395,11 +485,24 @@ class CoffeeShopItem extends Component {
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h4 className="modal-title" id="myModalLabel">Add New Coffee Shop</h4>
+                                        <h4 className="modal-title" id="myModalLabel">Edit Coffee Shop</h4>
                                     </div>
                                     <div className="modal-body" onSubmit={this.onSave}>
                                         <from className="form-horizontal form-material">
                                             <div className="form-group">
+                                            <div className="col-md-12 m-b-20">
+                                                            <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                        <input
+                                                            type="file"
+                                                            id="input-file-max-fs"
+                                                            class="dropify"
+                                                            data-max-file-size="2M"
+                                                            onChange={this.onChangeImage}
+                                                        />
+                                                    </div>
+                                                </div>
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
@@ -476,16 +579,7 @@ class CoffeeShopItem extends Component {
                                                         name="txtShopDayTo"
                                                         value={txtShopDayTo}
                                                         onChange={this.onChange} /> </div>
-                                                <div className="col-md-12 m-b-20">
-                                                    <div className="fileupload btn btn-danger btn-rounded waves-effect waves-light">
-                                                        <span>
-                                                            <i className="ion-upload m-r-5"></i>Upload Shop Image</span>
-                                                        <input
-                                                            type="file"
-                                                            className="upload"
-                                                            name="txtShopAvatar"
-                                                            value={txtShopAvatar}
-                                                            onChange={this.onChange} /> </div>
+                                                
                                                 </div>
                                             </div>
                                         </from>

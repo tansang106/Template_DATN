@@ -7,10 +7,20 @@ import callApi from '../../Utils/apiCaller';
 // import $ from 'jquery';
 
 class CoffeeShop extends Component {
- 
     render() {
-
         return (
+            <React.Fragment>
+            <div className="row page-titles">
+            <div className="col-md-5 col-8 align-self-center">
+                <h3 className="text-themecolor m-b-0 m-t-0">Shop</h3>
+                {/* <ol className="breadcrumb">
+                    <li className="breadcrumb-item">
+                        <a href="javascript:void(0)">Home</a>
+                    </li>
+                    {/* <li className="breadcrumb-item active">Table</li> 
+                </ol> */}
+            </div>
+            </div>
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -47,6 +57,7 @@ class CoffeeShop extends Component {
                     </div>
                 </div>
             </div>
+            </React.Fragment>
         );
     }
 }

@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
+import * as dataStorage from "../../Constants/localStorage";
+import * as Config from "../../Constants/Config";
 
 class Header extends Component {
     render() {
+        let permision = dataStorage.DATA_USER.user_permission;
+        let img = dataStorage.DATA_USER.user_avatar;
+        let userName = dataStorage.DATA_USER.user_name;
+        let userEmail = dataStorage.DATA_USER.user_email;
+        // let { img, permision, userName } = dataStorage.DATA_USER;
+        let sourceImg;
+        if (permision = 'boss') {
+            sourceImg = 'imgBoss'
+        } else {
+            sourceImg = 'imgStaff'
+        }
         return (
             <header className="topbar">
                 <nav className="navbar top-navbar navbar-expand-md navbar-light">
@@ -206,18 +219,20 @@ class Header extends Component {
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
-                                    <img src="../assets/images/users/1.jpg" alt="user" className="profile-pic" />
+                                    {/* <img src="../assets/images/users/1.jpg" alt="user" className="profile-pic" /> */}
+                                    <img src={`${Config.API_URL}/uploads/${sourceImg}/${img}`} alt="user" className="profile-pic"/> 
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-right scale-up">
                                     <ul className="dropdown-user">
                                         <li>
                                             <div className="dw-user-box">
                                                 <div className="u-img">
-                                                    <img src="../assets/images/users/1.jpg" alt="user" />
+                                                    {/* <img src="../assets/images/users/1.jpg" alt="user" /> */}
+                                                    <img src={`${Config.API_URL}/uploads/${sourceImg}/${img}`} /> 
                                                 </div>
                                                 <div className="u-text">
-                                                    <h4>Steave Jobs</h4>
-                                                    <p className="text-muted">varun@gmail.com</p>
+                                                    <h4>{ userName }</h4>
+                                                    <p className="text-muted">{userEmail}</p>
                                                     <a href="profile.html" className="btn btn-rounded btn-danger btn-sm">View Profile</a>
                                                 </div>
                                             </div>

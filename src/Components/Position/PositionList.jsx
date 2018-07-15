@@ -8,6 +8,18 @@ class PositionList extends Component {
     render() {
 
         return (
+            <React.Fragment>
+            <div className="row page-titles">
+            <div className="col-md-5 col-8 align-self-center">
+                <h3 className="text-themecolor m-b-0 m-t-0">Position List</h3>
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item">
+                        <a>User</a>
+                    </li>
+                    <li className="breadcrumb-item active">Position List</li> 
+                </ol>
+            </div>
+            </div>
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -43,6 +55,7 @@ class PositionList extends Component {
                     </div>
                 </div>
             </div>
+            </React.Fragment>
         );
     }
 }

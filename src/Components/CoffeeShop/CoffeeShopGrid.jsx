@@ -6,6 +6,7 @@ import CoffeeDetail from './CoffeeDetail';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import callApi from '../../Utils/apiCaller';
+import { actFetchShopRequest } from '../../Actions/index';
 
 class CoffeeShopGrid extends Component {
 
@@ -18,14 +19,46 @@ class CoffeeShopGrid extends Component {
     
 
     componentDidMount() {
-        callApi('shops/get-list','GET',null, {
+        callApi('shops/get-list', 'GET', null, {
             'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"
         }).then(res => {
             console.log('res data', res)
             this.setState({
-                shops : res.data.shops
+                shops: res.data.shops
             })
-        })
+        });
+        this.props.fetchAllShops();
+    }
+    
+    showShops = (shops, url) => {
+        // let { match } = this.props; // this.props.match
+        // let url = match.url;
+        let result = null;
+        if (shops.length > 0 ) {
+            result = shops.map((shop, index) => {
+                return (
+                    <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
+                            <div className="card card-body">
+                                <div className="row">
+                                    <div className="col-md-4 col-lg-3 text-center">
+                                    <NavLink to={`${url}/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
+                                    </div>
+                                    <div className="col-md-8 col-lg-9">
+                                        <h3 className="box-title m-b-0">{shop.shop_name}</h3> <small>{shop.shop_email}</small>
+                                        <address>
+                                           {shop.shop_address}
+                                            <br />
+                                            <br />
+                                            <abbr title="Phone">P:</abbr> {shop.shop_phone}
+                                        </address>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+        return result;
     }
     render() {
 
@@ -43,14 +76,13 @@ class CoffeeShopGrid extends Component {
             
         // })
 
-        var { shops } = this.state
-        console.log(shops)
+        // var { shops } = this.props
+        // console.log(shops)
        
         var { match } = this.props; // this.props.match
         var url = match.url;
 
         var {shopData} = this.props;
-
         // var result = items.map((item, index) => {
         //     return (
         //         <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
@@ -77,36 +109,36 @@ class CoffeeShopGrid extends Component {
         // }
         // )
 
-        var result = shops.map((shop, index) => {
-            return (
-                <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
-                        <div className="card card-body">
-                            <div className="row">
-                                <div className="col-md-4 col-lg-3 text-center">
-                                <NavLink to={`${url}/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
-                                </div>
-                                <div className="col-md-8 col-lg-9">
-                                    <h3 className="box-title m-b-0">{shop.shop_name}</h3> <small>{shop.shop_email}</small>
-                                    <address>
-                                       {shop.shop_address}
-                                        <br />
-                                        <br />
-                                        <abbr title="Phone">P:</abbr> {shop.shop_phone}
-                                    </address>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+        // var result = shops.map((shop, index) => {
+        //     return (
+        //         <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
+        //                 <div className="card card-body">
+        //                     <div className="row">
+        //                         <div className="col-md-4 col-lg-3 text-center">
+        //                         <NavLink to={`${url}/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink>
+        //                         </div>
+        //                         <div className="col-md-8 col-lg-9">
+        //                             <h3 className="box-title m-b-0">{shop.shop_name}</h3> <small>{shop.shop_email}</small>
+        //                             <address>
+        //                                {shop.shop_address}
+        //                                 <br />
+        //                                 <br />
+        //                                 <abbr title="Phone">P:</abbr> {shop.shop_phone}
+        //                             </address>
+        //                         </div>
+        //                     </div>
+        //             </div>
+        //         </div>
                 
-            )
-        })
+        //     )
+        // })
 
         var {location} = this.props;
         console.log(location); 
 
         return (
             <div className="row">
-                {result}
+                {this.showShops(shopData, url)}
                 <div className="card card-body">
                     <Route path="/coffeegrid/:slug" component={CoffeeDetail} />
                 </div>
@@ -349,4 +381,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(CoffeeShopGrid);
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchAllShops: () => {
+            dispatch(actFetchShopRequest())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoffeeShopGrid);

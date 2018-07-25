@@ -1,17 +1,12 @@
-/*
-Template Name: Material Pro Admin
-Author: Themedesigner
-Email: niravjoshi87@gmail.com
-File: js
-*/
-$(function () {
-    "use strict";
-    
-    
+import Chartist from 'chartist';
+
+export const LINE_BAR = {
+    function(params) {
+    console.log('1')
     var chart = new Chartist.Line('.campaign', {
-          labels: ["1/1", "2/1", "3/1", "4/1", '5/1', "6/1", "7/1", "8/1"],
-          series: [
-            [0, 5, 60, 8, 25, 9, 8, 24]
+        labels: ["1/1", "2/1", "3/1", "4/1", '5/1', "6/1", "7/1", "8/1"],
+        series: [
+            [0, 5, 6, 8, 25, 9, 8, 24]
             //   , [0, 3, 1, 2, 8, 1, 5, 1]
           ]}, {
           low: 0,
@@ -21,14 +16,14 @@ $(function () {
           plugins: [
             Chartist.plugins.tooltip()
           ],
-        //     axisY: {
-        //     onlyInteger: true
-        //     , scaleMinSpace: 40    
-        //     // , offset: 20
-        //     , labelInterpolationFnc: function (value) {
-        //         return (value / 1) + 'k';
-        //     }
-        // },
+            axisY: {
+            onlyInteger: true
+            , scaleMinSpace: 40    
+            , offset: 20
+            , labelInterpolationFnc: function (value) {
+                return (value / 1) + 'k';
+            }
+        },
         });
 
         // Offset x1 a tiny amount so that the straight stroke gets a bounding box
@@ -59,14 +54,14 @@ $(function () {
             'stop-color': 'rgba(38, 198, 218, 1)'
           });
         });
-    
-            
+
+
     var chart = [chart];
 
     // ============================================================== 
     // This is for the animation
     // ==============================================================
-    
+
     for (var i = 0; i < chart.length; i++) {
         chart[i].on('draw', function(data) {
             if (data.type === 'line' || data.type === 'area') {
@@ -98,7 +93,6 @@ $(function () {
             }
         });
     }
-    
 
- 
-});
+    }
+}

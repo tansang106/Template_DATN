@@ -111,6 +111,48 @@ class PositionItem extends Component {
         });
     }
 
+    showPosition = (positions) => {
+        let result = null;
+        if (positions.length > 0) {
+            result = positions.map((position, index) => {
+                return (
+                    <tr className="text_center" key={index}>
+                        <td>{index + 1}</td>
+                        <td className="text_left">
+                            <a >
+                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                /> {position.position_name}</a>
+                        </td>
+                        {/* <td>genelia@gmail.com</td> */}
+                        <td>
+                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+                                                {/* <i className="ti-close" aria-hidden="true"></i> 
+                                                <i className="fa fa-info-circle" aria-hidden="true"></i>
+                                            </button> */}
+                            <div className="button-group text-center">
+                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button>
+                                <button
+                                    type="button"
+                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                    data-toggle="modal"
+                                    data-target="#update-position"
+                                    data-value={position.position_id}
+                                    onClick={this.onGetIdPosition}
+                                >Add</button>
+                                <button type="button"
+                                    className="btn-sm waves-effect waves-light btn-danger"
+                                    data-toggle="modal"
+                                    data-target="#modal-test"
+                                >Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                )
+            })
+        }
+        return result;
+    }
 
     render() {
         var { positions } = this.props
@@ -165,7 +207,8 @@ class PositionItem extends Component {
         return (
             <React.Fragment>
                 <tbody>
-                    {position}
+                    {/* {position} */}
+                    {this.showPosition(positions)}
                 </tbody>
                 <tfoot>
                     <tr>

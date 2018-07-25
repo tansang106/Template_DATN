@@ -392,3 +392,19 @@ export const actUpdateProductInCart = (product, quantity) => {
         quantity,
     }
 }
+
+export const clearCart = () => {
+    return {
+        type: Types.CLEAR_CART
+    }
+}
+
+
+export const createBill = (bill) => {
+    callApi('bills/create', 'POST', bill, {
+        'token': dataStorage.TOKEN
+    }).then(res => {
+        console.log('res', res)
+        return res;
+    })
+}

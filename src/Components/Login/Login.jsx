@@ -68,7 +68,7 @@ class Login extends Component {
             user_password: this.state.txtPassword,
             user_email: this.state.txtUsername}).then(res => {
                 console.log(res)
-                if (res.status === 200){
+                if (res.data.status === 'success'){
                     this.setState({ userData : res.data})
                     toastr.success('Login Success', 'SUCCESS')
                     console.log('user data', this.state.userData)
@@ -77,10 +77,12 @@ class Login extends Component {
                     }));
                     localStorage.setItem("dataUser", JSON.stringify({
                         data: this.state.userData.user
-                    }))
+                    }));
+                    // <Redirect to= '/'/>
                     // return <Redirect to={{
                     //     pathname: '/',
                     // }}/>
+                    return <Redirect to='/home'/>
                 }
                 else {
                     toastr.error('Login Fail', 'ERROR')
@@ -105,7 +107,9 @@ class Login extends Component {
     }
 
     render() {
-
+        if (localStorage.DATA_USER != null) {
+            return <Redirect to='/home' />
+        }
         // Gọi API Login
         
         // let { userData } = this.state

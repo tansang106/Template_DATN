@@ -114,6 +114,51 @@ class CoffeeSystemItem extends Component {
         });
     }
 
+    showSystem = (systems) => {
+        var result = null;
+        if (systems.length > 0) {
+            result = systems.map((system, index) => {
+                return (
+                    <tr className="text_center" key={index}>
+                        <td>{index + 1}</td>
+                        <td className="text_left">
+                            <a >
+                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                /> {system.system_name}</a>
+                        </td>
+                        {/* <td>genelia@gmail.com</td> */}
+                        <td>{system.system_address}</td>
+                        <td>
+                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+                                                {/* <i className="ti-close" aria-hidden="true"></i> 
+                                                <i className="fa fa-info-circle" aria-hidden="true"></i>
+                                            </button> */}
+                            <div className="button-group text-center">
+                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button>
+                                <button
+                                    type="button"
+                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                    data-toggle="modal"
+                                    data-target="#update-system"
+                                    data-value={system.system_id}
+                                    onClick={this.onGetIdSystem}
+                                >Add</button>
+                                <button type="button"
+                                    className="btn-sm waves-effect waves-light btn-danger"
+                                    data-toggle="modal"
+                                    data-target="#modal-test"
+                                >Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                )
+                }
+            )
+        }
+
+        return result;
+    }
   
     render() {
         var { systems } = this.props
@@ -169,7 +214,8 @@ class CoffeeSystemItem extends Component {
         return (
             <React.Fragment>
                 <tbody>
-                    {system}
+                    {/* {system} */}
+                    { this.showSystem(systems)}
                 </tbody>
                 <tfoot>
                     <tr>

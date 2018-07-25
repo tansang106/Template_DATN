@@ -3,7 +3,7 @@ import Header from './Components/Elements/Header';
 import Sidebar from './Components/Elements/Sidebar';
 import Breadcrumb from './Components/Elements/Breadcrumb';
 import EmployeeList from './Components/Employee/EmployeeList';
-import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
 import CoffeeShopList from './Components/CoffeeShop/CoffeeShopList';
 import CoffeeShopGrid from './Components/CoffeeShop/CoffeeShopGrid';
 import CoffeeShopDetail from './Components/CoffeeShop/CoffeeShopDetail';
@@ -54,6 +54,7 @@ class App extends Component {
             //     return   <Main></Main> 
             // </Router>    
             render = <Main></Main>
+            // render = <Redirect to='/'/>
         }
         else {
             render = <Login></Login>

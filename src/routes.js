@@ -23,6 +23,12 @@ const routes = [
         
     },
     {
+        path: '/home',
+        exact: true,
+        main: () => <Home />,
+
+    },
+    {
         path: '/coffeeshop',
         exact: false,
         main: () => <CoffeeShopList />

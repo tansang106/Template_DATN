@@ -222,23 +222,23 @@ class CoffeeShopItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             {/* <a >
-                                <span class="mytooltip tooltip-effect-4 ">
+                                <span className="mytooltip tooltip-effect-4 ">
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
-                                    <span class="tooltip-content clearfix">
+                                    <span className="tooltip-content clearfix">
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
                                     </span>
                                 </span> 
                                     {shop.shop_name}
                             </a> */}
                              
-                                {/* <span class="mytooltip tooltip-effect-4 "> */}
+                                {/* <span className="mytooltip tooltip-effect-4 "> */}
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle"/>
-                                    {/* <span class="tooltip-content clearfix"> */}
+                                    {/* <span className="tooltip-content clearfix"> */}
                                     {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
                                     {/* </span> */}
                                 {/* </span>  */}
                                     {shop.shop_name}
@@ -299,23 +299,23 @@ class CoffeeShopItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             {/* <a >
-                                <span class="mytooltip tooltip-effect-4 ">
+                                <span className="mytooltip tooltip-effect-4 ">
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
-                                    <span class="tooltip-content clearfix">
+                                    <span className="tooltip-content clearfix">
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
                                     </span>
                                 </span> 
                                     {shop.shop_name}
                             </a> */}
                              
-                                {/* <span class="mytooltip tooltip-effect-4 "> */}
+                                {/* <span className="mytooltip tooltip-effect-4 "> */}
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle"/>
-                                    {/* <span class="tooltip-content clearfix"> */}
+                                    {/* <span className="tooltip-content clearfix"> */}
                                     {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
                                     {/* </span> */}
                                 {/* </span>  */}
                                     {shop.shop_name}
@@ -375,13 +375,13 @@ class CoffeeShopItem extends Component {
                                         <from className="form-horizontal form-material">
                                             <div className="form-group">
                                             <div className="col-md-12 m-b-20">
-                                                            <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                            <div className="card">
+                                                    <div className="card-body">
+                                                        <h4 className="card-title text_center">Avatar</h4>
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
@@ -404,7 +404,7 @@ class CoffeeShopItem extends Component {
                                                         value={txtShopSystemID}
                                                         onChange={this.onChange} /> */}
                                                     <select 
-                                                        class="form-control custom-select" 
+                                                        className="form-control custom-select" 
                                                         data-placeholder="Choose system" 
                                                         ref='idSystem'>
                                                         {this.props.systems.map((system, index) => {
@@ -491,13 +491,13 @@ class CoffeeShopItem extends Component {
                                         <from className="form-horizontal form-material">
                                             <div className="form-group">
                                             <div className="col-md-12 m-b-20">
-                                                            <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                            <div className="card">
+                                                    <div className="card-body">
+                                                        <h4 className="card-title text_center">Avatar</h4>
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
@@ -520,7 +520,7 @@ class CoffeeShopItem extends Component {
                                                         value={txtShopSystemID}
                                                         onChange={this.onChange} /> */}
                                                     <select
-                                                        class="form-control custom-select"
+                                                        className="form-control custom-select"
                                                         data-placeholder="Choose system"
                                                         ref='idSystem'>
                                                         {this.props.systems.map((system, index) => {

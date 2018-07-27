@@ -248,10 +248,10 @@ class LineGraph extends Component {
         return (
             <React.Fragment>
             <canvas id="lineChart1" height="100%" />
-            <div class="row text-center">
-                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
-                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
-                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
+            <div className="row text-center">
+                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
+                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
+                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
                 </div>
             </React.Fragment>
         );

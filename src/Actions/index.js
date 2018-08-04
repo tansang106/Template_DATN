@@ -1,7 +1,7 @@
 import * as Types from '../Constants/ActionType';
 import callApi from '../Utils/apiCaller';
 import * as dataStorage from '../Constants/localStorage';
-
+import toastr from 'toastr';
 //Login
 export const actFetchLogin = (dataLogin) => {
     return {
@@ -17,7 +17,12 @@ export const actFetchShopRequest = () => {
         return callApi('shops/get-list-name', 'GET', null, {
                 'token': dataStorage.TOKEN
         }).then(res => {
+            if (res.data.status == 'success') {
                 dispatch(actFetchShop(res.data.shopname))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
             })
         }
     
@@ -36,7 +41,12 @@ export const actAddShopResquest = (shop) => {
             'token': dataStorage.TOKEN     
         }).then(res => {
             console.log(res)
+            if (res.data.status == 'success') {
             dispatch(actAddShop(res.data.shop))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -54,7 +64,12 @@ export const actUpdateShopResquest = (shop) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actUpdateShop(res.data.shop))
+            if (res.data.status == 'success') {
+                dispatch(actUpdateShop(res.data.shop))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -71,8 +86,13 @@ export const actFetchSystemRequest = () => {
     return (dispatch) => {
         return callApi('systems/listsystem', 'GET', null, {
             'token': dataStorage.TOKEN
-            }).then(res => {
+        }).then(res => {
+            if (res.data.status == 'success') {
                 dispatch(actFetchSystem(res.data.system))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
             })
         }
     
@@ -91,7 +111,12 @@ export const actAddSystemResquest = (system) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actAddSystem(res.data.system))
+            if (res.data.status == 'success') {
+                dispatch(actAddSystem(res.data.system))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -109,7 +134,12 @@ export const actUpdateSystemResquest = (system) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
+            if (res.data.status == 'success') {
             dispatch(actUpdateSystem(res.data.system))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -128,8 +158,13 @@ export const actFetchAccountRequest = () => {
         return callApi('users/listaccount', 'GET', null, {
             'token': dataStorage.TOKEN
         }).then(res => {
+            if (res.data.status == 'success') {
             console.log(res)
-            dispatch(actFetchAccount(res.data.account))
+                dispatch(actFetchAccount(res.data.account))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 
@@ -148,7 +183,18 @@ export const actAddUserResquest = (user) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actAddUser(res.data.boss))
+            if (res.data.status == 'success') {
+                dispatch(actAddUser(res.data.boss))
+            } else {
+                toastr.error(res.data.message, 'Error', {
+                    timeOut: 2000,
+                    // closeButton: true,
+                    showAnimation: 'shake',
+                    hideAnimation: 'animated wobble'
+                });
+                return;
+            }
+            
         })
     }
 }
@@ -166,7 +212,12 @@ export const actUpdateUserResquest = (system) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actUpdateUser(res.data.boss))
+            if (res.data.status == 'success') {
+                dispatch(actUpdateUser(res.data.boss))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -188,7 +239,12 @@ export const actFetchPositionRequest = () => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log('res postion', res)
+            if (res.data.status == 'success') {
             dispatch(actFetchPosition(res.data.position))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -206,7 +262,12 @@ export const actAddPositionResquest = (position) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actAddPosition(res.data.positions))
+            if (res.data.status == 'success') {
+                dispatch(actAddPosition(res.data.positions))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -224,7 +285,12 @@ export const actUpdatePositionResquest = (position) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log('update api position')
+            if (res.data.status == 'success') {
             dispatch(actUpdatePosition(res.data.position))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -246,7 +312,12 @@ export const actFetchStaffRequest = () => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actFetchStaff(res.data.staffs))
+            if (res.data.status == 'success') {
+                dispatch(actFetchStaff(res.data.staffs))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 
@@ -266,7 +337,12 @@ export const actAddStaffResquest = (staff) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
+            if (res.data.status == 'success') {
             dispatch(actAddStaff(res.data.user))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -286,7 +362,12 @@ export const actUpdateStaffResquest = (staff) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actUpdateStaff(res.data.staff))
+            if (res.data.status == 'success') {
+                dispatch(actUpdateStaff(res.data.staff))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -308,7 +389,12 @@ export const actFetchDrinkRequest = () => {
                 'token': dataStorage.TOKEN
             }).then(res => {
                 console.log(res)
+                if (res.data.status == 'success') {
                 dispatch(actFetchDrink(res.data.drinks))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
             })
     }
 
@@ -329,7 +415,12 @@ export const actAddDrinkResquest = (drink) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            dispatch(actAddDrink(res.data.drink))
+            if (res.data.status == 'success') {
+                dispatch(actAddDrink(res.data.drink))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -349,7 +440,12 @@ export const actUpdateDrinkResquest = (drink) => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
+            if (res.data.status == 'success') {
             dispatch(actUpdateDrink(res.data.drink))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
         })
     }
 }
@@ -407,4 +503,29 @@ export const createBill = (bill) => {
         console.log('res', res)
         return res;
     })
+}
+
+export const actGetBillAmountRequest = () => {
+    return dispatch => {
+        return callApi('bills/countBillInvoice', 'POST', {
+            idShop: dataStorage.DATA_USER.user_shop_id
+        }, {
+            'token': dataStorage.TOKEN
+        }).then(res => {
+            console.log(res)
+            if (res.data.status == 'success') {
+                dispatch(actBillAmount(res.data.bill))
+            } else {
+                toastr.error(res.data.message, 'Error');
+                return;
+            }
+        })
+    }
+}
+
+export const actBillAmount = (data) => {
+    return {
+        type: Types.GET_BILL_AMOUNT,
+        data
+    }
 }

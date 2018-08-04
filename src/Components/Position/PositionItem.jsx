@@ -64,11 +64,13 @@ class PositionItem extends Component {
 
 
     onSave = (e) => {
+        try {
         console.log('click save')
         e.preventDefault();
         var { txtPositionName } = this.state;
         var position = {
             position_name: txtPositionName,
+            position_active: 'on',
         }
         if (this.state.idPosition) {
             position.position_id = this.state.idPosition;
@@ -81,6 +83,31 @@ class PositionItem extends Component {
             this.props.onAddPosition(position);
             console.log('đã add')
         }
+        } catch (error) {
+            console.log('Error onSave', error)
+        }
+    }
+
+    onDelete = (e) => {
+        try {
+            console.log('click save')
+        e.preventDefault();
+        var { txtPositionName } = this.state;
+        var position = {
+            position_name: txtPositionName,
+            position_active: 'off',
+            position_id: this.state.idPosition
+        }
+      
+            this.props.onUpdatePosition(position);
+            console.log('đã update')
+            // await Promise.all([this.props.onUpdatePosition(position), this.props.fetchAllPosition()]);
+        
+       
+        } catch (error) {
+            console.log('Error onDelete', error)
+        }
+
     }
 
     onSetState = () => {
@@ -115,13 +142,15 @@ class PositionItem extends Component {
         let result = null;
         if (positions.length > 0) {
             result = positions.map((position, index) => {
+                if (position.position_active == 'on') {
                 return (
                     <tr className="text_center" key={index}>
                         <td>{index + 1}</td>
                         <td className="text_left">
                             <a >
-                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                                /> {position.position_name}</a>
+                                {/* <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                /> */}
+                                {position.position_name}</a>
                         </td>
                         {/* <td>genelia@gmail.com</td> */}
                         <td>
@@ -130,8 +159,8 @@ class PositionItem extends Component {
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
                             <div className="button-group text-center">
-                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                    onClick={this.onTest}>Info</button>
+                                {/* <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button> */}
                                 <button
                                     type="button"
                                     className="btn-sm waves-effect waves-light btn-primary icon_action"
@@ -143,12 +172,15 @@ class PositionItem extends Component {
                                 <button type="button"
                                     className="btn-sm waves-effect waves-light btn-danger"
                                     data-toggle="modal"
-                                    data-target="#modal-test"
+                                    data-target="#delete-modal"
+                                    data-value={position.position_id}
+                                    onClick={this.onGetIdPosition}
                                 >Delete</button>
                             </div>
                         </td>
                     </tr>
                 )
+            }
             })
         }
         return result;
@@ -160,49 +192,6 @@ class PositionItem extends Component {
         console.log(positions)
         var { txtPositionName } = this.state
         //Biến shop dùng để đổ ra list shop
-        var position = positions.map((position, index) => {
-            // var getNamePosition = this.findObjectByKey(positions, 'position_id', )
-            // if (shop != undefined) {
-            // if (dataStorage.DATA_USER.user_shop_id == shop.shop_position_id)
-            // {
-            // if(position.position_name)
-            return (
-                <tr className="text_center" key={index}>
-                    <td>{index + 1}</td>
-                    <td className="text_left">
-                        <a >
-                            <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                            /> {position.position_name}</a>
-                    </td>
-                    {/* <td>genelia@gmail.com</td> */}
-                    <td>
-                        {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
-                                                {/* <i className="ti-close" aria-hidden="true"></i> 
-                                                <i className="fa fa-info-circle" aria-hidden="true"></i>
-                                            </button> */}
-                        <div className="button-group text-center">
-                            <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                onClick={this.onTest}>Info</button>
-                            <button
-                                type="button"
-                                className="btn-sm waves-effect waves-light btn-primary icon_action"
-                                data-toggle="modal"
-                                data-target="#update-position"
-                                data-value={position.position_id}
-                                onClick={this.onGetIdPosition}
-                            >Add</button>
-                            <button type="button"
-                                className="btn-sm waves-effect waves-light btn-danger"
-                                data-toggle="modal"
-                                data-target="#modal-test"
-                            >Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            )
-
-            // }
-        })
 
         return (
             <React.Fragment>
@@ -280,6 +269,32 @@ class PositionItem extends Component {
                             {/* /.modal-dialog */}
                         </div>
                         {/* End Modal Update */}
+
+                         {/* Modal Delete */}
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h1 className= "text-danger"> 
+                                                    Are you sure delete?
+                                                </h1>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    onClick={this.onDelete}
+                                                    data-dismiss="modal">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                        {/* End Modal Delete */}
 
                         {/* Pagination */}
                         <td colSpan="7">

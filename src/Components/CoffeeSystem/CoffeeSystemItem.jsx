@@ -71,7 +71,7 @@ class CoffeeSystemItem extends Component {
         var system = {
             system_name: txtSystemName,
             system_address: txtSystemAddress,
-
+            system_active: 'on'
         }
         if (this.state.idSystem) {
             system.system_id = this.state.idSystem
@@ -83,6 +83,25 @@ class CoffeeSystemItem extends Component {
             this.props.onAddSystem(system);
             console.log('đã add')
         }
+    }
+
+    onDelete = (e) => {
+        try {
+             e.preventDefault();
+        var { txtSystemAddress, txtSystemName } = this.state;
+        var system = {
+            system_name: txtSystemName,
+            system_address: txtSystemAddress,
+            system_active: 'off',
+            system_id: this.state.idSystem
+        }
+        
+            this.props.onUpdateSystem(system);
+        } catch (error) {
+            console.log('onDelete', error)
+        }
+       
+       
     }
 
     onSetState = () => {
@@ -118,13 +137,15 @@ class CoffeeSystemItem extends Component {
         var result = null;
         if (systems.length > 0) {
             result = systems.map((system, index) => {
+                 if (system.system_active == 'on') {
                 return (
                     <tr className="text_center" key={index}>
                         <td>{index + 1}</td>
                         <td className="text_left">
                             <a >
-                                <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
-                                /> {system.system_name}</a>
+                                {/* <img src="../assets/images/users/4.jpg" alt="user" width="40" className="img-circle"
+                                />  */}
+                                {system.system_name}</a>
                         </td>
                         {/* <td>genelia@gmail.com</td> */}
                         <td>{system.system_address}</td>
@@ -134,8 +155,8 @@ class CoffeeSystemItem extends Component {
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
                             <div className="button-group text-center">
-                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                    onClick={this.onTest}>Info</button>
+                                {/* <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button> */}
                                 <button
                                     type="button"
                                     className="btn-sm waves-effect waves-light btn-primary icon_action"
@@ -143,16 +164,19 @@ class CoffeeSystemItem extends Component {
                                     data-target="#update-system"
                                     data-value={system.system_id}
                                     onClick={this.onGetIdSystem}
-                                >Add</button>
+                                >Edit</button>
                                 <button type="button"
                                     className="btn-sm waves-effect waves-light btn-danger"
                                     data-toggle="modal"
-                                    data-target="#modal-test"
+                                    data-target="#delete-modal"
+                                    data-value={system.system_id}
+                                    onClick={this.onGetIdSystem}
                                 >Delete</button>
                             </div>
                         </td>
                     </tr>
                 )
+            }
                 }
             )
         }
@@ -312,7 +336,7 @@ class CoffeeSystemItem extends Component {
                         {/* End Modal Update */}
 
                         {/* Modal Test */}
-                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="modal-test">
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="modal-test">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -320,16 +344,16 @@ class CoffeeSystemItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <h4 className="card-title text_center">Avatar</h4>
-                                                        {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
-                                                        <input type="file" id="input-file-max-fs" className="dropify" data-max-file-size="2M" />
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                        {/* <label for="input-file-max-fs">Upload Avatar</label> */}
+                                                        <input type="file" id="input-file-max-fs" class="dropify" data-max-file-size="2M" />
                                                     </div>
                                                 </div>
-                                                <form className="floating-labels m-t-40">
+                                                <form class="floating-labels m-t-40">
                                              
                                                 <div className="col-md-12 m-b-20">
                                                     <input
@@ -344,45 +368,45 @@ class CoffeeSystemItem extends Component {
                                                  
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
-                                                        <input type="text" className="form-control" id="input1" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Email</label>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="floating-labels m-t-40">
+                                                    <div class="form-group m-b-40">
+                                                        <input type="text" class="form-control"  />
+                                                        <span class="bar"></span>
+                                                        <label >User Email</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
-                                                        <input type="password" className="form-control" id="input2" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input2">Password</label>
+                                                    <div class="form-group m-b-40">
+                                                        <input type="password" class="form-control" />
+                                                        <span class="bar"></span>
+                                                        <label for="input2">Password</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
-                                                        <input type="text" className="form-control" id="input1" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Name</label>
+                                                    <div class="form-group m-b-40">
+                                                        <input type="text" class="form-control"  />
+                                                        <span class="bar"></span>
+                                                        <label >User Name</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
-                                                        <input type="text" className="form-control" id="input1" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Address</label>
+                                                    <div class="form-group m-b-40">
+                                                        <input type="text" class="form-control"  />
+                                                        <span class="bar"></span>
+                                                        <label >Address</label>
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
-                                                        <input type="text" className="form-control" id="input1" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Phone</label>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="floating-labels m-t-40">
+                                                    <div class="form-group m-b-40">
+                                                        <input type="text" class="form-control"  />
+                                                        <span class="bar"></span>
+                                                        <label >Phone</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
-                                                        <input type="text" className="form-control" id="input1" />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">ID</label>
+                                                    <div class="form-group m-b-40">
+                                                        <input type="text" class="form-control"  />
+                                                        <span class="bar"></span>
+                                                        <label >ID</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                     <select
-                                                        className="form-control custom-select"
+                                                        class="form-control custom-select"
                                                         data-placeholder="Sexual"
                                                         ref='idSystem'>
                                                         {/* {this.props.systems.map((system, index) => {
@@ -402,9 +426,9 @@ class CoffeeSystemItem extends Component {
                                                     </select>
                                                     </div>
                                                  
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                     <select
-                                                        className="form-control custom-select"
+                                                        class="form-control custom-select"
                                                         data-placeholder="Sexual"
                                                         ref='idSystem'>
                                                         {/* {this.props.systems.map((system, index) => {
@@ -437,6 +461,33 @@ class CoffeeSystemItem extends Component {
                             {/* /.modal-dialog  */}
                         </div>
                         {/* End Modal Test */}
+                                                        
+                        {/* Modal Delete */}
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h1 className= "text-danger"> 
+                                                    Are you sure delete?
+                                                </h1>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    onClick={this.onDelete}
+                                                    data-dismiss="modal">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                        {/* End Modal Delete */}
+
                         {/* Pagination */}
                         <td colSpan="7">
                             <div className="text-right">

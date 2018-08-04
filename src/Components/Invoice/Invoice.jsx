@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actFetchDrinkRequest } from '../../Actions/index';
+import { actFetchDrinkRequest, actGetBillAmountRequest } from '../../Actions/index';
 import Cart from './Cart';
 import DrinkCartContainer from '../../Containers/DrinkCartContainer';
 import CartContainer from '../../Containers/CartContainer';
 import moment from 'moment';
+import callApi from '../../Utils/apiCaller';
+import * as Config from '../../Constants/Config';
+import * as dataStorage from '../../Constants/localStorage';
 class Invoice extends Component {
 
     constructor(props, context) {
@@ -12,7 +15,12 @@ class Invoice extends Component {
         this.state = {
             txtName: '',
             txtPhone: '',
-            txtAddress: '', 
+            txtAddress: '',
+            txtVAT: '',
+            txtDiscount: '',
+            shop: '',
+            name: '',
+            bill:'',
         }
     }
 
@@ -25,15 +33,56 @@ class Invoice extends Component {
         });
     }
     
+    getShop = () => {
+        callApi('shops/get', 'POST', {
+            shop_id: dataStorage.DATA_USER.user_shop_id
+        }, { 'token': dataStorage.TOKEN
+            }).then(res => {
+                console.log(res)
+                if (res.data.status == 'success') {
+                    this.setState({
+                    shop: res.data.shop.shop_address,
+                    name: res.data.shop.shop_name
+                    })
+                } else {
+                    console.log('Error get Shop', res.data.message);
+                    return;
+                }
+                
+        })
+    }
+
+    getAmountBill = () => {
+        callApi('bills/countBillInvoice', 'POST', {
+            idShop: dataStorage.DATA_USER.user_shop_id
+        }, {
+            'token': dataStorage.TOKEN
+            }).then(res => {
+                console.log(res)
+                if (res.data.status == 'success') {
+                this.setState({
+                   bill : res.data.bill.count + 1
+                })
+                } else {
+                    console.log('Error');
+                    return;
+                }
+                
+            })
+    }
 
     componentDidMount() {
         this.props.fetchAllDrink();
+        this.getShop();
+        this.getAmountBill();
+        this.props.getBill();
     }
 
     render() {
-        var { drinks } = this.props;
-        var { txtName, txtPhone, txtAddress } = this.state
+        var { drinks, bills } = this.props;
+        var { txtName, txtPhone, txtAddress, txtVAT, txtDiscount } = this.state
         console.log('drinks render', drinks)
+        console.log('số bill', bills);
         let drink = drinks.map((drink, index) => {
             return (
                 <tr>
@@ -79,46 +128,52 @@ class Invoice extends Component {
                                     <i className="ti-close"></i>
                                 </a>
                             </div>
-                            <h4 className="card-title m-b-0">Info</h4>
+                            <h4 className="card-title m-b-0">Info Customer</h4>
                         </div>
 
                         <div className="card-body">
-                            <h4 className="card-title">Animated Line Inputs Form With Floating Labels</h4>
-                            <form className="floating-labels m-t-40">
-                                <div className="form-group has-success m-b-40">
+                            {/* <h4 className="card-title">Info Customer</h4> */}
+                            <form className="form-horizontal form-control-line m-t-10">
+                                <div className="form-group has-success m-b-20">
+                                    <span className="bar"></span>
+                                    <label className="text-info">Name</label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        id="input11" 
+                                        // id="input11" 
                                         name="txtName"
                                         value={txtName}
                                         onChange={this.onChange}
                                     />
-                                    <span className="bar"></span>
-                                    <label htmlFor="input11">Name</label>
+                                    {/* <span className="bar"></span>
+                                    <label for="input11">Name</label> */}
                                 </div>
-                                <div className="form-group has-warning m-b-40">
+                                <div className="form-group has-warning m-b-20">
+                                    <span className="bar"></span>
+                                    <label className="text-warning">Phone</label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        id="input11" 
+                                        // id="input11" 
                                         name="txtPhone"
                                         value={txtPhone}
                                         onChange={this.onChange}/>
-                                    <span className="bar"></span>
-                                    <label htmlFor="input11">Phone</label>
+                                    {/* <span className="bar"></span>
+                                    <label for="input11">Phone</label> */}
                                 </div>
-                                <div className="form-group has-error has-danger m-b-40">
+                                <div className="form-group has-error has-danger m-b-20">
+                                    <span className="bar"></span>
+                                    <label className="text-danger">Address</label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        id="input12" 
+                                        // id="input12" 
                                         name="txtAddress"
                                         value={txtAddress}
                                         onChange={this.onChange}
                                     />
-                                    <span className="bar"></span>
-                                    <label htmlFor="input12">Address</label>
+                                    {/* <span className="bar"></span>
+                                    <label for="input12">Address</label> */}
                                 </div>
                             </form>
                         </div>
@@ -143,16 +198,24 @@ class Invoice extends Component {
                             <h4 className="card-title m-b-0">Product</h4>
                         </div>
                         <div className="card-body">
-                            <select className="custom-select pull-right">
+                            {/* <select className="custom-select pull-right">
                                 <option selected="">Electronics</option>
                                 <option value="1">Kitchen</option>
                                 <option value="2">Crocory</option>
                                 <option value="3">Wooden</option>
-                            </select>
+                            </select> */}
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="input-group">
-                                        <input type="text" className="form-control" id="exampleInputuname2" placeholder="VAT" />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            // id="exampleInputuname2"
+                                            placeholder="VAT"
+                                            name="txtVAT"
+                                            value={txtVAT}
+                                            onChange={this.onChange}
+                                        />
                                         <div className="input-group-addon">
                                             <i className="fa fa-percent"></i>
                                         </div>
@@ -161,7 +224,15 @@ class Invoice extends Component {
                                 {/*/span*/}
                                 <div className="col-md-6">
                                     <div className="input-group">
-                                        <input type="text" className="form-control" id="exampleInputuname2" placeholder="Discount" />
+                                        <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            // id="exampleInputuname2" 
+                                            placeholder="Discount" 
+                                             name="txtDiscount"
+                                            value={txtDiscount}
+                                            onChange={this.onChange}
+                                        />
                                         <div className="input-group-addon">
                                             <i className="fa fa-percent"></i>
                                         </div>
@@ -182,7 +253,7 @@ class Invoice extends Component {
                     <div className="card card-body printableArea">
                         <h3>
                             <b>INVOICE</b>
-                            <span className="pull-right">#5669626</span>
+                            <span className="pull-right">#{this.state.bill}</span>
                         </h3>
                         <hr />
                         <div className="row">
@@ -190,12 +261,15 @@ class Invoice extends Component {
                                 <div className="pull-left">
                                     <address>
                                         <h3> &nbsp;
-                                                <b className="text-danger">Material Pro Admin</b>
+                                                {/* <b className="text-danger">Material Pro Admin</b> */}
+                                            <b className="text-danger">{this.state.name}</b>
+
                                         </h3>
-                                        <p className="text-muted m-l-5">E 104, Dharti-2,
+                                        {/* <p className="text-muted m-l-5">E 104, Dharti-2,
                                                 <br /> Nr' Viswakarma Temple,
                                                 <br /> Talaja Road,
-                                                <br /> Bhavnagar - 364002</p>
+                                                <br /> Bhavnagar - 364002</p> */}
+                                        <p className="text-muted m-l-5">{this.state.shop}</p>
                                     </address>
                                 </div>
                                 <div className="pull-right text-right">
@@ -217,7 +291,10 @@ class Invoice extends Component {
                                     </address>
                                 </div>
                             </div>
-                                <CartContainer/>
+                                <CartContainer
+                                    vat= {txtVAT}
+                                    discount= {txtDiscount}
+                                />
                         </div>
                     </div>
                 </div>
@@ -232,7 +309,7 @@ const mapStateToProps = state => {
         //users: state.users,
         //systems: state.systems,
         drinks: state.drinks,
-      
+        bills: state.bill
     }
 }
 
@@ -242,6 +319,10 @@ const mapDispatchToProps = (dispatch, props) => {
       
         fetchAllDrink: () => {
             dispatch(actFetchDrinkRequest())
+        },
+
+        getBill: () => {
+            dispatch(actGetBillAmountRequest())
         }
     }
 }

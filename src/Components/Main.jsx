@@ -3,7 +3,7 @@ import Header from './Elements/Header';
 import Sidebar from './Elements/Sidebar';
 import Breadcrumb from './Elements/Breadcrumb';
 import EmployeeList from './Employee/EmployeeList';
-import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
 import CoffeeShopList from './CoffeeShop/CoffeeShopList';
 import CoffeeShopGrid from './CoffeeShop/CoffeeShopGrid';
 import CoffeeShopDetail from './CoffeeShop/CoffeeShopDetail';
@@ -18,11 +18,16 @@ import Login from './Login/Login';
 
 class Main extends Component {
 
+    state = {
+        number: 1
+    }
+
     showContentMenus = (routes) => {
         var result = null;
         if (routes.length > 0) {
             result = routes.map((route, index) => {
                 console.log(route)
+                // if (route.path != '/login') {
                 return (
                     <Route
                         key={index}
@@ -32,6 +37,7 @@ class Main extends Component {
                     />
                 );
                 console.log(result);
+                // }
             }
             )
         }
@@ -39,9 +45,22 @@ class Main extends Component {
     }
 
     render() {
-
+        if (localStorage.getItem("tokenUser") && localStorage.getItem("dataUser")) {
+            // <Router>
+            // return   <Main></Main> 
+            // </Router>   
+            // <Redirect to='/main'/>
+            <Redirect to='/' />
+            // render = <Main></Main>
+            // <Redirect to='/home'/>
+            // render = <Redirect to='/'/>
+        }
+        else {
+            // render = <Login></Login>
+            <Redirect to='/login' />
+        }
         return (
-            <Router>
+            // <Router>
                 <React.Fragment>
 
                     {/* ============================================================== */}
@@ -55,10 +74,11 @@ class Main extends Component {
                     {/* Main wrapper - style you can find in pages.scss */}
                     {/* ============================================================== */}
                     <div id="main-wrapper">
+                        
                         {/* ============================================================== */}
                         {/* Topbar header - style you can find in pages.scss */}
                         {/* ============================================================== */}
-                        <Header></Header>
+                        <Header number={this.state.number}></Header>
                         {/* ============================================================== */}
                         {/* End Topbar header */}
                         {/* ============================================================== */}
@@ -88,6 +108,7 @@ class Main extends Component {
                                 {/* Start Page Content */}
                                 {/* ============================================================== */}
                                 {/* <Home></Home> */}
+                                {/* <button onClick={() => this.setState({ number: 2 })}>aaaaa</button> */}
                                 <Switch>
                                     {/* <Login></Login> */}
                                     {this.showContentMenus(routes)}
@@ -119,7 +140,7 @@ class Main extends Component {
 
 
                 </React.Fragment>
-            </Router>
+            // </Router>
 
 
         );

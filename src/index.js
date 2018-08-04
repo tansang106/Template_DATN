@@ -16,8 +16,11 @@ const store = createStore(
 )
 
 ReactDOM.render(
-    <Provider store={store}>
+    <Router>
+        <Provider store={store}>
         <App />
-    </Provider>
+        </Provider>
+    </Router>
+    
 , document.getElementById('root'));
 registerServiceWorker();

@@ -33,9 +33,14 @@ class CartContainer extends Component {
     }
 
     showTotalAmount = (cart) => {
+        var { vat, discount } = this.props;
         var result = null;
         if (cart.length > 0) {
-            result = <CartResult cart={cart}/>
+            result = <CartResult 
+                        cart={cart}
+                        vat={vat}
+                        discount={discount}   
+                    />
         }
         return result;
     }

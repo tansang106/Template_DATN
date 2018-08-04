@@ -9,8 +9,8 @@ const MenuLink = ({ label, to, activeOnlyWhenExact, iClass, spanClass, classN })
         <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
             var active = match ? 'active' : '';
             return (
-                <li className={`my -li ${active} my-u`}>
-                    <Link to={to} aria-expanded="false" className={classN}>
+                <li className={`${active}`}>
+                    <Link to={to} aria-expanded="false" >
                         <i className={iClass}></i><span className={spanClass}>{label}</span>
                     </Link>
                 </li>
@@ -19,18 +19,18 @@ const MenuLink = ({ label, to, activeOnlyWhenExact, iClass, spanClass, classN })
     )
 }
 
-const MenuLink2 = ({ label, to, activeOnlyWhenExact, iClass, spanClass }) => {
-    return (
-        <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
-            var active = match ? 'active' : '';
-            return (
-                <Link to={to} aria-expanded="false">
-                    <i className={iClass}></i><span className={spanClass}>{label}</span>
-                </Link>
-            )
-        }} />
-    )
-}
+// const MenuLink2 = ({ label, to, activeOnlyWhenExact, iClass, spanClass }) => {
+//     return (
+//         <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
+//             var active = match ? 'active' : '';
+//             return (
+//                 <Link to={to} aria-expanded="false">
+//                     <i className={iClass}></i><span className={spanClass}>{label}</span>
+//                 </Link>
+//             )
+//         }} />
+//     )
+// }
 
 
 class Sidebar extends Component {
@@ -48,14 +48,20 @@ class Sidebar extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            per: dataStorage.DATA_USER.user_permission || null
+            per: dataStorage.DATA_USER.user_permission || null,
+            updated: this.props.updated
         };
     }
-    
+
+    // load = () =>  {
+    //     this.setState({ updated: true})
+    // }
+
     
 
     render() {
         console.log(this.state.per)
+        console.log('prop từ appjs', this.props.updated)
         var permision = dataStorage.DATA_USER.user_permission;
         let img = dataStorage.DATA_USER.user_avatar;
         let userName = dataStorage.DATA_USER.user_name;
@@ -84,18 +90,17 @@ class Sidebar extends Component {
         )
 
         // day la cua chung
-        let Home =  (
-            <MenuLink label="Home" to="/" activeOnlyWhenExact={true} iClass="fa fa-circle" spanClass="hide-menu">
+        let Home = (this.state.per == 'boss') ? 
+            (
+            <MenuLink label="Home" to="/home" activeOnlyWhenExact={true} iClass="fa fa-circle" spanClass="hide-menu">
             </MenuLink>
-        )
+        ) : '';
 
         // day la cua boss
         let Shop = (this.state.per == 'boss') ? (
             <MenuLink label="Shop" to="/coffeeshop" iClass="fa fa-circle" spanClass="hide-menu">
             </MenuLink>
         ) : '';
-
-      
 
         // let Drink = (
         //     <MenuLink label="Drink" to="/drink" iClass="fa fa-circle" spanClass="hide-menu">

@@ -4,6 +4,7 @@ import * as Config from "../../Constants/Config";
 
 class Header extends Component {
     render() {
+        console.log(this.props.number)
         let permision = dataStorage.DATA_USER.user_permission;
         let img = dataStorage.DATA_USER.user_avatar;
         let userName = dataStorage.DATA_USER.user_name;

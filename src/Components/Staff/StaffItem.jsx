@@ -18,6 +18,8 @@ import $ from 'jquery';
 import * as dataStorage from '../../Constants/localStorage';
 import callApi from '../../Utils/apiCaller';
 import * as Config from '../../Constants/Config';
+import loadjs from 'loadjs';
+import FormErrors from '../Helper/FormErrors';
 // dataStorage.DATA_USER.user_shop_id
 //xem lai phan refs dang loi
 
@@ -33,13 +35,21 @@ class BossItem extends Component {
             txtUserAvatar: '',
             txtUserBirthday: '',
             txtUserSexual: '',
-            txtUserPhone: '',
+            Phone: '',
             txtUserPositionID: '',
-            txtUserEmail: '',
-            txtUserPassword: '',
+            Email: '',
+            Password: '',
             txtUserIDCard: '',
             avatarUpload: '',
             txtAvatarUpload: '',
+            formErrors: {
+                Email: '',
+                Password: '',
+            },
+            emailValid: false,
+            formValid: false,
+            passwordValid: false,
+            phoneValid: false,
         }
     }
 
@@ -56,8 +66,46 @@ class BossItem extends Component {
         var value = target.value;
         this.setState({
             [name]: value
-        });
+        }, () => { this.validateField(name, value) });
     }
+
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+        let phoneValid = this.state.phoneValid;
+        switch (fieldName) {
+            case 'Email':
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                fieldValidationErrors.Email = emailValid ? '' : ' is invalid';
+                break;
+            case 'Password':
+                passwordValid = value.length >= 6;
+                fieldValidationErrors.Password = passwordValid ? '' : ' is too short';
+                break;
+            case 'Phone':
+                phoneValid = value.match(/(09|01[2|6|8|9])+([0-9]{8})\b/);
+                fieldValidationErrors.Phone = phoneValid ? '' : ' is invalid'
+            default:
+                break;
+        }
+        this.setState({
+            formErrors: fieldValidationErrors,
+            emailValid: emailValid,
+            passwordValid: passwordValid,
+            phoneValid: phoneValid
+        }, this.validateForm);
+    }
+
+    validateForm() {
+        this.setState({ formValid: this.state.emailValid && this.state.phoneValid && this.state.passwordValid });
+    }
+
+    errorClass(error) {
+        console.log(error)
+        return (error.length === 0 ? '' : 'has-danger');
+    }
+
     findObjectByKey(array, key, value) {
         for (var i = 0; i < array.length; i++) {
             if (array[i][key] == value) {
@@ -92,9 +140,9 @@ class BossItem extends Component {
             //txtUserAvatar: dataUser.user_avatar,
             txtUserBirthday: moment(dataUser.user_birthday).format('YYYY-MM-DD'),
             txtUserSexual: dataUser.user_sex,
-            txtUserEmail: dataUser.user_email,
+            Email: dataUser.user_email,
             txtUserName: dataUser.user_name,
-            txtUserPhone: dataUser.user_phone,
+            Phone: dataUser.user_phone,
             txtUserPositionID: dataUser.user_position_id,
             idUser: dataUser.user_id,
             txtUserIDCard: dataUser.user_Idcard,
@@ -121,17 +169,17 @@ class BossItem extends Component {
        try {
         console.log('click save')
         e.preventDefault();
-        var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard } = this.state;
-        console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard)
+        var { txtUserAddress, Password, txtUserAvatar, txtUserBirthday, txtUserSexual, Email, txtUserName, Phone, txtUserPositionID, txtUserIDCard } = this.state;
+        console.log('data', txtUserAddress, Password, txtUserBirthday, Email, txtUserName, Phone, txtUserIDCard)
         await this.uploadFile();
         //data này trùng với body call tới api
         
         var user = {
             staff_name: txtUserName,
             staff_address: txtUserAddress,
-            staff_phone: txtUserPhone,
+            staff_phone: Phone,
             staff_avatar: this.state.avatarUpload,
-            staff_email: txtUserEmail,
+            staff_email: Email,
             staff_birthday: txtUserBirthday,
             staff_active: 'on',
             staff_Idcard: txtUserIDCard,
@@ -147,7 +195,7 @@ class BossItem extends Component {
         else {
             console.log('đã k có id')
             user.staff_shop_id = dataStorage.DATA_USER.user_shop_id,
-            user.staff_password = txtUserPassword;
+            user.staff_password = Password;
             user.staff_sex = (this.refs.idSex) ? this.refs.idSex.value : '',
             user.staff_permission = 'staff',
                 //console.log('log system id', user.boss_shop_id)
@@ -165,16 +213,16 @@ class BossItem extends Component {
         try {
             console.log('click save')
             e.preventDefault();
-            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard,txtAvatarUpload } = this.state;
-            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard, txtAvatarUpload)
+            var { txtUserAddress, Password, txtUserAvatar, txtUserBirthday, txtUserSexual, Email, txtUserName, Phone, txtUserPositionID, txtUserIDCard,txtAvatarUpload } = this.state;
+            console.log('data', txtUserAddress, Password, txtUserBirthday, Email, txtUserName, Phone, txtUserIDCard, txtAvatarUpload)
             
             
             var user = {
                 staff_name: txtUserName,
                 staff_address: txtUserAddress,
-                staff_phone: txtUserPhone,
+                staff_phone: Phone,
                 staff_avatar: txtAvatarUpload,
-                staff_email: txtUserEmail,
+                staff_email: Email,
                 staff_birthday: txtUserBirthday,
                 staff_active: 'off',
                 staff_Idcard: txtUserIDCard,
@@ -198,10 +246,10 @@ class BossItem extends Component {
             txtUserAvatar: '',
             txtUserBirthday: '',
             txtUserSexual: '',
-            txtUserPhone: '',
+            Phone: '',
             txtUserPositionID: '',
-            txtUserEmail: '',
-            txtUserPassword: '',
+            Email: '',
+            Password: '',
             txtUserIDCard: ''
         })
     }
@@ -211,7 +259,7 @@ class BossItem extends Component {
     componentDidMount() {
         this.props.fetchAllStaff();
         this.props.fetchPosition();
-
+        loadjs(['/assets/plugins/footable/js/footable.all.min.js','/assets/plugins/bootstrap-select/bootstrap-select.min.js','/js/footable-init.js'])
     }
 
     onTest = () => {
@@ -239,7 +287,7 @@ class BossItem extends Component {
         $('#demo-show-entries').change(function (e) {
             e.preventDefault();
             var pageSize = $(this).val();
-            $('#demo-foo-pagination').data('page-size', pageSize);
+            $('#demo-foo-pagination').data('page-size', 10);
             $('#demo-foo-pagination').trigger('footable_initialized');
         });
     }
@@ -278,8 +326,8 @@ class BossItem extends Component {
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
                             <div className="button-group text-center">
-                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                    onClick={this.onTest}>Info</button>
+                                {/* <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                    onClick={this.onTest}>Info</button> */}
                                 <button
                                     type="button"
                                     className="btn-sm waves-effect waves-light btn-primary icon_action"
@@ -310,7 +358,7 @@ class BossItem extends Component {
 
     render() {
         var { staffs, positions } = this.props
-        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserPositionID, txtUserIDCard } = this.state;
+        var { txtUserAddress, txtUserAvatar, txtUserBirthday, Password, Email, txtUserName, Phone, txtUserPositionID, txtUserIDCard } = this.state;
         return (
             <React.Fragment>
                 <tbody>
@@ -323,29 +371,29 @@ class BossItem extends Component {
                             <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-user" onClick={this.onSetState}>Add New User</button>
                         </td>
                         {/* Modal Add */}
-                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h4 className="modal-title" id="myLargeModalLabel">Add Boss</h4>
+                                        <h4 className="modal-title" id="myLargeModalLabel">Add Staff</h4>
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <h4 className="card-title text_center">Avatar</h4>
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            className="dropify"
+                                                            class="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                <form className="floating-labels m-t-40">
+                                                {/* <form class="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -358,89 +406,93 @@ class BossItem extends Component {
                                                         />
                                                     </div>
 
-                                                </form>
+                                                </form> */}
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-control-line">
+                                                    <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserEmail"
-                                                            value={txtUserEmail}
+                                                            placeholder="Type Email"
+                                                            type="email"
+                                                            class="form-control"
+
+                                                            name="Email"
+                                                            value={Email}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Email</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Email"
+                                                        />
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Password"
                                                             type="password"
-                                                            className="form-control"
+                                                            class="form-control"
                                                             id="input2"
-                                                            name="txtUserPassword"
-                                                            value={txtUserPassword}
+                                                            name="Password"
+                                                            value={Password}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input2">Password</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Password"
+                                                        />
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Username"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+
                                                             name="txtUserName"
+                                                            required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Name</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Address"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Address</label>
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-material">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Phone"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserPhone"
-                                                            value={txtUserPhone}
+                                                            class="form-control"
+
+                                                            name="Phone"
+                                                            value={Phone}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Phone</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Phone"
+                                                        />
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
-                                                            type="text"
+                                                            data-placeholder="Birthday"
+                                                            type="date"
                                                             className="form-control"
-                                                            id="input1"
-                                                            name="txtUserIDCard"
-                                                            value={txtUserIDCard}
+                                                            placeholder="Date Expire"
+                                                            name="txtUserBirthday"
+                                                            value={txtUserBirthday}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">ID</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
-                                                            data-placeholder="Sexual"
+                                                            class="form-control custom-select"
+                                                            data-placeholder="System"
                                                             ref='idPosition'>
                                                             {this.props.positions.map((position, index) => {
                                                                 return (
@@ -459,9 +511,9 @@ class BossItem extends Component {
                                                         </select>
                                                     </div>
 
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
+                                                            class="form-control custom-select"
                                                             data-placeholder="Sexual"
                                                             ref='idSex'>
                                                             {/* {this.props.systems.map((system, index) => {
@@ -483,7 +535,13 @@ class BossItem extends Component {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-danger waves-effect text-left" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger waves-effect text-left"
+                                            data-dismiss="modal"
+                                            onClick={this.onSave}
+                                            disabled={!this.state.formValid}                                                        
+                                        >Save</button>
                                     </div>
                                 </div>
                                 {/* /.modal-content  */}
@@ -493,30 +551,30 @@ class BossItem extends Component {
                         {/* End Modal Add */}
 
                         {/* Modal Update */}
-                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h4 className="modal-title" id="myLargeModalLabel">Add Boss</h4>
+                                        <h4 className="modal-title" id="myLargeModalLabel">Update Staff</h4>
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <h4 className="card-title text_center">Avatar</h4>
-                                                        {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                        {/* <label for="input-file-max-fs">Upload Avatar</label> */}
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            className="dropify"
+                                                            class="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                <form className="floating-labels m-t-40">
+                                                {/* <form class="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -529,77 +587,78 @@ class BossItem extends Component {
                                                         />
                                                     </div>
 
-                                                </form>
+                                                </form> */}
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="floating-labels m-t-40">
+                                                    <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
+                                                            placeholder="Type Email"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserEmail"
-                                                            value={txtUserEmail}
+                                                            class="form-control"
+
+                                                            name="Email"
+                                                            value={Email}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Email</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Email"
+                                                        />
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Username"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+
                                                             name="txtUserName"
+                                                            required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Name</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Address"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Address</label>
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="floating-labels m-t-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Phone"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserPhone"
-                                                            value={txtUserPhone}
+                                                            class="form-control"
+
+                                                            name="Phone"
+                                                            value={Phone}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Phone</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Phone" />
                                                     </div>
                                                     <div className="form-group m-b-40">
                                                         <input
-                                                            type="text"
+                                                            data-placeholder="Birthday"
+                                                            type="date"
                                                             className="form-control"
-                                                            id="input1"
-                                                            name="txtUserIDCard"
-                                                            value={txtUserIDCard}
+                                                            placeholder="Date Expire"
+                                                            name="txtUserBirthday"
+                                                            value={txtUserBirthday}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">ID</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
-                                                            data-placeholder="Sexual"
+                                                            class="form-control custom-select"
+                                                            data-placeholder="System"
                                                             ref='idPosition'>
                                                             {this.props.positions.map((position, index) => {
                                                                 return (
@@ -624,7 +683,13 @@ class BossItem extends Component {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-danger waves-effect text-left" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger waves-effect text-left"
+                                            data-dismiss="modal"
+                                            onClick={this.onSave}
+                                            // disabled={!this.state.formValid}
+                                        >Save</button>
                                     </div>
                                 </div>
                                 {/* /.modal-content  */}
@@ -634,23 +699,23 @@ class BossItem extends Component {
                         {/* End Modal Update */}
 
                         {/* Modal Delete */}
-                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">  
-                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 className="modal-title">Delete</h4>
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">  
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Delete</h4>
                                             </div>
-                                            <div className="modal-body">
+                                            <div class="modal-body">
                                                 <h1 className= "text-danger"> 
                                                     Are you sure delete?
                                                 </h1>
                                             </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                                                 <button 
                                                     type="button" 
-                                                    className="btn btn-danger waves-effect waves-light" 
+                                                    class="btn btn-danger waves-effect waves-light" 
                                                     onClick={this.onDelete}
                                                     data-dismiss="modal">Delete</button>
                                             </div>

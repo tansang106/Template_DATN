@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { actFetchShopRequest, actAddShopResquest, actFetchSystemRequest, actUpdateShopResquest, actFetchAccountRequest, actAddUserResquest, actUpdateUserResquest } from '../../Actions/index';
 import moment from 'moment';
-import $ from 'jquery'; 
+import $ from 'jquery';
 import callApi from '../../Utils/apiCaller';
 import * as Config from '../../Constants/Config';
 import * as dataStorage from '../../Constants/localStorage';
+import  FormErrors  from '../Helper/FormErrors';
 //xem lai phan refs dang loi
 
 class BossItem extends Component {
@@ -14,22 +15,30 @@ class BossItem extends Component {
         super(props, context);
         this.state = {
             shops: [],
-            idUser : '',
-            txtUserName : '',
-            txtUserAddress : '',
-            txtUserAvatar : '',
-            txtUserBirthday : '',
-            txtUserSexual : '',
-            txtUserPhone : '',
-            txtUserSystemID : '',
-            txtUserEmail: '',
-            txtUserPassword: '',
+            idUser: '',
+            txtUserName: '',
+            txtUserAddress: '',
+            txtUserAvatar: '',
+            txtUserBirthday: '',
+            txtUserSexual: '',
+            Phone: '',
+            txtUserSystemID: '',
+            Email: '',
+            Password: '',
             txtUserIDCard: '',
             avatarUpload: '',
             txtAvatarUpload: '',
+            formErrors: {
+                Email: '',
+                Password: '',
+            },
+            emailValid: false,
+            formValid: false,
+            passwordValid: false,
+            phoneValid: false,
         }
     }
-  
+
     onChangeImage = (e) => {
         this.setState({
             txtUserAvatar: e.target.files[0]
@@ -42,8 +51,46 @@ class BossItem extends Component {
         var value = target.value;
         this.setState({
             [name]: value
-        });
+        }, () => { this.validateField(name, value) });
     }
+
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+        let phoneValid = this.state.phoneValid;
+        switch (fieldName) {
+            case 'Email':
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                fieldValidationErrors.Email = emailValid ? '' : ' is invalid';
+                break;
+            case 'Password':
+                passwordValid = value.length >= 6;
+                fieldValidationErrors.Password = passwordValid ? '' : ' is too short';
+                break;
+            case 'Phone':
+                phoneValid = value.match(/(09|01[2|6|8|9])+([0-9]{8})\b/);
+                fieldValidationErrors.Phone = phoneValid ? '' : ' is invalid'
+            default:
+                break;
+        }
+        this.setState({
+            formErrors: fieldValidationErrors,
+            emailValid: emailValid,
+            passwordValid: passwordValid,
+            phoneValid: phoneValid
+        }, this.validateForm);
+    }
+
+    validateForm() {
+        this.setState({ formValid: this.state.emailValid && this.state.phoneValid && this.state.passwordValid });
+    }
+
+    errorClass(error) {
+        console.log(error)
+        return (error.length === 0 ? '' : 'has-danger');
+    }
+
     findObjectByKey(array, key, value) {
         for (var i = 0; i < array.length; i++) {
             if (array[i][key] == value) {
@@ -54,13 +101,13 @@ class BossItem extends Component {
     }
 
     findElementInObjectOfArray(nameKey, myArray) {
-    for (var i = 0; i < myArray.length; i++) {
-        if (myArray[i].name === nameKey) {
-            return myArray[i];
+        for (var i = 0; i < myArray.length; i++) {
+            if (myArray[i].name === nameKey) {
+                return myArray[i];
+            }
         }
     }
-}
-    
+
     //Nút sửa - Nhấn vào lấy đc thông tin boss
     onGetIdUser = (ev) => {
         let { users, systems } = this.props
@@ -78,9 +125,9 @@ class BossItem extends Component {
             //txtUserAvatar: dataUser.user_avatar,
             txtUserBirthday: moment(dataUser.user_birthday).format('YYYY-MM-DD'),
             txtUserSexual: dataUser.user_sex,
-            txtUserEmail: dataUser.user_email,
+            Email: dataUser.user_email,
             txtUserName: dataUser.user_name,
-            txtUserPhone: dataUser.user_phone,
+            Phone: dataUser.user_phone,
             txtUserSystemID: dataUser.user_shop_id,
             idUser: dataUser.user_id,
             txtUserIDCard: dataUser.user_Idcard,
@@ -98,7 +145,7 @@ class BossItem extends Component {
         }).then(res => {
             return res.data.imgBoss;
         })
-        this.setState({ avatarUpload: avatar})
+        this.setState({ avatarUpload: avatar })
         console.log('đã up ảnh', this.state.avatarUpload)
         // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
     }
@@ -108,84 +155,85 @@ class BossItem extends Component {
         try {
             console.log('click save')
             e.preventDefault();
-            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
-            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard )
+            var { txtUserAddress, Password, txtUserAvatar, txtUserBirthday, txtUserSexual, Email, txtUserName, Phone, txtUserSystemID, txtUserIDCard } = this.state;
+            console.log('data', txtUserAddress, Password, txtUserBirthday, Email, txtUserName, Phone, txtUserIDCard)
             await this.uploadFile();
             //data này trùng với body call tới api
-    
+
             var user = {
                 boss_name: txtUserName,
                 // boss_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
                 boss_address: txtUserAddress,
-                boss_phone: txtUserPhone,
+                boss_phone: Phone,
                 // boss_avatar: txtUserAvatar,
                 boss_avatar: this.state.avatarUpload,
-                boss_email: txtUserEmail,
+                boss_email: Email,
                 boss_birthday: txtUserBirthday,
-               
+
                 boss_active: 'on',
                 boss_Idcard: txtUserIDCard,
                 //boss_id: this.state.idUser
-               
-                
+
+
             }
             if (this.state.idUser) {
                 user.boss_id = this.state.idUser
-                user.boss_shop= (this.refs.idSystem) ? this.refs.idSystem.value : '',
-                console.log('đang kiểm tra tồn tại id', this.state.idUser)
+                user.boss_shop = (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                    console.log('đang kiểm tra tồn tại id', this.state.idUser)
                 this.props.onUpdateUser(user);
                 console.log('đã update')
             }
             else {
                 console.log('đã k có id')
-                user.boss_password = txtUserPassword;
+                user.boss_password = Password;
                 user.boss_sex = (this.refs.idSex) ? this.refs.idSex.value : '',
-                user.boss_shop_id = (this.refs.idSystem) ? this.refs.idSystem.value : '',
-                console.log('log system id', user.boss_shop_id)
-             
+                    user.boss_shop_id = (this.refs.idSystem) ? this.refs.idSystem.value : '',
+                    console.log('log system id', user.boss_shop_id)
+                console.log(user);
+                // return;
                 this.props.onAddUser(user);
                 console.log(user)
-    
+
             }
-                // callApi('shops/create', 'POST', {
-                //     shop_name: txtShopName,
-                //     shop_system_id: txtShopSystemID,
-                //     shop_address: txtShopAddress,
-                //     shop_phone: txtShopPhone,
-                //     shop_avatar: txtShopAvatar,
-                //     shop_email: txtShopEmail,
-                //     shop_dayFrom: txtShopDayFrom,
-                //     shop_dayTo: txtShopDayTo
-                // }, {
-                //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
-                // }).then(res => {
-                //     console.log(res);
-                // })
+            // callApi('shops/create', 'POST', {
+            //     shop_name: txtShopName,
+            //     shop_system_id: txtShopSystemID,
+            //     shop_address: txtShopAddress,
+            //     shop_phone: txtShopPhone,
+            //     shop_avatar: txtShopAvatar,
+            //     shop_email: txtShopEmail,
+            //     shop_dayFrom: txtShopDayFrom,
+            //     shop_dayTo: txtShopDayTo
+            // }, {
+            //     'token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAZ21haWwuY29tIiwiaWF0IjoxNTI2Njk2Njc5fQ.mMmoD11AmjiyARIWufhJDl3LifDAf8LqSAzKEzeV7bE"    
+            // }).then(res => {
+            //     console.log(res);
+            // })
         } catch (error) {
             console.log('Error onSave', error)
         }
-       
+
     }
 
     onDelete = (e) => {
         try {
             console.log('click save')
             e.preventDefault();
-            var { txtUserAddress, txtUserPassword, txtUserAvatar, txtUserBirthday, txtUserSexual, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard, txtAvatarUpload } = this.state;
-            console.log('xem avatar', this.refs.refAvatar.value)
-            console.log('data', txtUserAddress, txtUserPassword, txtUserBirthday, txtUserEmail, txtUserName, txtUserPhone, txtUserIDCard, txtAvatarUpload )
+            var { txtUserAddress, Password, txtUserAvatar, txtUserBirthday, txtUserSexual, Email, txtUserName, Phone, txtUserSystemID, txtUserIDCard, txtAvatarUpload } = this.state;
+            // console.log('xem avatar', this.refs.refAvatar.value)
+            console.log('data', txtUserAddress, Password, txtUserBirthday, Email, txtUserName, Phone, txtUserIDCard, txtAvatarUpload)
             var user = {
                 boss_name: txtUserName,
                 boss_system: (this.refs.idSystem) ? this.refs.idSystem.value : '',
                 boss_address: txtUserAddress,
-                boss_phone: txtUserPhone,
+                boss_phone: Phone,
                 boss_avatar: txtAvatarUpload,
-                boss_email: txtUserEmail,
+                boss_email: Email,
                 boss_birthday: txtUserBirthday,
                 boss_active: 'off',
                 boss_Idcard: txtUserIDCard,
                 boss_id: this.state.idUser
-            
+
             }
             console.log('đang kiểm tra tồn tại id', user)
             this.props.onUpdateUser(user);
@@ -193,7 +241,7 @@ class BossItem extends Component {
         } catch (error) {
             console.log('Error onSave', error)
         }
-       
+
     }
 
     onSetState = () => {
@@ -204,20 +252,20 @@ class BossItem extends Component {
             txtUserAvatar: '',
             txtUserBirthday: '',
             txtUserSexual: '',
-            txtUserPhone: '',
+            Phone: '',
             txtUserSystemID: '',
-            txtUserEmail: '',
-            txtUserPassword: '',
+            Email: '',
+            Password: '',
             txtUserIDCard: ''
         })
     }
-    
+
 
     componentDidMount() {
         this.props.fetchAllUsers();
         this.props.fetchAllSystem();
-        
-       
+
+
     }
 
     onTest = () => {
@@ -237,7 +285,7 @@ class BossItem extends Component {
         // console.log('chạy add xong')
 
     }
-    
+
     pagination = () => {
         // Pagination
         // -----------------------------------------------------------------
@@ -245,7 +293,7 @@ class BossItem extends Component {
         $('#demo-show-entries').change(function (e) {
             e.preventDefault();
             var pageSize = $(this).val();
-            $('#demo-foo-pagination').data('page-size', pageSize);
+            $('#demo-foo-pagination').data('page-size', 10);
             $('#demo-foo-pagination').trigger('footable_initialized');
         });
     }
@@ -256,57 +304,57 @@ class BossItem extends Component {
             result = users.map((user, index) => {
                 if (user.user_active == 'on') {
                     let nameSystems = systems.find(x => x.system_id === user.user_shop_id)
-            let nameSystem;
-            if (nameSystems != undefined) {
-                nameSystem = nameSystems.system_name
-                
-                // if (dataStorage.DATA_USER.user_user_id == user.user_system_id)
-                // {
-                return (
-                    <tr className="text_center" key={index}>
-                        <td>{index + 1}</td>
-                        <td className="text_left">
-                            <a >
-                                <img src={`${Config.API_URL}/uploads/imgBoss/${user.user_avatar}`} alt="user" width="40" className="img-circle"
-                                /> {user.user_name}</a>
-                                {/* <img src={user.user_avatar} alt="user" width="40" className="img-circle"
+                    let nameSystem;
+                    if (nameSystems != undefined) {
+                        nameSystem = nameSystems.system_name
+
+                        // if (dataStorage.DATA_USER.user_user_id == user.user_system_id)
+                        // {
+                        return (
+                            <tr className="text_center" key={index}>
+                                <td>{index + 1}</td>
+                                <td className="text_left">
+                                    <a >
+                                        <img src={`${Config.API_URL}/uploads/imgBoss/${user.user_avatar}`} alt="user" width="40" className="img-circle"
+                                        /> {user.user_name}</a>
+                                    {/* <img src={user.user_avatar} alt="user" width="40" className="img-circle"
                                 /> {user.user_name}</a> */}
-                        </td>
-                        {/* <td>genelia@gmail.com</td> */}
-                        <td>{user.user_sex}</td>
-                        <td>{user.user_phone}</td>
-                        <td>{nameSystem}</td>
-                        <td>{user.user_active}</td>
-                        {/* <td></td> */}
-                        <td>
-                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+                                </td>
+                                {/* <td>genelia@gmail.com</td> */}
+                                <td>{user.user_sex}</td>
+                                <td>{user.user_phone}</td>
+                                <td>{nameSystem}</td>
+                                <td>{user.user_active}</td>
+                                {/* <td></td> */}
+                                <td>
+                                    {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
                                                 {/* <i className="ti-close" aria-hidden="true"></i> 
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
-                            <div className="button-group text-center">
-                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                    onClick={this.onTest}>Info</button>
-                                <button
-                                    type="button"
-                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
-                                    data-toggle="modal"
-                                    data-target="#update-user"
-                                    data-value={user.user_id}
-                                    onClick={this.onGetIdUser}
-                                >Add</button>
-                               <button 
-                                    type="button" 
-                                    className="btn-sm waves-effect waves-light btn-danger"
-                                    data-toggle="modal" 
-                                    data-target="#delete-modal"
-                                    data-value={user.user_id}
-                                    onClick={this.onGetIdUser}
-                                >Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                )
-            }
+                                    <div className="button-group text-center">
+                                        {/* <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                            onClick={this.onTest}>Info</button> */}
+                                        <button
+                                            type="button"
+                                            className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                            data-toggle="modal"
+                                            data-target="#update-user"
+                                            data-value={user.user_id}
+                                            onClick={this.onGetIdUser}
+                                        >Edit</button>
+                                        <button
+                                            type="button"
+                                            className="btn-sm waves-effect waves-light btn-danger"
+                                            data-toggle="modal"
+                                            data-target="#delete-modal"
+                                            data-value={user.user_id}
+                                            onClick={this.onGetIdUser}
+                                        >Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    }
                 }
             })
         }
@@ -315,14 +363,14 @@ class BossItem extends Component {
 
     render() {
         var { users, systems } = this.props
-        
+
         console.log(this.props)
         console.log(users)
-        var { txtUserAddress, txtUserAvatar, txtUserBirthday, txtUserPassword, txtUserEmail, txtUserName, txtUserPhone, txtUserSystemID, txtUserIDCard } = this.state;
+        var { txtUserAddress, txtUserAvatar, txtUserBirthday, Password, Email, txtUserName, Phone, txtUserSystemID, txtUserIDCard } = this.state;
         return (
             <React.Fragment>
                 <tbody>
-                    {this.showBoss( users, systems)}
+                    {this.showBoss(users, systems)}
                 </tbody>
                 <tfoot>
                     <tr>
@@ -330,7 +378,7 @@ class BossItem extends Component {
                             <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-user" onClick={this.onSetState}>Add New User</button>
                         </td>
                         {/* Modal Add */}
-                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -338,11 +386,11 @@ class BossItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <h4 className="card-title text_center">Avatar</h4>
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
                                                         {/* <label for="input-file-max-fs">Upload Avatar</label> */}
                                                         {/* <input
                                                             type="file"
@@ -356,13 +404,13 @@ class BossItem extends Component {
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            className="dropify"
+                                                            class="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                <form className="floating-labels m-t-40">
+                                                {/* <form class="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -375,99 +423,122 @@ class BossItem extends Component {
                                                         />
                                                     </div>
 
-                                                </form>
+                                                </form> */}
+                                                {/* <form class="m-t-40" novalidate>
+                                    
+                                        
+                                    <div class="form-group">
+                                        <h5>Email Field <span class="text-danger">*</span></h5>
+                                        <div class="controls">
+                                            <input type="email" name="email" class="form-control" required data-validation-required-message="This field is required"/> </div>
+                                    </div>
+                                    </form> */}
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-control-line">
+                                                    <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserEmail"
-                                                            value={txtUserEmail}
-                                                            onChange={this.onChange} 
+                                                            placeholder="Type Email"
+                                                            type="email"
+                                                            class="form-control"
+                                                            
+                                                            name="Email"
+                                                            value={Email}
+                                                            onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Email</label>
+                                                        <FormErrors formErrors={this.state.formErrors} 
+                                                            nameValid="Email"
+                                                        />
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">User Emai</label> */}
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Password"
                                                             type="password"
-                                                            className="form-control"
+                                                            class="form-control"
                                                             id="input2"
-                                                            name="txtUserPassword"
-                                                            value={txtUserPassword}
-                                                            onChange={this.onChange} 
+                                                            name="Password"
+                                                            value={Password}
+                                                            onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input2">Password</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Password"
+                                                        />
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input2">Password</label> */}
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Username"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+                                                            
                                                             name="txtUserName"
+                                                            required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Name</label>
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">User Name</label> */}
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Address"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+                                                            
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
-                                                            onChange={this.onChange} 
+                                                            onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Address</label>
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">Address</label> */}
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-material">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Phone"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserPhone"
-                                                            value={txtUserPhone}
-                                                            onChange={this.onChange} 
+                                                            class="form-control"
+                                                            
+                                                            name="Phone"
+                                                            value={Phone}
+                                                            onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Phone</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Phone"
+                                                        />
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">Phone</label> */}
                                                     </div>
                                                     <div className="form-group m-b-40">
                                                         <input
-                                                            type="text"
+                                                            data-placeholder="Birthday"
+                                                            type="date"
                                                             className="form-control"
-                                                            id="input1"
-                                                            name="txtUserIDCard"
-                                                            value={txtUserIDCard}
-                                                            onChange={this.onChange} 
+                                                            placeholder="Date Expire"
+                                                            name="txtUserBirthday"
+                                                            value={txtUserBirthday}
+                                                            onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">ID</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
-                                                            data-placeholder="Sexual"
+                                                            class="form-control custom-select"
+                                                            data-placeholder="System"
                                                             ref='idSystem'>
                                                             {this.props.systems.map((system, index) => {
-                                                            return (
-                                                                <option
-                                                                    name="txtShopSystemID"
-                                                                    value={system.system_id}
-                                                                    key={index}>
-                                                                    {system.system_name}
-                                                                </option>
-                                                            )
+                                                                return (
+                                                                    <option
+                                                                        name="txtShopSystemID"
+                                                                        value={system.system_id}
+                                                                        key={index}>
+                                                                        {system.system_name}
+                                                                    </option>
+                                                                )
                                                             })}
                                                             {/* <option value="Category 1">Sexual</option>
                                                             <option value="Category 2">Category 2</option>
@@ -476,9 +547,9 @@ class BossItem extends Component {
                                                         </select>
                                                     </div>
 
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
+                                                            class="form-control custom-select"
                                                             data-placeholder="Sexual"
                                                             ref='idSex'>
                                                             {/* {this.props.systems.map((system, index) => {
@@ -500,7 +571,13 @@ class BossItem extends Component {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-danger waves-effect text-left" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger waves-effect text-left"
+                                            data-dismiss="modal"
+                                            onClick={this.onSave}
+                                            disabled={!this.state.formValid}
+                                        >Save</button>
                                     </div>
                                 </div>
                                 {/* /.modal-content  */}
@@ -510,30 +587,30 @@ class BossItem extends Component {
                         {/* End Modal Add */}
 
                         {/* Modal Update */}
-                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h4 className="modal-title" id="myLargeModalLabel">Add Boss</h4>
+                                        <h4 className="modal-title" id="myLargeModalLabel">Update Boss</h4>
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <h4 className="card-title text_center">Avatar</h4>
-                                                        {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text_center">Avatar</h4>
+                                                        {/* <label for="input-file-max-fs">Upload Avatar</label> */}
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            className="dropify"
+                                                            class="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                <form className="floating-labels m-t-40">
+                                                {/* <form class="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -546,77 +623,82 @@ class BossItem extends Component {
                                                         />
                                                     </div>
 
-                                                </form>
+                                                </form> */}
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-control-line">
+                                                    <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
+                                                            placeholder="Type Email"                                                            
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserEmail"
-                                                            value={txtUserEmail}
+                                                            class="form-control"
+                                                            
+                                                            name="Email"
+                                                            value={Email}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Email</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Email"
+                                                        />
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Username"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+                                                            
                                                             name="txtUserName"
+                                                            required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">User Name</label>
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">User Name</label> */}
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Address"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
+                                                            class="form-control"
+                                                            
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Address</label>
+                                                        {/* <span class="bar"></span>
+                                                        <label for="input1">Address</label> */}
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form className="floating-labels m-t-40">
-                                                    <div className="form-group m-b-40">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form class="form-horizontal form-material">
+                                                    <div class="form-group m-b-40">
                                                         <input
+                                                            placeholder="Type Phone"
                                                             type="text"
-                                                            className="form-control"
-                                                            id="input1"
-                                                            name="txtUserPhone"
-                                                            value={txtUserPhone}
+                                                            class="form-control"
+                                                            
+                                                            name="Phone"
+                                                            value={Phone}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">Phone</label>
+                                                        <FormErrors formErrors={this.state.formErrors}
+                                                            nameValid="Phone"/>
                                                     </div>
                                                     <div className="form-group m-b-40">
                                                         <input
-                                                            type="text"
+                                                            data-placeholder="Birthday"
+                                                            type="date"
                                                             className="form-control"
-                                                            id="input1"
-                                                            name="txtUserIDCard"
-                                                            value={txtUserIDCard}
+                                                            placeholder="Date Expire"
+                                                            name="txtUserBirthday"
+                                                            value={txtUserBirthday}
                                                             onChange={this.onChange}
                                                         />
-                                                        <span className="bar"></span>
-                                                        <label htmlFor="input1">ID</label>
                                                     </div>
-                                                    <div className="form-group m-b-40">
+                                                    <div class="form-group m-b-40">
                                                         <select
-                                                            className="form-control custom-select"
-                                                            data-placeholder="Sexual"
+                                                            class="form-control custom-select"
+                                                            data-placeholder="System"
                                                             ref='idSystem'>
                                                             {this.props.systems.map((system, index) => {
                                                                 return (
@@ -635,45 +717,51 @@ class BossItem extends Component {
                                                         </select>
                                                     </div>
 
-                                                   
+
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-danger waves-effect text-left" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger waves-effect text-left"
+                                            data-dismiss="modal"
+                                            onClick={this.onSave}
+                                            // disabled={!this.state.formValid}
+                                        >Save</button>
                                     </div>
                                 </div>
                                 {/* /.modal-content  */}
                             </div>
                             {/* /.modal-dialog  */}
-                        </div> 
+                        </div>
                         {/* End Modal Update */}
 
                         {/* Modal Delete */}
-                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">  
-                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 className="modal-title">Delete</h4>
-                                            </div>
-                                            <div className="modal-body">
-                                                <h1 className= "text-danger"> 
-                                                    Are you sure delete?
-                                                </h1>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                                                <button 
-                                                    type="button" 
-                                                    className="btn btn-danger waves-effect waves-light" 
-                                                    onClick={this.onDelete}
-                                                    data-dismiss="modal">Delete</button>
-                                            </div>
-                                        </div>
+                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{ display: "none" }}>
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Delete</h4>
                                     </div>
-                                </div>                                
+                                    <div class="modal-body">
+                                        <h1 className="text-danger">
+                                            Are you sure delete?
+                                                </h1>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger waves-effect waves-light"
+                                            onClick={this.onDelete}
+                                            data-dismiss="modal">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {/* End Modal Delete */}
                         {/* Pagination */}
                         <td colSpan="7">
@@ -702,19 +790,19 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        fetchAllShops : () => {
+        fetchAllShops: () => {
             dispatch(actFetchShopRequest());
         },
         onAddShop: (shop) => {
             dispatch(actAddShopResquest(shop));
         },
-        fetchAllSystem : (system) => {
+        fetchAllSystem: (system) => {
             dispatch(actFetchSystemRequest(system))
         },
         onUpdateShop: (shop) => {
             dispatch(actUpdateShopResquest(shop));
         },
-        fetchAllUsers : (user) => {
+        fetchAllUsers: (user) => {
             dispatch(actFetchAccountRequest(user))
         },
         onAddUser: (user) => {

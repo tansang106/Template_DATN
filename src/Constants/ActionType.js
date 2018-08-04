@@ -31,3 +31,5 @@ export const DELETE_PRODUCT_IN_CART = "DELETE_PRODUCT_IN_CART";
 export const CHANGE_MESSAGE = "CHANGE_MESSAGE";
 export const UPDATE_PRODUCT_IN_CART = "UPDATE_PRODUCT_IN_CART";
 export const CLEAR_CART = "CLEAR_CART"
+//===============
+export const GET_BILL_AMOUNT = "GET_BILL_AMOUNT"

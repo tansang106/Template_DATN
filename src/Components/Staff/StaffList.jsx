@@ -28,7 +28,7 @@ class Staff extends Component {
                             <h4 className="card-title">Staff List</h4>
                             {/* <h6 className="card-subtitle"></h6> */}
                             <div className="table-responsive">
-                                <table id="demo-foo-addrow" className="table m-t-30 table-hover contact-list" data-page-size="10">
+                                <table id="demo-foo-addrow" className="table m-t-30 table-hover contact-list color-table success-table" data-page-size="10">
                                     <thead>
                                         <tr>
                                             <th className="text_center">No</th>

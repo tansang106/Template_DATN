@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import loadjs from 'loadjs';
 import {
     actFetchShopRequest,
     actAddShopResquest,
@@ -16,6 +17,7 @@ import $ from 'jquery';
 import * as dataStorage from '../../Constants/localStorage';
 import * as Config from '../../Constants/Config';
 import callApi from '../../Utils/apiCaller';
+import toastr from 'toastr';
 // dataStorage.DATA_USER.user_shop_id
 //xem lai phan refs dang loi
 
@@ -55,11 +57,11 @@ class DrinkItem extends Component {
         // console.log('change')
         // const files= file[0];
         const file = e.target.files[0];
-        this.getBase64(file).then(base64 => {
-            // localStorage["fileBase64"] = base64;
-            // console.debug("file stored",base64);
-            console.log(base64);
-        });
+        // this.getBase64(file).then(base64 => {
+        //     // localStorage["fileBase64"] = base64;
+        //     // console.debug("file stored",base64);
+        //     console.log(base64);
+        // });
        
         // console.log('hinh', e.target.files[0].name);
         this.setState({
@@ -132,7 +134,11 @@ class DrinkItem extends Component {
         let avatar = await callApi('boss/upload-imgDrink', 'POST', formData, {
             'token': dataStorage.TOKEN
         }).then(res => {
-            return res.data.imgDrink;
+            if (res.data.status == 'success'){
+                return res.data.imgDrink;
+            } else {
+                toastr.warning(res.data.mesage, 'Warning')
+            }
         })
         this.setState({ avatarUpload: avatar})
         // this.setState({ avatarUpload: `${Config.API_URL}/uploads/imgDrink/${avatar}`})
@@ -146,14 +152,14 @@ class DrinkItem extends Component {
             console.log('hình', this.state.txtAvatarUpload)
             console.log('avatarupload', this.state.avatarUpload)
             console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
-           
+            
             await this.uploadFile();
             //data này trùng với body call tới api
             // console.log('avatar',avatar);
             var drink = {
                 drink_name: txtDrinkName,
                 drink_price: txtDrinkPrice,
-
+                drink_active: 'on',
                 // drink_avatar: txtDrinkAvatar,
                 drink_avatar: this.state.avatarUpload,
 
@@ -170,14 +176,37 @@ class DrinkItem extends Component {
                 console.log('đã k có id')
                 console.log('data trước khi add', drink)
                 drink.drink_shop_id = dataStorage.DATA_USER.user_shop_id,
-                    this.props.onAddDrink(drink);
+                this.props.onAddDrink(drink);
                 console.log(drink)
 
             }
         } catch (error) {
             console.log('Error onSave', error)
-        }
-      
+        }  
+    }
+
+    onDelete = async (e) => {
+         try {
+            console.log('click save')
+            e.preventDefault();
+            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
+            console.log('hình', this.state.txtAvatarUpload)
+            console.log('avatarupload', this.state.avatarUpload)
+            console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
+            // await this.uploadFile();
+           
+            var drink = {
+                drink_name: txtDrinkName,
+                drink_price: txtDrinkPrice,
+                drink_id: idDrink,
+                drink_active: 'off',
+                drink_avatar: this.state.txtAvatarUpload,
+            }
+            console.log('drink', drink)
+           this.props.onUpdateDrink(drink)
+        } catch (error) {
+            console.log('Error onSave', error)
+        }  
     }
 
     onSetState = () => {
@@ -189,6 +218,22 @@ class DrinkItem extends Component {
         })
     }
 
+    componentWillMount() {
+        // loadjs([
+        //     '/assets/plugins/jquery/jquery.min.js',
+        //     '/assets/plugins/footable/js/footable.all.min.js',
+        //     '/assets/plugins/bootstrap-select/bootstrap-select.min.js',
+        //     '/js/footable-init.js',
+        //     '/assets/plugins/bootstrap/js/popper.min.js',
+        //     '/assets/plugins/bootstrap/js/bootstrap.min.js',
+        //     '/js/jquery.slimscroll.js',
+        //     '/js/custom.min.js',
+        //     '/assets/plugins/styleswitcher/jQuery.style.switcher.js',
+
+        //     // '/assets/plugins/jquery/jquery.min.js',
+
+        // ])
+    }
 
 
     componentDidMount() {
@@ -197,6 +242,19 @@ class DrinkItem extends Component {
         // this.props.fetchAllSystem();
         this.props.fetchAllDrink();
         this.props.fetchPosition();
+        // loadjs([
+        //     '/assets/plugins/jquery/jquery.min.js',
+        //     '/assets/plugins/footable/js/footable.all.min.js',
+        //     '/assets/plugins/bootstrap-select/bootstrap-select.min.js',
+        //     '/js/footable-init.js',
+        //     '/assets/plugins/bootstrap/js/popper.min.js',
+        //     '/assets/plugins/bootstrap/js/bootstrap.min.js',
+        //     '/js/jquery.slimscroll.js',
+        //     '/js/custom.min.js',
+
+        //     // '/assets/plugins/jquery/jquery.min.js',
+
+        // ])
 
     }
 
@@ -246,49 +304,51 @@ class DrinkItem extends Component {
         let result = null
         if (drinks.length > 0 ){
             result = drinks.map((drink, index) => {
-                return (
-                    <tr className="text_center" key={index}>
-                        <td>{index + 1}</td>
-                        <td className="text_left">
-                            <a >
-                                <img src={`${Config.API_URL}/uploads/imgDrink/${drink.drink_avatar}`} alt="shop" width="40" className="img-circle" />
-                                {drink.drink_name}</a>
-                            {/* <img src={drink.drink_avatar} alt="drink" width="40" className="img-circle"
+                if (drink.drink_active == 'on') {
+                    return (
+                        <tr className="text_center" key={index}>
+                            <td>{index + 1}</td>
+                            <td className="text_left">
+                                <a >
+                                    <img src={`${Config.API_URL}/uploads/imgDrink/${drink.drink_avatar}`} alt="shop" width="40" className="img-circle" />
+                                    {drink.drink_name}</a>
+                                {/* <img src={drink.drink_avatar} alt="drink" width="40" className="img-circle"
                                 /> {drink.drink_name}</a> */}
-                        </td>
-                        {/* <td>genelia@gmail.com</td> */}
-                        <td>{drink.drink_price}</td>
-                        {/* <td>{nameSystem}</td> */}
-                        {/* <td></td> */}
-                        <td>
-                            {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
+                            </td>
+                            {/* <td>genelia@gmail.com</td> */}
+                            <td>{drink.drink_price}</td>
+                            {/* <td>{nameSystem}</td> */}
+                            {/* <td></td> */}
+                            <td>
+                                {/* <button type="button" className="btn btn-lg btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete">
                                                 {/* <i className="ti-close" aria-hidden="true"></i> 
                                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                                             </button> */}
-                            <div className="button-group text-center">
-                                <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
-                                    onClick={this.onTest}>Info</button>
-                                <button
-                                    type="button"
-                                    className="btn-sm waves-effect waves-light btn-primary icon_action"
-                                    data-toggle="modal"
-                                    data-target="#update-drink"
-                                    data-value={drink.drink_id}
-                                    onClick={this.onGetIdDrink}
-                                >Edit</button>
-                                <button 
-                                    type="button" 
-                                    className="btn-sm waves-effect waves-light btn-danger"
-                                    data-toggle="modal" 
-                                    data-target="#delete-modal"
-                                    data-value={drink.drink_id}
-                                    onClick={this.onGetIdDrink}
-                                >Delete</button>
+                                <div className="button-group text-center">
+                                    {/* <button type="button" className="btn-sm waves-effect waves-light btn-info icon_action"
+                                        onClick={this.onTest}>Info</button> */}
+                                    <button
+                                        type="button"
+                                        className="btn-sm waves-effect waves-light btn-primary icon_action"
+                                        data-toggle="modal"
+                                        data-target="#update-drink"
+                                        data-value={drink.drink_id}
+                                        onClick={this.onGetIdDrink}
+                                    >Edit</button>
+                                    <button
+                                        type="button"
+                                        className="btn-sm waves-effect waves-light btn-danger"
+                                        data-toggle="modal"
+                                        data-target="#delete-modal"
+                                        data-value={drink.drink_id}
+                                        onClick={this.onGetIdDrink}
+                                    >Delete</button>
                                 
-                            </div>
-                        </td>
-                    </tr>
-                )
+                                </div>
+                            </td>
+                        </tr>
+                    )
+                }
             }
         )
         }
@@ -487,7 +547,10 @@ class DrinkItem extends Component {
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger waves-effect waves-light">Delete</button>
+                                                <button type="button" class="btn btn-danger waves-effect waves-light"
+                                                onClick={this.onDelete}
+                                                data-dismiss="modal"
+                                                >Delete</button>
                                             </div>
                                         </div>
                                     </div>

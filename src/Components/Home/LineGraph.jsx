@@ -247,12 +247,204 @@ class LineGraph extends Component {
 
         return (
             <React.Fragment>
-            <canvas id="lineChart1" height="100%" />
-            <div className="row text-center">
-                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
-                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
-                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
+            <div class="row">
+                {/* Column */}
+                <div class="col-lg-4 col-xlg-3 col-md-5">
+                    {/* <div class="card blog-widget">
+                            <div class="card-body">
+                                <div class="blog-image"><img src="../assets/images/big/img1.jpg" alt="img" class="img-responsive" /></div>
+                                <h3>Business development new rules for 2017</h3>
+                                <label class="label label-rounded label-success">Technology</label>
+                                <p class="m-t-20 m-b-20">
+                                    Lorem ipsum dolor sit amet, this is a consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                                </p>
+                                <div class="d-flex">
+                                    <div class="read"><a href="javascript:void(0)" class="link font-medium">Read More</a></div>
+                                    <div class="ml-auto">
+                                        <a href="javascript:void(0)" class="link m-r-10 " data-toggle="tooltip" title="Like"><i class="mdi mdi-heart-outline"></i></a> <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="Share"><i class="mdi mdi-share-variant"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   */}
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-actions">
+                                <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                                <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                                <a class="btn-close" data-action="close"><i class="ti-close"></i></a>
+                            </div>
+                            <h4 class="card-title m-b-0">Date</h4>
+                        </div>
+                        <div class="card-body">
+                            <from className="form-horizontal form-material">
+
+                                            <div className="form-group">
+                                                <div className="col-md-12 m-b-20">
+                                                 <span class="bar"></span>
+                                                    <label for="input1">From Date</label>
+                                                    {/* <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="input1"
+                                                        name="txtDrinkName"
+                                                        // value={txtDrinkName}
+                                                        // onChange={this.onChange}
+                                                    /> */}
+                                                    <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    placeholder="2018-06-04" 
+                                                    id="mdate"/>
+                                                   
+                                                </div>
+
+                                                <div className="col-md-12 m-b-20">
+                                                 <span class="bar"></span>
+                                                    <label for="input1">To Day</label>
+                                                    <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    placeholder="2018-08-04" 
+                                                    id="mdate"/>
+                                                   
+                                                </div>
+                                            </div>
+                                        </from>
+                                       
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-actions">
+                                <a class="" data-action="collapse">
+                                    <i class="ti-minus"></i>
+                                </a>
+                                <a class="btn-minimize" data-action="expand">
+                                    <i class="mdi mdi-arrow-expand"></i>
+                                </a>
+                                <a class="btn-close" data-action="close">
+                                    <i class="ti-close"></i>
+                                </a>
+                            </div>
+                            <h4 class="card-title m-b-0">Discount</h4>
+                        </div>
+                        <div class="card-body collapse show bg-info">
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                {/* Carousel items */}
+                                <div class="carousel-inner">
+                                    <div class="carousel-item flex-column active">
+                                        <i class="fa fa-shopping-cart fa-2x text-white"></i>
+                                        <p class="text-white">25th Jan</p>
+                                        <h3 class="text-white font-light">Now Get
+                                                    <span class="font-bold">50% Off</span>
+                                            <br /> on buy</h3>
+                                        <div class="text-white m-t-20">
+                                            <i>- Ecommerce site</i>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item flex-column">
+                                        <i class="fa fa-shopping-cart fa-2x text-white"></i>
+                                        <p class="text-white">25th Jan</p>
+                                        <h3 class="text-white font-light">Now Get
+                                                    <span class="font-bold">50% Off</span>
+                                            <br /> on buy</h3>
+                                        <div class="text-white m-t-20">
+                                            <i>- Ecommerce site</i>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item flex-column">
+                                        <i class="fa fa-shopping-cart fa-2x text-white"></i>
+                                        <p class="text-white">25th Jan</p>
+                                        <h3 class="text-white font-light">Now Get
+                                                    <span class="font-bold">50% Off</span>
+                                            <br /> on buy</h3>
+                                        <div class="text-white m-t-20">
+                                            <i>- Ecommerce site</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <div>
+                                    <h3 class="card-title">Total Money</h3>
+                                    <h6 class="card-subtitle">Overview of Total money</h6>
+                                </div>
+                                <div class="ml-auto align-self-center">
+                                    <ul class="list-inline m-b-0">
+                                        <li>
+                                            <h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10 "></i>Total  Money</h6> </li>
+                                        {/* <li>
+                                                                        <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Recurring Payments</h6> </li> */}
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                            {/* <div class="campaign ct-charts"></div> */}
+                            <canvas id="lineChart1" height="100%" />
+                            <div class="row text-center">
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            {/* Modal Add */}
+                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">
+                            <div className="modal-dialog modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h4 className="modal-title" id="myLargeModalLabel">Add Drink</h4>
+                                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <from className="form-horizontal form-material">
+                                            <div className="form-group">
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="input1"
+                                                        name="txtDrinkName"
+                                                        // value={txtDrinkName}
+                                                        // onChange={this.onChange}
+                                                    />
+                                                    <span class="bar"></span>
+                                                    <label for="input1">Drink Name</label>
+                                                </div>
+
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="input1"
+                                                        name="txtDrinkPrice"
+                                                        // value={txtDrinkPrice}
+                                                        // onChange={this.onChange}
+                                                    />
+                                                    <span class="bar"></span>
+                                                    <label for="input1">Price</label>
+                                                </div>
+                                            </div>
+                                        </from>
+                                       
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-danger waves-effect text-left" data-dismiss="modal" onClick={this.onSave}>Save</button>
+                                    </div>
+                                </div>
+                                {/* /.modal-content  */}
+                            </div>
+                            {/* /.modal-dialog  */}
+                        </div>
             </React.Fragment>
         );
     }

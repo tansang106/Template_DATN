@@ -23,6 +23,18 @@ const routes = [
         
     },
     {
+        path: '/main',
+        exact: true,
+        main: () => <Main />,
+
+    },
+    // {
+    //     path: '/login',
+    //     exact: true,
+    //     main: () => <Login />,
+
+    // },
+    {
         path: '/home',
         exact: true,
         main: () => <Home />,

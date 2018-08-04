@@ -6,10 +6,21 @@ import {
 } from '../../Actions/index';
 import * as dataStorage from '../../Constants/localStorage';
 import callApi from '../../Utils/apiCaller';
+import toastr from 'toastr';
 
 class CartResult extends Component {
 
-    showTotalAmout = (cart) => {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            total: '',
+            vat: '', 
+            discount: '',
+        }
+    }
+    
+
+    showTotalAmount = (cart) => {
         console.log('cart ở result', cart)
         var total = 0;
         if (cart.length > 0) {
@@ -17,13 +28,104 @@ class CartResult extends Component {
                 total += cart[i].product.drink_price * cart[i].quantity;
             }
         }
-        return total;
+        return <p>Total Amount: {total} </p>
     }
 
-    onPay = (cart) => {
+    calculatorTotal = (cart) => {
+        console.log('cart ở result', cart)
+        var total = 0;
+        if (cart.length > 0) {
+            for (var i = 0; i < cart.length; i++) {
+                total += cart[i].product.drink_price * cart[i].quantity;
+
+            }
+        }
+        return total
+    }
+
+
+    showVAT = (cart, vat) => {
+        // let Vat = (vat != '') ? vat : 1
+        if (vat != '') {
+            var total = 0;
+            if (cart.length > 0) {
+                for (var i = 0; i < cart.length; i++){
+                    total += cart[i].product.drink_price * cart[i].quantity;
+                   
+                }
+            }
+            let Total = total*(vat/100)
+            return  <p>VAT ({vat}%) : {Total} </p>
+        } else {
+           return null;
+        }
+    }
+
+    calculatorVAT = (cart, vat) => {
+        // let Vat = (vat != '') ? vat : 1
+        if (vat != '') {
+            var total = 0;
+            if (cart.length > 0) {
+                for (var i = 0; i < cart.length; i++) {
+                    total += cart[i].product.drink_price * cart[i].quantity;
+
+                }
+            }
+            let Total = total * (vat / 100)
+            return Total
+        } else {
+            return null;
+        }
+    }
+
+    showDiscount = (cart, discount) => {
+        // let Vat = (vat != '') ? vat : 1
+        if (discount != '') {
+            var total = 0;
+            if (cart.length > 0) {
+                for (var i = 0; i < cart.length; i++){
+                    total += cart[i].product.drink_price * cart[i].quantity;
+                   
+                }
+            }
+            let Total = total*(discount/100)
+            return  <p>Discount ({discount}%) : {Total} </p>
+        } else {
+           return null;
+        }
+    }
+
+    calculatorDiscount = (cart, discount) => {
+        // let Vat = (vat != '') ? vat : 1
+        if (discount != '') {
+            var total = 0;
+            if (cart.length > 0) {
+                for (var i = 0; i < cart.length; i++) {
+                    total += cart[i].product.drink_price * cart[i].quantity;
+
+                }
+            }
+            let Total = total * (discount / 100)
+            return  Total 
+        } else {
+            return null;
+        }
+    }
+
+    showTotal = (cart, vat, discount) => {
+        // let { cart, vat, discount} = this.state
+        let total =  this.calculatorTotal(cart);
+        let Vat =  this.calculatorVAT(cart, vat);
+        let Discount =  this.calculatorDiscount(cart, discount);
+        let Total = total + Vat - Discount;
+        return Total
+    }
+
+    onPay = (cart, discount, vat) => {
         console.log('cart', cart)
         // let user_id = dataStorage.DATA_USER.user_id
-        let total = this.showTotalAmout(cart);
+        // let total = this.showTotalAmount(cart);
+        let total = this.showTotal(cart, discount, vat)
         // console.log('total', total, user_id)
         let array = [
             {
@@ -49,44 +151,56 @@ class CartResult extends Component {
         }
         console.log(date, data, count)
         console.log('log', array)
-        return;
+        // return;
         //Test
         //=====================
         let bill = {
             bill_user_id: dataStorage.DATA_USER.user_id,
+            bill_shop_id: dataStorage.DATA_USER.user_shop_id,
             bill_total: total,
         }
         callApi('bills/create', 'POST', bill, {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log('res', res);
-            let bill_id = res.data.bill.bill_id;
-            // let detail_bill = {
-            //     detail_bill_id: res.data.bill.bill_id,
-            //     detail_drink_id: 
-            // }
-            let i = 0;
-            let length = cart.length;
-            for (i; i < length; i++){
-                let product = cart[i].product;
-                let quantity = cart[i].quantity;
-                let total = quantity * product.drink_price;
-                let detail_bill = {
-                    detail_bill_id: bill_id,
-                    detail_drink_id: product.drink_id,
-                    detail_drink_name: product.drink_name,
-                    detail_number: quantity,
-                    detail_price: product.drink_price,
-                    detail_toalMoney_drink: total
+            if (res.data.status == 'success') {
+
+                let bill_id = res.data.bill.bill_id;
+                // let detail_bill = {
+                //     detail_bill_id: res.data.bill.bill_id,
+                //     detail_drink_id: 
+                // }
+                let i = 0;
+                let length = cart.length;
+                for (i; i < length; i++) {
+                    let product = cart[i].product;
+                    let quantity = cart[i].quantity;
+                    let total = quantity * product.drink_price;
+                    let detail_bill = {
+                        detail_bill_id: bill_id,
+                        detail_drink_id: product.drink_id,
+                        detail_drink_name: product.drink_name,
+                        detail_number: quantity,
+                        detail_price: product.drink_price,
+                        detail_toalMoney_drink: total
+                    }
+                    callApi('detail-bill/create', 'POST', detail_bill, {
+                        'token': dataStorage.TOKEN
+                    }).then(res => {
+                        console.log(res);
+                        if (res.data.status == 'success') {
+                            this.props.removeCart();
+                            // this.get();
+                        } else {
+                            toastr.error(res.data.message, 'Error')
+                        }
+                    })
                 }
-                callApi('detail-bill/create', 'POST', detail_bill, {
-                    'token': dataStorage.TOKEN
-                }).then(res => {
-                    console.log(res);
-                })
+                // localStorage.removeItem('CART')
+                // this.props.removeCart();
+            } else {
+                toastr.error(res.data.message, 'Error')
             }
-            // localStorage.removeItem('CART')
-            this.props.removeCart();
         })
     }
     
@@ -94,14 +208,23 @@ class CartResult extends Component {
 
 
     render() {
-        var { cart } = this.props;
+        var { cart, vat, discount, countBill } = this.props;
+        // let Vat = (vat != '' ) ? vat : '';
+        // let totalVat = this.showVAT(cart, vat)
+        // let totalDiscount = this.showDiscount(cart, discount)
+        // console.log('dsa', countBill)
         return <React.Fragment>
             <div className="pull-right m-t-30 text-right">
-                    <p>Sub - Total amount: $13,8488</p>
-                    <p>vat (10%) : $138 </p>
+                    {/* <p>Sub - Total amount: $13,8488</p> */}
+                    {/* <p>VAT ({Vat}%) : ${this.showVAT(cart,vat)} </p> */}
+                    {this.showTotalAmount(cart)}
+                    {this.showVAT(cart, vat)}
+                    {this.showDiscount(cart, discount)}
+                    {/* <p>Total - Discount(%) : </p> */}
                     <hr />
                     <h3>
-                    <b>Total :</b> ${ this.showTotalAmout(cart)}
+                    <b>Total :</b> ${ this.showTotal(cart, vat, discount)}
+                    {/* {this.showTotal(cart, vat, discount)} */}
                     </h3>
                 </div>
                 <div className="clearfix" />
@@ -125,6 +248,12 @@ class CartResult extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        countBill: state.bill
+    }
+}
+
 const mapDispatchToProps = (dispatch, props) => {
     return {
         createBill: (bill) => {
@@ -136,4 +265,4 @@ const mapDispatchToProps = (dispatch, props) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(CartResult);
+export default connect(mapStateToProps, mapDispatchToProps)(CartResult);

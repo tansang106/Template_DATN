@@ -11,7 +11,7 @@ class DrinksCart extends Component {
                         <tr>
                             <th style={{ width: "90px" }}></th>
                             <th style={{ width: "150px" }}>Description</th>
-                            <th>QTY</th>
+                            {/* <th>QTY</th> */}
                             <th>Price</th>
 
                         </tr>

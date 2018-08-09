@@ -32,6 +32,7 @@ class DrinkItem extends Component {
             txtDrinkAvatar: '',
             avatarUpload: '',
             txtAvatarUpload: '',
+            txtETH: '',
         }
     }
 
@@ -121,8 +122,8 @@ class DrinkItem extends Component {
             txtDrinkPrice: dataDrink.drink_price,
             txtAvatarUpload: dataDrink.drink_avatar,
             txtDrinkName: dataDrink.drink_name,
-            idDrink: dataDrink.drink_id
-           
+            idDrink: dataDrink.drink_id,
+            txtETH: dataDrink.drink_eth
         })
         console.log(dataDrink);
         console.log('hình', this.state.txtAvatarUpload, this.state.txtDrinkPrice)
@@ -148,10 +149,10 @@ class DrinkItem extends Component {
         try {
             console.log('click save')
             e.preventDefault();
-            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
+            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink, txtETH } = this.state;
             console.log('hình', this.state.txtAvatarUpload)
             console.log('avatarupload', this.state.avatarUpload)
-            console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
+            console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink, txtETH)
             
             await this.uploadFile();
             //data này trùng với body call tới api
@@ -160,6 +161,7 @@ class DrinkItem extends Component {
                 drink_name: txtDrinkName,
                 drink_price: txtDrinkPrice,
                 drink_active: 'on',
+                drink_eth: txtETH,
                 // drink_avatar: txtDrinkAvatar,
                 drink_avatar: this.state.avatarUpload,
 
@@ -189,7 +191,7 @@ class DrinkItem extends Component {
          try {
             console.log('click save')
             e.preventDefault();
-            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink } = this.state;
+            var { txtDrinkPrice, txtDrinkAvatar, txtDrinkName, idDrink, txtETH } = this.state;
             console.log('hình', this.state.txtAvatarUpload)
             console.log('avatarupload', this.state.avatarUpload)
             console.log('data trước khi save', txtDrinkPrice, txtDrinkName, idDrink)
@@ -198,6 +200,7 @@ class DrinkItem extends Component {
             var drink = {
                 drink_name: txtDrinkName,
                 drink_price: txtDrinkPrice,
+                drink_eth: txtETH,
                 drink_id: idDrink,
                 drink_active: 'off',
                 drink_avatar: this.state.txtAvatarUpload,
@@ -215,6 +218,7 @@ class DrinkItem extends Component {
             txtDrinkName: '',
             txtDrinkPrice: '',
             txtDrinkAvatar: '',
+            txtETH: ''
         })
     }
 
@@ -362,7 +366,7 @@ class DrinkItem extends Component {
         // console.log('lấy hình avt',`${Config.API_URL}/uploads/imgDrink/${this.state.txtAvatarUpload}`)
         // console.log(this.props)
         // console.log(drinks, positions)
-        var { txtDrinkPrice, txtDrinkAvatar, txtAvatarUpload,   txtDrinkName} = this.state;
+        var { txtDrinkPrice, txtDrinkAvatar, txtAvatarUpload,   txtDrinkName, txtETH} = this.state;
 
         return (
             <React.Fragment>
@@ -438,6 +442,19 @@ class DrinkItem extends Component {
                                                     />
                                                     <span class="bar"></span>
                                                     <label for="input1">Price</label>
+                                                </div>
+
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="input1"
+                                                        name="txtETH"
+                                                        value={txtETH}
+                                                        onChange={this.onChange}
+                                                    />
+                                                    <span class="bar"></span>
+                                                    <label for="input1">Price ETH</label>
                                                 </div>
                                             </div>
                                         </from>
@@ -517,6 +534,19 @@ class DrinkItem extends Component {
                                                     />
                                                     <span class="bar"></span>
                                                     <label for="input1">Price</label>
+                                                </div>
+
+                                                <div className="col-md-12 m-b-20">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="input1"
+                                                        name="txtETH"
+                                                        value={txtETH}
+                                                        onChange={this.onChange}
+                                                    />
+                                                    <span class="bar"></span>
+                                                    <label for="input1">Price ETH</label>
                                                 </div>
                                             </div>
                                         </from>

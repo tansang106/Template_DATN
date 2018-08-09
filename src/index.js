@@ -8,6 +8,9 @@ import {createStore, applyMiddleware} from 'redux';
 import appReducers from './Reducers/index';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
 
 const store = createStore(
     appReducers,
@@ -16,11 +19,13 @@ const store = createStore(
 )
 
 ReactDOM.render(
-    <Router>
-        <Provider store={store}>
-        <App />
-        </Provider>
-    </Router>
+    
+    <Provider store={store}>
+        <Router history={history}>
+            <App />
+        </Router>
+    </Provider>
+    
     
 , document.getElementById('root'));
 registerServiceWorker();

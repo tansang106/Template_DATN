@@ -27,7 +27,8 @@ class Invoice extends Component {
     onChange = (e) => {
         var target = e.target;
         var name = target.name;
-        var value = target.value;
+        // var value = target.value;
+        var value = (target.validity.valid) ? target.value : this.state[name]
         this.setState({
             [name]: value
         });
@@ -79,6 +80,7 @@ class Invoice extends Component {
     }
 
     render() {
+        console.log('location', this.props)
         var { drinks, bills } = this.props;
         var { txtName, txtPhone, txtAddress, txtVAT, txtDiscount } = this.state
         console.log('drinks render', drinks)
@@ -215,6 +217,7 @@ class Invoice extends Component {
                                             name="txtVAT"
                                             value={txtVAT}
                                             onChange={this.onChange}
+                                            pattern="[0-9]*"
                                         />
                                         <div className="input-group-addon">
                                             <i className="fa fa-percent"></i>
@@ -232,6 +235,7 @@ class Invoice extends Component {
                                              name="txtDiscount"
                                             value={txtDiscount}
                                             onChange={this.onChange}
+                                            pattern="[0-9]*"
                                         />
                                         <div className="input-group-addon">
                                             <i className="fa fa-percent"></i>

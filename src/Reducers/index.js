@@ -8,6 +8,7 @@ import positions from './positions';
 import drinks from './drinks';
 import cart from './cart';
 import bill from './bill';
+import cartcustomer from './cartcustomer';
 
 const appReducers = combineReducers({
     login,
@@ -18,7 +19,8 @@ const appReducers = combineReducers({
     positions,
     drinks,
     cart,
-    bill
+    bill,
+    cartcustomer
 })
 
 export default appReducers;

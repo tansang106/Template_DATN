@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LineGraph from './LineGraph';
+import BarChart from './BarChart';
 import * as Graph from './LineBar';
 import callApi from '../../Utils/apiCaller';   
 import * as dataStorage from '../../Constants/localStorage';
@@ -220,6 +221,7 @@ class Home extends Component {
                     {/* Column */}
                 </div>
                 <LineGraph/>
+                <BarChart/>
             </React.Fragment>
         );
     }

@@ -66,7 +66,7 @@ class Sidebar extends Component {
         let img = dataStorage.DATA_USER.user_avatar;
         let userName = dataStorage.DATA_USER.user_name;
         let sourceImg;
-        if (permision = 'boss') {
+        if (permision = 'boss' || 'admin') {
             sourceImg = 'imgBoss'
         } else {
             sourceImg = 'imgStaff'
@@ -92,13 +92,13 @@ class Sidebar extends Component {
         // day la cua chung
         let Home = (this.state.per == 'boss') ? 
             (
-            <MenuLink label="Home" to="/home" activeOnlyWhenExact={true} iClass="fa fa-circle" spanClass="hide-menu">
+            <MenuLink label="Home" to="/home" activeOnlyWhenExact={true} iClass="fa fa-home" spanClass="hide-menu">
             </MenuLink>
         ) : '';
 
         // day la cua boss
         let Shop = (this.state.per == 'boss') ? (
-            <MenuLink label="Shop" to="/coffeeshop" iClass="fa fa-circle" spanClass="hide-menu">
+            <MenuLink label="Shop" to="/shop" iClass="fa fa-cube" spanClass="hide-menu">
             </MenuLink>
         ) : '';
 
@@ -108,7 +108,7 @@ class Sidebar extends Component {
         // )
 
         let Drink = (this.state.per == 'boss') ? (
-            <MenuLink label="Drink" to="/drink" iClass="fa fa-circle" spanClass="hide-menu">
+            <MenuLink label="Drink" to="/drink" iClass="fa fa-coffee" spanClass="hide-menu">
             </MenuLink>
         ) : '';
 
@@ -126,7 +126,7 @@ class Sidebar extends Component {
 
         let Staff = (this.state.per == 'boss') ? (
             <li>
-                <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="mdi mdi-map-marker"></i><span className="hide-menu">Users</span></Link>
+                <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="fa fa-users"></i><span className="hide-menu">Users</span></Link>
                 <ul aria-expanded="false" className="collapse">
                     <li><Link to="/staff">List Staff</Link></li>
                     <li><Link to="/position">List Position</Link></li>
@@ -147,10 +147,10 @@ class Sidebar extends Component {
 
         let ShopSystem = (this.state.per == 'admin') ? (
             <li>
-                <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="mdi mdi-map-marker"></i><span className="hide-menu">Shop & System</span></Link>
+                <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="fa fa-university"></i><span className="hide-menu">Shop & System</span></Link>
                 <ul aria-expanded="false" className="collapse">
-                    <li><Link to="/coffeeshop">List Shop</Link></li>
-                    <li><Link to="/coffeesystem">List System</Link></li>
+                    <li><Link to="/shop">List Shop</Link></li>
+                    <li><Link to="/system">List System</Link></li>
                 </ul>
             </li>
         ) : '';
@@ -161,7 +161,7 @@ class Sidebar extends Component {
         // )
 
         let User = (this.state.per == 'admin') ? (
-            <MenuLink label="User" to="/user" iClass="fa fa-circle" spanClass="hide-menu">
+            <MenuLink label="User" to="/user" iClass="fa fa-user" spanClass="hide-menu">
             </MenuLink>
         ) : '';
 
@@ -172,7 +172,7 @@ class Sidebar extends Component {
         // )
 
         let Counter = (this.state.per == 'staff' || this.state.per == 'boss') ? (
-            <MenuLink label="Counter" to="/invoice" iClass="fa fa-circle" spanClass="hide-menu">
+            <MenuLink label="Counter" to="/invoice" iClass="fa fa-shopping-cart" spanClass="hide-menu">
             </MenuLink>
         ) : '';
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import {Redirect, Link } from 'react-router-dom';
+import {Redirect, Link, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import toastr from 'toastr';
 import callApi from '../../Utils/apiCaller';
 import { actFetchLogin } from '../../Actions/index';
 import { connect } from 'react-redux';
+import {withRouter} from 'react-router';
+import Home from '../Home/Home';
 
 class Login extends Component {
 
@@ -87,8 +89,9 @@ class Login extends Component {
                     this.setState({login: true})
                     // return ( <Redirect to='/home' /> )
                     // console.log('sau redirec')
-                    this.props.updated
-                    console.log(this.props)
+                    // this.props.updated
+                    // console.log(this.props)
+                    console.log('login', this.state.login)
                 }
                 else {
                     toastr.error('Login Fail', 'ERROR')
@@ -132,8 +135,7 @@ class Login extends Component {
             // } />
             // return <Redirect to="/home"/>
             // this.reload();
-            <Redirect to="/home" />
-        // setTimeout( this.reload(), 100)
+            return <Redirect to="/home"/>
         }
         // let { userData } = this.state
 
@@ -250,7 +252,7 @@ class Login extends Component {
             </section>
             {/* ============================================================== */}
             {/* End Wrapper */}
-
+            
             </React.Fragment>
             
         );
@@ -271,4 +273,4 @@ const mapDispatchToProps = (dispatch, props) => {
     }
 }
 
-export default connect(mapStateToProps, null)(Login);
+export default withRouter(connect(mapStateToProps, null)(Login));

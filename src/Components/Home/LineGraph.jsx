@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import * as Chartist from 'chartist';
-import * as Tooltips from 'chartist-plugin-tooltip';
 import * as dataStorage from '../../Constants/localStorage';
 import callApi from '../../Utils/apiCaller';
 import Chart from 'chart.js';
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class LineGraph extends Component {
 
@@ -13,6 +13,8 @@ class LineGraph extends Component {
         this.state = {
             labels: [],
             dataGraph: [],
+            startDate: moment(),
+            endDate: moment(),
         }
         this.fromDate = moment().startOf("day").format("YYYY-MM-DD HH:mm:ss")
         this.toDate = moment().endOf("day").format("YYYY-MM-DD HH:mm:ss")
@@ -25,20 +27,37 @@ class LineGraph extends Component {
     componentDidMount() {
         // this.renderGraph();
         console.log(this.fromDateWeek, this.toDate)
-        this.getDataLineGraph();
+        this.getDataLineGraph(this.fromDateWeek, this.toDate);
     }
 
-    getDataLineGraph() {
+    handleChange = (date) => {
+        this.setState({
+            startDate: date,
+        });
+        console.log(this.state.startDate.format("YYYY-MM-DD HH:mm:ss"))
+    }
+
+     handleChangeE = (date) => {
+        this.setState({
+            endDate: date,
+        });
+        console.log(this.state.endDate.format("YYYY-MM-DD HH:mm:ss"))
+    }
+
+    getDataLineGraph(startDate, endDate) {
         let body = {
             idShop: 2,
-            fromDay: this.fromDateWeek,
-            toDay: this.toDate
+            // fromDay: this.fromDateWeek,
+            // toDay: this.toDate
+            fromDay: startDate,
+            toDay: endDate
         }
         let date = [];
         let data = [];
         let count = [];
-        console.log(data)
+        console.log('body line graph',body),
         callApi('home/countBillByWeek', 'POST', body, { 'token': dataStorage.TOKEN }).then(res => {
+            console.log(res)
             let array = res.data.bill;
             for (let j = 0; j < array.length; j++) {
                 console.log(array[j])
@@ -242,9 +261,13 @@ class LineGraph extends Component {
         });
     }
     
+    clickRenderGraph = (startDate, endDate) => {
+        console.log(endDate.format("YYYY-MM-DD HH:mm:ss"), startDate.format("YYYY-MM-DD HH:mm:ss"))
+        this.getDataLineGraph(startDate.format("YYYY-MM-DD HH:mm:ss"), endDate.format("YYYY-MM-DD HH:mm:ss"))
+    }
 
     render() {
-
+        var {startDate, endDate} = this.state
         return (
             <React.Fragment>
             <div class="row">
@@ -279,7 +302,7 @@ class LineGraph extends Component {
                             <from className="form-horizontal form-material">
 
                                             <div className="form-group">
-                                                <div className="col-md-12 m-b-20">
+                                                {/* <div className="col-md-12 m-b-20"> */}
                                                  <span class="bar"></span>
                                                     <label for="input1">From Date</label>
                                                     {/* <input
@@ -290,30 +313,45 @@ class LineGraph extends Component {
                                                         // value={txtDrinkName}
                                                         // onChange={this.onChange}
                                                     /> */}
-                                                    <input 
+                                                    {/* <input 
                                                     type="text" 
                                                     class="form-control" 
                                                     placeholder="2018-06-04" 
                                                     id="mdate"/>
-                                                   
-                                                </div>
+                                                    */}
+                                                      <DatePicker
+                                                    className={`form-control`}
+                                                    selected={this.state.startDate}
+                                                    onChange={this.handleChange}
+                                                    />
+                                                {/* </div> */}
 
-                                                <div className="col-md-12 m-b-20">
-                                                 <span class="bar"></span>
+                                                {/* <div className="col-md-12 m-b-20">*/}
+                                                 <span class="bar"></span> 
                                                     <label for="input1">To Day</label>
-                                                    <input 
+                                                    {/* <input 
                                                     type="text" 
                                                     class="form-control" 
                                                     placeholder="2018-08-04" 
-                                                    id="mdate"/>
-                                                   
-                                                </div>
+                                                    id="mdate"/> */}
+                                                     <DatePicker
+                                                    className={`form-control`}
+                                                    selected={this.state.endDate}
+                                                    onChange={this.handleChangeE}
+                                                    />
+                                                {/* </div> */}
+                                                <button 
+                                                    type="button" 
+                                                    className="btn btn-danger waves-effect text-left" 
+                                                    aria-hidden="true"
+                                                    onClick={ () => this.clickRenderGraph(startDate, endDate)}    
+                                                >Click</button>
                                             </div>
                                         </from>
                                        
                         </div>
                     </div>
-                    <div class="card">
+                    {/* <div class="card">
                         <div class="card-header">
                             <div class="card-actions">
                                 <a class="" data-action="collapse">
@@ -330,7 +368,7 @@ class LineGraph extends Component {
                         </div>
                         <div class="card-body collapse show bg-info">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                {/* Carousel items */}
+                                
                                 <div class="carousel-inner">
                                     <div class="carousel-item flex-column active">
                                         <i class="fa fa-shopping-cart fa-2x text-white"></i>
@@ -365,7 +403,7 @@ class LineGraph extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div class="col-lg-8 col-xlg-9 col-md-7">
                     <div class="card">
@@ -388,14 +426,15 @@ class LineGraph extends Component {
                             </div>
                             {/* <div class="campaign ct-charts"></div> */}
                             <canvas id="lineChart1" height="100%" />
-                            <div class="row text-center">
+                            {/* <div class="row text-center">
                                 <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
                                 <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
                                 <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
+                
             </div> 
             {/* Modal Add */}
                         <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">

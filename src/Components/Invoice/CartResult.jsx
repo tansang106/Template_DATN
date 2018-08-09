@@ -7,6 +7,7 @@ import {
 import * as dataStorage from '../../Constants/localStorage';
 import callApi from '../../Utils/apiCaller';
 import toastr from 'toastr';
+import currencyFormatter from 'currency-formatter';
 
 class CartResult extends Component {
 
@@ -115,17 +116,19 @@ class CartResult extends Component {
     showTotal = (cart, vat, discount) => {
         // let { cart, vat, discount} = this.state
         let total =  this.calculatorTotal(cart);
-        let Vat =  this.calculatorVAT(cart, vat);
-        let Discount =  this.calculatorDiscount(cart, discount);
+        let Vat =  this.calculatorVAT(cart, vat) || 0;
+        let Discount =  this.calculatorDiscount(cart, discount) || 0;
         let Total = total + Vat - Discount;
+        console.log('trong showtotal', total,Total, Vat, Discount)
         return Total
     }
 
-    onPay = (cart, discount, vat) => {
+    onPay = async (cart, discount, vat) => {
         console.log('cart', cart)
         // let user_id = dataStorage.DATA_USER.user_id
         // let total = this.showTotalAmount(cart);
-        let total = this.showTotal(cart, discount, vat)
+        let totalBill = await this.showTotal(cart, vat, discount)
+        console.log(totalBill)
         // console.log('total', total, user_id)
         let array = [
             {
@@ -157,8 +160,9 @@ class CartResult extends Component {
         let bill = {
             bill_user_id: dataStorage.DATA_USER.user_id,
             bill_shop_id: dataStorage.DATA_USER.user_shop_id,
-            bill_total: total,
+            bill_total: totalBill,
         }
+        console.log(bill)
         callApi('bills/create', 'POST', bill, {
             'token': dataStorage.TOKEN
         }).then(res => {
@@ -189,6 +193,9 @@ class CartResult extends Component {
                     }).then(res => {
                         console.log(res);
                         if (res.data.status == 'success') {
+                            if (i == length - 1) {
+                                toastr.success('Payment Success', 'Success')
+                            }
                             this.props.removeCart();
                             // this.get();
                         } else {
@@ -223,7 +230,8 @@ class CartResult extends Component {
                     {/* <p>Total - Discount(%) : </p> */}
                     <hr />
                     <h3>
-                    <b>Total :</b> ${ this.showTotal(cart, vat, discount)}
+                    {/* <b>Total :</b> ${ this.showTotal(cart, vat, discount)} */}
+                    <b>Total :</b> ${ currencyFormatter.format(this.showTotal(cart, vat, discount), { locale: 'vn-VN' })}
                     {/* {this.showTotal(cart, vat, discount)} */}
                     </h3>
                 </div>
@@ -233,7 +241,8 @@ class CartResult extends Component {
                 <button
                     className="btn btn-danger"
                     type="submit"
-                    onClick={ () => this.onPay(cart)}
+                    onClick={ () => this.onPay(cart, discount, vat)}
+                    id="proceedToPayment"
                 >
                     {" "}
                     Proceed to payment{" "}

@@ -495,7 +495,7 @@ export const clearCart = () => {
     }
 }
 
-
+//Bill
 export const createBill = (bill) => {
     callApi('bills/create', 'POST', bill, {
         'token': dataStorage.TOKEN
@@ -527,5 +527,69 @@ export const actBillAmount = (data) => {
     return {
         type: Types.GET_BILL_AMOUNT,
         data
+    }
+}
+
+//Cart customer
+export const actAddToCartCustomer = (product, quantity) => {
+    return {
+        type: Types.ADD_TO_CART_CUSTOMER,
+        product,   //product : product
+        quantity,  //quantity : quantity
+    }
+}
+
+export const actChangeMessageCustomer = (message) => {
+    return {
+        type: Types.CHANGE_MESSAGE,
+        message, // message : message
+    }
+}
+
+export const actDeleteProductInCartCustomer = (product) => {
+    return {
+        type: Types.DELETE_PRODUCT_IN_CART_CUSTOMER,
+        product,
+    }
+}
+
+export const actUpdateProductInCartCustomer = (product, quantity) => {
+    return {
+        type: Types.UPDATE_PRODUCT_IN_CART_CUSTOMER,
+        product,
+        quantity,
+    }
+}
+
+export const clearCartCustomer = () => {
+    return {
+        type: Types.CLEAR_CART_CUSTOMER
+    }
+}
+
+export const actFetchDrinkRequestCustomer = (id) => {
+    console.log('vào act')
+    return (dispatch) => {
+        return callApi('drinks/get', 'POST', {
+            drink_shop_id: id
+        }, {
+                'token': dataStorage.TOKEN
+            }).then(res => {
+                console.log('res từ customer', res)
+                if (res.data.status == 'success') {
+                    dispatch(actFetchDrinkCustomer(res.data.drinks))
+                } else {
+                    toastr.error(res.data.message, 'Error');
+                    return;
+                }
+            })
+    }
+
+}
+
+export const actFetchDrinkCustomer = (drinks) => {
+    return {
+        type: Types.FETCH_DRINK,
+        drinks
     }
 }

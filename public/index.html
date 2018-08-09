@@ -130,6 +130,12 @@
     <script>
         $(document).ready(function () {
             $("#print").click(function () {
+                var printButton = document.getElementById("print");
+                var paymentButton = document.getElementById("proceedToPayment");
+
+                printButton.style.visibility = 'hidden';
+                paymentButton.style.visibility = 'hidden';
+
                 var mode = 'iframe'; //popup
                 var close = mode == "popup";
                 var options = {
@@ -137,6 +143,9 @@
                     popClose: close
                 };
                 $("div.printableArea").printArea(options);
+                printButton.style.visibility = 'visible';
+                paymentButton.style.visibility = 'visible';
+
             });
         });
     </script>

@@ -6,6 +6,8 @@ import DrinkItem from './DrinkItem';
 
 class Drink extends Component {
 
+   
+
     componentDidMount() {
 	    window.jQuery('.table').footable();
     }

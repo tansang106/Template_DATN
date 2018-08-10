@@ -444,7 +444,7 @@ class LineGraph extends Component {
     
     clickRenderGraph = (startDate, endDate) => {
         console.log(endDate.format("YYYY-MM-DD HH:mm:ss"), startDate.format("YYYY-MM-DD HH:mm:ss"))
-        this.getDataLineGraph(startDate.format("YYYY-MM-DD HH:mm:ss"), endDate.format("YYYY-MM-DD HH:mm:ss"))
+        this.getDataLineGraph(startDate.format("YYYY-MM-DD 00:00:00"), endDate.format("YYYY-MM-DD 23:59:59"))
     }
 
     render() {

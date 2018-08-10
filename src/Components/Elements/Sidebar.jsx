@@ -97,7 +97,7 @@ class Sidebar extends Component {
         ) : '';
 
         // day la cua boss
-        let Shop = (this.state.per == 'boss') ? (
+        let Shop = (this.state.per == 'tests') ? (
             <MenuLink label="Shop" to="/shop" iClass="fa fa-cube" spanClass="hide-menu">
             </MenuLink>
         ) : '';
@@ -126,7 +126,7 @@ class Sidebar extends Component {
 
         let Staff = (this.state.per == 'boss') ? (
             <li>
-                <Link className="has-arrow " to="/coffeeshop" aria-expanded="false"><i className="fa fa-users"></i><span className="hide-menu">Users</span></Link>
+                <Link className="has-arrow " to="/staff" aria-expanded="false"><i className="fa fa-users"></i><span className="hide-menu">Users</span></Link>
                 <ul aria-expanded="false" className="collapse">
                     <li><Link to="/staff">List Staff</Link></li>
                     <li><Link to="/position">List Position</Link></li>

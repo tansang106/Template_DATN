@@ -18,7 +18,8 @@ class CartCustomer extends Component {
                                 <th className="text-center">#</th>
                                 <th>Description</th>
                                 <th className="text-center">Quantity</th>
-                                <th className="text-right">Unit Cost</th>
+                                {/* <th className="text-right">Unit Cost</th> */}
+                                <th className="text-right">ETH Cost</th>
                                 <th className="text-right">Total</th>
                                 <th className="text-right"></th>
                             </tr>

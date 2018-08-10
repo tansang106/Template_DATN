@@ -35,8 +35,9 @@ class InvoiceCustomer extends Component {
     }
     
     getShop = () => {
+        let id = this.props.match.url
         callApi('shops/get', 'POST', {
-            shop_id: dataStorage.DATA_USER.user_shop_id
+            shop_id: id.slice(-1)
         }, { 'token': dataStorage.TOKEN
             }).then(res => {
                 console.log(res)
@@ -119,70 +120,7 @@ class InvoiceCustomer extends Component {
             <div className="row">
                 <div className="col-md-6">
                     {/* Table Info */}
-                    <div className="card earning-widget">
-                        <div className="card-header">
-                            <div className="card-actions">
-                                <a className="" data-action="collapse">
-                                    <i className="ti-minus"></i>
-                                </a>
-                                <a className="btn-minimize" data-action="expand">
-                                    <i className="mdi mdi-arrow-expand"></i>
-                                </a>
-                                <a className="btn-close" data-action="close">
-                                    <i className="ti-close"></i>
-                                </a>
-                            </div>
-                            <h4 className="card-title m-b-0">Info Customer</h4>
-                        </div>
 
-                        <div className="card-body">
-                            {/* <h4 className="card-title">Info Customer</h4> */}
-                            <form className="form-horizontal form-control-line m-t-10">
-                                <div className="form-group has-success m-b-20">
-                                    <span className="bar"></span>
-                                    <label className="text-info">Name</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        // id="input11" 
-                                        name="txtName"
-                                        value={txtName}
-                                        onChange={this.onChange}
-                                    />
-                                    {/* <span className="bar"></span>
-                                    <label htmlFor="input11">Name</label> */}
-                                </div>
-                                <div className="form-group has-warning m-b-20">
-                                    <span className="bar"></span>
-                                    <label className="text-warning">Phone</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        // id="input11" 
-                                        name="txtPhone"
-                                        value={txtPhone}
-                                        onChange={this.onChange}/>
-                                    {/* <span className="bar"></span>
-                                    <label htmlFor="input11">Phone</label> */}
-                                </div>
-                                <div className="form-group has-error has-danger m-b-20">
-                                    <span className="bar"></span>
-                                    <label className="text-danger">Address</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        // id="input12" 
-                                        name="txtAddress"
-                                        value={txtAddress}
-                                        onChange={this.onChange}
-                                    />
-                                    {/* <span className="bar"></span>
-                                    <label htmlFor="input12">Address</label> */}
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
                     {/* End Table Info */}
 
                     {/* Table Product */}
@@ -208,44 +146,7 @@ class InvoiceCustomer extends Component {
                                 <option value="2">Crocory</option>
                                 <option value="3">Wooden</option>
                             </select> */}
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            // id="exampleInputuname2"
-                                            placeholder="VAT"
-                                            name="txtVAT"
-                                            value={txtVAT}
-                                            onChange={this.onChange}
-                                            pattern="[0-9]*"
-                                        />
-                                        <div className="input-group-addon">
-                                            <i className="fa fa-percent"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/*/span*/}
-                                <div className="col-md-6">
-                                    <div className="input-group">
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            // id="exampleInputuname2" 
-                                            placeholder="Discount" 
-                                             name="txtDiscount"
-                                            value={txtDiscount}
-                                            onChange={this.onChange}
-                                            pattern="[0-9]*"
-                                        />
-                                        <div className="input-group-addon">
-                                            <i className="fa fa-percent"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/*/span*/}
-                            </div>
+                           
                                 <DrinkCartContainerCustomer />
                         </div>
 
@@ -257,11 +158,8 @@ class InvoiceCustomer extends Component {
                 {/* Table Invoice */}
                 <div className="col-md-6">
                     <div className="card card-body printableArea">
-                        <h3>
-                            <b>INVOICE</b>
-                            <span className="pull-right">#{this.state.bill}</span>
-                        </h3>
-                        <hr />
+                        
+                        
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="pull-left">
@@ -280,17 +178,6 @@ class InvoiceCustomer extends Component {
                                 </div>
                                 <div className="pull-right text-right">
                                     <address>
-                                        <h3>To,</h3>
-                                        {/* <h4 className="font-bold">Gaala & Sons,</h4> */}
-                                        <h4 className="font-bold">{txtName},</h4>
-                                        {/* <p className="text-muted m-l-30">E 104, Dharti-2,
-                                                <br /> Nr' Viswakarma Temple,
-                                                <br /> Talaja Road,
-                                                <br /> Bhavnagar - 364002</p> */}
-                                         <p className="text-muted m-l-30">{txtAddress}</p>
-                                        <p className="m-t-30">
-                                            <b>Phone :</b>
-                                            <i className="fa fa-phone"></i> {txtPhone}</p>
                                         <p>
                                             <b>Invoice Date :</b>
                                             <i className="fa fa-calendar"></i> {moment().format('LLL')}</p>

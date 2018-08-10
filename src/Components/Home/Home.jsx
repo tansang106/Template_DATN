@@ -6,6 +6,7 @@ import callApi from '../../Utils/apiCaller';
 import * as dataStorage from '../../Constants/localStorage';
 import moment from 'moment';
 import toastr from 'toastr';
+import currencyFormatter from 'currency-formatter';
 
 class Home extends Component {
 
@@ -23,8 +24,9 @@ class Home extends Component {
         }
         this.fromDate = moment().startOf("day").format("YYYY-MM-DD HH:mm:ss") //00h hom nay
         this.toDate = moment().endOf("day").format("YYYY-MM-DD HH:mm:ss") //tai thoi diem hom nay
-        this.fromDateWeek = moment().subtract(20, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss") //dau 20 ngay trc
-        this.toDateWeek = moment().subtract(20, "day").endOf("day").format("YYYY-MM-DD HH:mm:ss") //cuoi 20 ngay trc
+        this.fromDateWeek = moment().subtract(7, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss") //dau 20 ngay trc
+        this.toDateWeek = moment().subtract(7, "day").endOf("day").format("YYYY-MM-DD HH:mm:ss") //cuoi 20 ngay trc
+        this.fromDateWeek = moment().subtract(30, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss") //dau 20 ngay trc
         this.fromLastMonth = moment().subtract(1, "months").startOf("month").format("YYYY-MM-DD HH:mm:ss") //dau thang trc
         this.toLastMonth = moment().subtract(1, "months").endOf("month").format("YYYY-MM-DD HH:mm:ss") //cuoi thang trc
         this.fromLastWeek = moment().subtract(1, 'week').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss")
@@ -35,8 +37,8 @@ class Home extends Component {
 
     componentDidMount() {
         this.getTotalDay(this.fromDate, this.toDate);
-        this.getTotalWeek(this.fromLastWeek, this.toLastWeek);
-        this.getTotalMonth(this.fromLastMonth, this.toLastMonth)
+        this.getTotalWeek(this.fromDateWeek, this.toDate);
+        this.getTotalMonth(this.fromDateWeek, this.toDate)
         this.getTotalHalfYear(this.fromHalfYear, this.toDate)
         console.log(this.fromLastMonth, this.toLastMonth)
     }
@@ -161,13 +163,13 @@ class Home extends Component {
                 {/* ============================================================== */}
                 <div className="row">
                     {/* Column */}
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-row">
                                     <div className="round round-lg align-self-center round-info"><i className="ti-wallet"></i></div>
                                     <div className="m-l-10 align-self-center">
-                                        <h3 className="m-b-0 font-light">{this.state.totalDay}</h3>
+                                        <h3 className="m-b-0 font-light">{currencyFormatter.format(this.state.totalDay, { locale: 'vn-VN' })}</h3>
                                         <h5 className="text-muted m-b-0">{this.state.toatalCountDay} Product / Day</h5></div>
                                 </div>
                             </div>
@@ -175,49 +177,49 @@ class Home extends Component {
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-row">
                                     <div className="round round-lg align-self-center round-warning"><i className="mdi mdi-cellphone-link"></i></div>
                                     <div className="m-l-10 align-self-center">
-                                        <h3 className="m-b-0 font-lgiht">{this.state.totalWeek}</h3>
-                                        <h5 className="text-muted m-b-0">{this.state.totalCountWeek} PROD / Week</h5></div>
+                                        <h3 className="m-b-0 font-lgiht">{currencyFormatter.format(this.state.totalWeek, { locale: 'vn-VN' })}</h3>
+                                        <h5 className="text-muted m-b-0">{this.state.totalCountWeek} Product / Week</h5></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-row">
                                     <div className="round round-lg align-self-center round-primary"><i className="mdi mdi-cart-outline"></i></div>
                                     <div className="m-l-10 align-self-center">
-                                        <h3 className="m-b-0 font-lgiht">{this.state.totalMonth}</h3>
-                                        <h5 className="text-muted m-b-0">{this.state.totalCountMonth} PROD / Month</h5></div>
+                                        <h3 className="m-b-0 font-lgiht">{currencyFormatter.format(this.state.totalMonth, { locale: 'vn-VN' })}</h3>
+                                        <h5 className="text-muted m-b-0">{this.state.totalCountMonth} Product / Month</h5></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div className="col-lg-3 col-md-6">
+                    {/* <div className="col-lg-3 col-md-6">
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-row">
                                     <div className="round round-lg align-self-center round-danger"><i className="mdi mdi-bullseye"></i></div>
                                     <div className="m-l-10 align-self-center">
-                                        {/* <h3 className="m-b-0 font-lgiht">{this.state.totalHaftYear}</h3> */}
+                                       
                                         <h3 className="m-b-0 font-lgiht">1232000</h3>
-                                        {/* <h5 className="text-muted m-b-0">{this.state.totalCountHaftYear} PROD / Year</h5></div> */}
+                                        
                                         <h5 className="text-muted m-b-0">12 PROD / Year</h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     {/* Column */}
                 </div>
                 <LineGraph/>

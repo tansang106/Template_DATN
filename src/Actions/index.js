@@ -513,12 +513,17 @@ export const actGetBillAmountRequest = () => {
             'token': dataStorage.TOKEN
         }).then(res => {
             console.log(res)
-            if (res.data.status == 'success') {
+            try {
+                if (res.data.status == 'success') {
                 dispatch(actBillAmount(res.data.bill))
             } else {
                 toastr.error(res.data.message, 'Error');
                 return;
             }
+            } catch (ex) {
+                console.log(ex)
+            }
+            
         })
     }
 }

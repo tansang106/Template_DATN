@@ -3,8 +3,8 @@ import * as Config from "../../Constants/Config";
 
 class CartItemCustomer extends Component {
 
-    showSubTotal = (price, quantity) => {
-        return price * quantity;
+    showSubTotal = (eth, quantity) => {
+        return eth * quantity;
     }
 
     onDelete = (product) =>{
@@ -49,11 +49,13 @@ class CartItemCustomer extends Component {
                     onClick={ () => this.onDelete(item.product)}   
                     onClick={ () => this.onUpdateQuantity(item.product, item.quantity + 1)}   
                     style = {{ marginLeft: '3%'}}
+                    id="add"
                 >
                 +
                 </button> </td>
-            <td className="text-right"> { item.product.drink_price} </td>
-            <td className="text-right"> { this.showSubTotal(item.product.drink_price, item.quantity)} </td>
+            {/* <td className="text-right"> { item.product.drink_price} </td> */}
+            <td className="text-right"> { item.product.drink_eth} </td>
+            <td className="text-right"> { this.showSubTotal(item.product.drink_eth, item.quantity)} </td>
             <td className="text-right">
                 <button
                     type="button"
@@ -61,6 +63,7 @@ class CartItemCustomer extends Component {
                     data-toggle="tooltip"
                     data-placement="top"
                     onClick={ () => this.onDelete(item.product)}   
+                    id="sub"
                 >
                 <i className="ti-trash"></i>
                 </button>

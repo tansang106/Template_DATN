@@ -257,7 +257,7 @@ class Invoice extends Component {
                     <div className="card card-body printableArea">
                         <h3>
                             <b>INVOICE</b>
-                            <span className="pull-right">#{this.state.bill}</span>
+                            {/* <span className="pull-right">#{this.state.bill}</span> */}
                         </h3>
                         <hr />
                         <div className="row">

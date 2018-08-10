@@ -8,6 +8,8 @@ import * as dataStorage from '../../Constants/localStorage';
 import callApi from '../../Utils/apiCaller';
 import toastr from 'toastr';
 import currencyFormatter from 'currency-formatter';
+import $ from 'jquery';
+// import {printArea} from '../../../public/js/jquery.PrintArea.js"';
 
 class CartResult extends Component {
 
@@ -20,6 +22,28 @@ class CartResult extends Component {
         }
     }
     
+    componentDidMount () {
+        //  $(document).ready(function () {
+        //     $("#print").click(function () {
+        //         var printButton = document.getElementById("print");
+        //         var paymentButton = document.getElementById("proceedToPayment");
+
+        //         printButton.style.visibility = 'hidden';
+        //         paymentButton.style.visibility = 'hidden';
+
+        //         var mode = 'iframe'; //popup
+        //         var close = mode == "popup";
+        //         var options = {
+        //             mode: mode,
+        //             popClose: close
+        //         };
+        //         $("div.printableArea").printArea(options);
+        //         printButton.style.visibility = 'visible';
+        //         paymentButton.style.visibility = 'visible';
+
+        //     });
+        // });
+    }
 
     showTotalAmount = (cart) => {
         console.log('cart ở result', cart)
@@ -29,7 +53,7 @@ class CartResult extends Component {
                 total += cart[i].product.drink_price * cart[i].quantity;
             }
         }
-        return <p>Total Amount: {total} </p>
+        return <p>Total Amount: { currencyFormatter.format(total, { locale: 'vn-VN' })} </p>
     }
 
     calculatorTotal = (cart) => {
@@ -56,7 +80,7 @@ class CartResult extends Component {
                 }
             }
             let Total = total*(vat/100)
-            return  <p>VAT ({vat}%) : {Total} </p>
+            return  <p>VAT ({vat}%) : { currencyFormatter.format(Total, { locale: 'vn-VN' })}</p>
         } else {
            return null;
         }
@@ -90,7 +114,7 @@ class CartResult extends Component {
                 }
             }
             let Total = total*(discount/100)
-            return  <p>Discount ({discount}%) : {Total} </p>
+            return  <p>Discount ({discount}%) : { currencyFormatter.format(Total, { locale: 'vn-VN' })} </p>
         } else {
            return null;
         }

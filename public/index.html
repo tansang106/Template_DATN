@@ -132,6 +132,8 @@
             $("#print").click(function () {
                 var printButton = document.getElementById("print");
                 var paymentButton = document.getElementById("proceedToPayment");
+                var addButton = document.getElementById("add");
+                
 
                 printButton.style.visibility = 'hidden';
                 paymentButton.style.visibility = 'hidden';
@@ -145,7 +147,7 @@
                 $("div.printableArea").printArea(options);
                 printButton.style.visibility = 'visible';
                 paymentButton.style.visibility = 'visible';
-
+                addButton.style.visibility = 'visible'
             });
         });
     </script>

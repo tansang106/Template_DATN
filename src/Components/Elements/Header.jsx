@@ -66,7 +66,7 @@ class Header extends Component {
                             {/* ============================================================== */}
                             <li className="nav-item hidden-sm-down search-box">
                                 <a className="nav-link hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)">
-                                    <i className="ti-search"></i>
+                                    {/* <i className="ti-search"></i> */}
                                 </a>
                                 <form className="app-search">
                                     <input type="text" className="form-control" placeholder="Search & enter" />
@@ -81,7 +81,7 @@ class Header extends Component {
                             <li className="nav-item dropdown mega-dropdown">
                                 <a className="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <i className="mdi mdi-view-grid"></i>
+                                    {/* <i className="mdi mdi-view-grid"></i> */}
                                 </a>
                                 <div className="dropdown-menu scale-up-left">
                                     <ul className="mega-dropdown-menu row">
@@ -258,7 +258,7 @@ class Header extends Component {
                                         </li>
                                         <li role="separator" className="divider"></li>
                                         <li>
-                                            <a href="#">
+                                            <a href="/login">
                                                 <i className="fa fa-power-off"></i> Logout</a>
                                         </li>
                                     </ul>

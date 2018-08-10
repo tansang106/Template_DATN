@@ -442,7 +442,7 @@ class CoffeeShopItem extends Component {
                 <tfoot>
                     <tr>
                         <td colSpan="2">
-                            <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" onClick={this.onSetState}>Add New Contact</button>
+                            <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" onClick={this.onSetState}>Add New Shop</button>
                         </td>
                         {/* Modal Add */}
                         <div id="add-contact" className="modal fade in" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

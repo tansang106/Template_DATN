@@ -26,7 +26,7 @@ class CartResultCustomer extends Component {
         var total = 0;
         if (cart.length > 0) {
             for (var i = 0; i < cart.length; i++){
-                total += cart[i].product.drink_price * cart[i].quantity;
+                total += cart[i].product.drink_eth * cart[i].quantity;
             }
         }
         return <p>Total Amount: {total} </p>
@@ -37,7 +37,7 @@ class CartResultCustomer extends Component {
         var total = 0;
         if (cart.length > 0) {
             for (var i = 0; i < cart.length; i++) {
-                total += cart[i].product.drink_price * cart[i].quantity;
+                total += cart[i].product.drink_eth * cart[i].quantity;
 
             }
         }
@@ -51,7 +51,7 @@ class CartResultCustomer extends Component {
             var total = 0;
             if (cart.length > 0) {
                 for (var i = 0; i < cart.length; i++){
-                    total += cart[i].product.drink_price * cart[i].quantity;
+                    total += cart[i].product.drink_eth * cart[i].quantity;
                    
                 }
             }
@@ -68,7 +68,7 @@ class CartResultCustomer extends Component {
             var total = 0;
             if (cart.length > 0) {
                 for (var i = 0; i < cart.length; i++) {
-                    total += cart[i].product.drink_price * cart[i].quantity;
+                    total += cart[i].product.drink_eth * cart[i].quantity;
 
                 }
             }
@@ -85,7 +85,7 @@ class CartResultCustomer extends Component {
             var total = 0;
             if (cart.length > 0) {
                 for (var i = 0; i < cart.length; i++){
-                    total += cart[i].product.drink_price * cart[i].quantity;
+                    total += cart[i].product.drink_eth * cart[i].quantity;
                    
                 }
             }
@@ -102,7 +102,7 @@ class CartResultCustomer extends Component {
             var total = 0;
             if (cart.length > 0) {
                 for (var i = 0; i < cart.length; i++) {
-                    total += cart[i].product.drink_price * cart[i].quantity;
+                    total += cart[i].product.drink_eth * cart[i].quantity;
 
                 }
             }
@@ -127,88 +127,76 @@ class CartResultCustomer extends Component {
         console.log('cart', cart)
         // let user_id = dataStorage.DATA_USER.user_id
         // let total = this.showTotalAmount(cart);
-        let totalBill = await this.showTotal(cart, vat, discount)
-        console.log(totalBill)
-        // console.log('total', total, user_id)
-        let array = [
-            {
-                "Date": "01/12",
-                "Data": 225000,
-                "Count": 2
-            },
-            {
-                "Date": "06/12",
-                "Data": 33000,
-                "Count": 1
-            }
-        ]
-        let date = [];
-        let data = [];
-        let count = [];
-        for (let j = 0; j < array.length; j++){
-            console.log(array[j])
-            date.push(array[j].Date);
-            data.push(array[j].Data);
-            count.push(array[j].Count)
-            // data.push(array[j].Count)
-        }
-        console.log(date, data, count)
-        console.log('log', array)
-        // return;
-        //Test
-        //=====================
-        let bill = {
-            bill_user_id: dataStorage.DATA_USER.user_id,
-            bill_shop_id: dataStorage.DATA_USER.user_shop_id,
-            bill_total: totalBill,
-        }
-        console.log(bill)
-        callApi('bills/create', 'POST', bill, {
-            'token': dataStorage.TOKEN
-        }).then(res => {
-            console.log('res', res);
-            if (res.data.status == 'success') {
+        // let totalBill = await this.showTotal(cart, vat, discount)
+        // console.log(totalBill)
+        // // console.log('total', total, user_id)
+        // let date = [];
+        // let data = [];
+        // let count = [];
+        // for (let j = 0; j < array.length; j++){
+        //     console.log(array[j])
+        //     date.push(array[j].Date);
+        //     data.push(array[j].Data);
+        //     count.push(array[j].Count)
+        //     // data.push(array[j].Count)
+        // }
+        // console.log(date, data, count)
+        // console.log('log', array)
+        // // return;
+        // //Test
+        // //=====================
+        // let bill = {
+        //     bill_user_id: dataStorage.DATA_USER.user_id,
+        //     bill_shop_id: dataStorage.DATA_USER.user_shop_id,
+        //     bill_total: totalBill,
+        // }
+        // console.log(bill)
+        // callApi('bills/create', 'POST', bill, {
+        //     'token': dataStorage.TOKEN
+        // }).then(res => {
+        //     console.log('res', res);
+        //     if (res.data.status == 'success') {
 
-                let bill_id = res.data.bill.bill_id;
-                // let detail_bill = {
-                //     detail_bill_id: res.data.bill.bill_id,
-                //     detail_drink_id: 
-                // }
-                let i = 0;
-                let length = cart.length;
-                for (i; i < length; i++) {
-                    let product = cart[i].product;
-                    let quantity = cart[i].quantity;
-                    let total = quantity * product.drink_price;
-                    let detail_bill = {
-                        detail_bill_id: bill_id,
-                        detail_drink_id: product.drink_id,
-                        detail_drink_name: product.drink_name,
-                        detail_number: quantity,
-                        detail_price: product.drink_price,
-                        detail_toalMoney_drink: total
-                    }
-                    callApi('detail-bill/create', 'POST', detail_bill, {
-                        'token': dataStorage.TOKEN
-                    }).then(res => {
-                        console.log(res);
-                        if (res.data.status == 'success') {
-                            if (i == length - 1) {
-                                toastr.success('Payment Success', 'Success')
-                            }
-                            this.props.removeCart();
-                            // this.get();
-                        } else {
-                            toastr.error(res.data.message, 'Error')
-                        }
-                    })
-                }
-                // localStorage.removeItem('CART')
-                // this.props.removeCart();
-            } else {
-                toastr.error(res.data.message, 'Error')
-            }
-        })
+        //         let bill_id = res.data.bill.bill_id;
+        //         // let detail_bill = {
+        //         //     detail_bill_id: res.data.bill.bill_id,
+        //         //     detail_drink_id: 
+        //         // }
+        //         let i = 0;
+        //         let length = cart.length;
+        //         for (i; i < length; i++) {
+        //             let product = cart[i].product;
+        //             let quantity = cart[i].quantity;
+        //             let total = quantity * product.drink_price;
+        //             let detail_bill = {
+        //                 detail_bill_id: bill_id,
+        //                 detail_drink_id: product.drink_id,
+        //                 detail_drink_name: product.drink_name,
+        //                 detail_number: quantity,
+        //                 detail_price: product.drink_price,
+        //                 detail_toalMoney_drink: total
+        //             }
+        //             callApi('detail-bill/create', 'POST', detail_bill, {
+        //                 'token': dataStorage.TOKEN
+        //             }).then(res => {
+        //                 console.log(res);
+        //                 if (res.data.status == 'success') {
+        //                     if (i == length - 1) {
+        //                         toastr.success('Payment Success', 'Success')
+        //                     }
+        //                     this.props.removeCart();
+        //                     // this.get();
+        //                 } else {
+        //                     toastr.error(res.data.message, 'Error')
+        //                 }
+        //             })
+        //         }
+        //         // localStorage.removeItem('CART')
+        //         // this.props.removeCart();
+        //     } else {
+        //         toastr.error(res.data.message, 'Error')
+        //     }
+        // })
     }
     
 
@@ -222,16 +210,13 @@ class CartResultCustomer extends Component {
         // console.log('dsa', countBill)
         return <React.Fragment>
             <div className="pull-right m-t-30 text-right">
-                    {/* <p>Sub - Total amount: $13,8488</p> */}
-                    {/* <p>VAT ({Vat}%) : ${this.showVAT(cart,vat)} </p> */}
-                    {this.showTotalAmount(cart)}
+                    {/* {this.showTotalAmount(cart)}
                     {this.showVAT(cart, vat)}
-                    {this.showDiscount(cart, discount)}
-                    {/* <p>Total - Discount(%) : </p> */}
+                    {this.showDiscount(cart, discount)} */}
                     <hr />
                     <h3>
                     {/* <b>Total :</b> ${ this.showTotal(cart, vat, discount)} */}
-                    <b>Total :</b> ${ currencyFormatter.format(this.showTotal(cart, vat, discount), { locale: 'vn-VN' })}
+                    <b>Total :</b> { currencyFormatter.format(this.showTotal(cart, vat, discount), { locale: 'vn-VN' })}
                     {/* {this.showTotal(cart, vat, discount)} */}
                     </h3>
                 </div>
@@ -245,12 +230,7 @@ class CartResultCustomer extends Component {
                     id="proceedToPayment"
                 >
                     {" "}
-                    Proceed to payment{" "}
-                    </button>
-                    <button id="print" className="btn btn-default btn-outline" type="button">
-                    <span>
-                        <i className="fa fa-print" /> Print
-                    </span>
+                    Payment{" "}
                     </button>
                 </div>
         </React.Fragment>;

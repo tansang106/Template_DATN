@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2018 at 09:20 PM
+-- Generation Time: Aug 10, 2018 at 09:38 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -132,30 +132,30 @@ CREATE TABLE `drinks` (
 --
 
 INSERT INTO `drinks` (`drink_id`, `drink_shop_id`, `drink_name`, `drink_price`, `drink_avatar`, `drink_eth`, `drink_active`) VALUES
-(1, 1, 'Cà Phê Đen', '22000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '2.5', 'on'),
-(2, 1, 'Cà Phê Sữa', '25000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '3.5', 'on'),
-(3, 1, 'Cà Phê Đặc Biệt', '30000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '1', 'on'),
-(4, 1, 'Nước Cam', '35000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '2', 'on'),
-(5, 1, 'Nước Bưởi Ép', '35000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(6, 2, 'Nước Ép Táo', '29000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '3', 'on'),
-(7, 2, ' Sinh Tố Bơ', '33000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '1', 'on'),
-(8, 2, 'Cà Phê Đen', '33000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(9, 2, 'Cà Phê Sữa', '37000', 'd142670b-dd79-438b-8df6-e37a716240db.png', '2', 'on'),
-(10, 2, 'Trà xanh', '40000', '350d6bcb-39ce-4e90-a1d1-0d54649e1965.jpg', '1', 'on'),
-(11, 2, 'Trà sữa ', '34000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '4', 'off'),
-(13, 4, 'Cà phê đen', '22000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '4', 'on'),
-(14, 4, 'Cà phê sữa', '25000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(15, 4, 'Cam vắt', '32000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(16, 4, 'Sữa dừa', '36000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(17, 2, 'Trà Đào', '41000', 'e19690c3-0c6a-4fde-97d3-90c85b9d6a18.jpg', '2', 'off'),
-(18, 2, 'Trà Đào', '35000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '5', 'off'),
-(19, 4, 'Cà Phê Đen', '27000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '3', 'on'),
-(24, 2, 'Test', '54561', 'b1dc3670-3449-45e4-8b0f-474ae607e0a9.png', '4', 'off'),
-(26, 2, 'Test Image', '99999999', 'd3075831-6479-4120-a882-d860e1fe99a7.jpg', '2', 'off'),
-(27, 2, 's', '2121', 'd7caf44a-d756-40f0-9c3a-e7947839e0a6.png', '2', 'off'),
-(28, 2, 'Test', '123456', 'af21aea6-82a3-471b-a407-34c87bc484f2.jpg', '3', 'off'),
-(29, 2, 'S', '30000', '6a9db5cd-cbc1-4140-87a8-366ffea44db9.jpg', '1', 'off'),
-(30, 2, 'Test', '60000', '791f758b-6027-4de3-ada3-8754bb909abc.jpg', '2', 'off');
+(1, 1, 'Cà Phê Đen', '22000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '0.3', 'on'),
+(2, 1, 'Cà Phê Sữa', '25000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '0.2', 'on'),
+(3, 1, 'Cà Phê Đặc Biệt', '30000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '0.02', 'on'),
+(4, 1, 'Nước Cam', '35000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '0.004', 'on'),
+(5, 1, 'Nước Bưởi Ép', '35000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.3', 'on'),
+(6, 2, 'Nước Ép Táo', '29000', 'f8f4c77e-d92e-4272-9cd7-e29e1ec9fc24.jpg', '0.02', 'on'),
+(7, 2, ' Sinh Tố Bơ', '33000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.3', 'on'),
+(8, 2, 'Cà Phê Đen', '33000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.02', 'on'),
+(9, 2, 'Cà Phê Sữa', '37000', 'd142670b-dd79-438b-8df6-e37a716240db.png', '0.5', 'on'),
+(10, 2, 'Trà xanh', '40000', '350d6bcb-39ce-4e90-a1d1-0d54649e1965.jpg', '0.02', 'on'),
+(11, 2, 'Trà sữa ', '34000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.4', 'off'),
+(13, 4, 'Cà phê đen', '22000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.004', 'on'),
+(14, 4, 'Cà phê sữa', '25000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.004', 'on'),
+(15, 4, 'Cam vắt', '32000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.02', 'on'),
+(16, 4, 'Sữa dừa', '36000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.3', 'on'),
+(17, 2, 'Trà Đào', '41000', 'e19690c3-0c6a-4fde-97d3-90c85b9d6a18.jpg', '0.4', 'off'),
+(18, 2, 'Trà Đào', '35000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.3', 'off'),
+(19, 4, 'Cà Phê Đen', '27000', '472a085b-d799-46be-a741-5f4131fde0eb.jpg', '0.3', 'on'),
+(24, 2, 'Test', '54561', 'b1dc3670-3449-45e4-8b0f-474ae607e0a9.png', '0.02', 'off'),
+(26, 2, 'Test Image', '99999999', 'd3075831-6479-4120-a882-d860e1fe99a7.jpg', '0.004', 'off'),
+(27, 2, 's', '2121', 'd7caf44a-d756-40f0-9c3a-e7947839e0a6.png', '0.3', 'off'),
+(28, 2, 'Test', '123456', 'af21aea6-82a3-471b-a407-34c87bc484f2.jpg', '0.004', 'off'),
+(29, 2, 'S', '30000', '6a9db5cd-cbc1-4140-87a8-366ffea44db9.jpg', '0.004', 'off'),
+(30, 2, 'Test', '60000', '791f758b-6027-4de3-ada3-8754bb909abc.jpg', '0.004', 'off');
 
 -- --------------------------------------------------------
 

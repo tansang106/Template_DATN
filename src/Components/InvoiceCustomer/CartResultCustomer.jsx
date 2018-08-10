@@ -124,7 +124,7 @@ class CartResultCustomer extends Component {
     }
 
     onPay = async (cart, discount, vat) => {
-        console.log('viết code ở đây'
+        console.log('viết code ở đây')
         // let user_id = dataStorage.DATA_USER.user_id
         // let total = this.showTotalAmount(cart);
         // let totalBill = await this.showTotal(cart, vat, discount)

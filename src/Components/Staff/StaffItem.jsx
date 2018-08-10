@@ -371,7 +371,7 @@ class BossItem extends Component {
                             <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-user" onClick={this.onSetState}>Add New User</button>
                         </td>
                         {/* Modal Add */}
-                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
+                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -379,21 +379,21 @@ class BossItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div class="row">
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text_center">Avatar</h4>
+                                        <div className="row">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <h4 className="card-title text_center">Avatar</h4>
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                {/* <form class="floating-labels m-t-40">
+                                                {/* <form className="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -408,13 +408,13 @@ class BossItem extends Component {
 
                                                 </form> */}
                                             </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form class="form-horizontal form-control-line">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form className="form-horizontal form-control-line">
                                                     <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
                                                             placeholder="Type Email"
                                                             type="email"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="Email"
                                                             value={Email}
@@ -424,11 +424,11 @@ class BossItem extends Component {
                                                             nameValid="Email"
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Password"
                                                             type="password"
-                                                            class="form-control"
+                                                            className="form-control"
                                                             id="input2"
                                                             name="Password"
                                                             value={Password}
@@ -438,22 +438,22 @@ class BossItem extends Component {
                                                             nameValid="Password"
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Username"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="txtUserName"
                                                             required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Address"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
@@ -462,13 +462,13 @@ class BossItem extends Component {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form class="form-horizontal form-material">
-                                                    <div class="form-group m-b-40">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form className="form-horizontal form-material">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Phone"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="Phone"
                                                             value={Phone}
@@ -478,7 +478,7 @@ class BossItem extends Component {
                                                             nameValid="Phone"
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             data-placeholder="Birthday"
                                                             type="date"
@@ -489,9 +489,9 @@ class BossItem extends Component {
                                                             onChange={this.onChange}
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <select
-                                                            class="form-control custom-select"
+                                                            className="form-control custom-select"
                                                             data-placeholder="System"
                                                             ref='idPosition'>
                                                             {this.props.positions.map((position, index) => {
@@ -511,9 +511,9 @@ class BossItem extends Component {
                                                         </select>
                                                     </div>
 
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <select
-                                                            class="form-control custom-select"
+                                                            className="form-control custom-select"
                                                             data-placeholder="Sexual"
                                                             ref='idSex'>
                                                             {/* {this.props.systems.map((system, index) => {
@@ -551,7 +551,7 @@ class BossItem extends Component {
                         {/* End Modal Add */}
 
                         {/* Modal Update */}
-                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
+                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-user">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -559,22 +559,22 @@ class BossItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <div class="row">
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text_center">Avatar</h4>
-                                                        {/* <label for="input-file-max-fs">Upload Avatar</label> */}
+                                        <div className="row">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <h4 className="card-title text_center">Avatar</h4>
+                                                        {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
                                                         <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             onChange={this.onChangeImage}
                                                         />
                                                     </div>
                                                 </div>
-                                                {/* <form class="floating-labels m-t-40">
+                                                {/* <form className="floating-labels m-t-40">
 
                                                     <div className="col-md-12 m-b-20">
                                                         <input
@@ -589,13 +589,13 @@ class BossItem extends Component {
 
                                                 </form> */}
                                             </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form class="floating-labels m-t-40">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form className="floating-labels m-t-40">
                                                     <div class={`form-group m-b-40 ${this.errorClass(this.state.formErrors.Email)}`}>
                                                         <input
                                                             placeholder="Type Email"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="Email"
                                                             value={Email}
@@ -605,22 +605,22 @@ class BossItem extends Component {
                                                             nameValid="Email"
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Username"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="txtUserName"
                                                             required
                                                             value={txtUserName}
                                                             onChange={this.onChange} />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Address"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="txtUserAddress"
                                                             value={txtUserAddress}
@@ -629,13 +629,13 @@ class BossItem extends Component {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form class="floating-labels m-t-40">
-                                                    <div class="form-group m-b-40">
+                                            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <form className="floating-labels m-t-40">
+                                                    <div className="form-group m-b-40">
                                                         <input
                                                             placeholder="Type Phone"
                                                             type="text"
-                                                            class="form-control"
+                                                            className="form-control"
 
                                                             name="Phone"
                                                             value={Phone}
@@ -655,9 +655,9 @@ class BossItem extends Component {
                                                             onChange={this.onChange}
                                                         />
                                                     </div>
-                                                    <div class="form-group m-b-40">
+                                                    <div className="form-group m-b-40">
                                                         <select
-                                                            class="form-control custom-select"
+                                                            className="form-control custom-select"
                                                             data-placeholder="System"
                                                             ref='idPosition'>
                                                             {this.props.positions.map((position, index) => {
@@ -699,23 +699,23 @@ class BossItem extends Component {
                         {/* End Modal Update */}
 
                         {/* Modal Delete */}
-                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">  
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 class="modal-title">Delete</h4>
+                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">  
+                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 className="modal-title">Delete</h4>
                                             </div>
-                                            <div class="modal-body">
+                                            <div className="modal-body">
                                                 <h1 className= "text-danger"> 
                                                     Are you sure delete?
                                                 </h1>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                                                 <button 
                                                     type="button" 
-                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    className="btn btn-danger waves-effect waves-light" 
                                                     onClick={this.onDelete}
                                                     data-dismiss="modal">Delete</button>
                                             </div>

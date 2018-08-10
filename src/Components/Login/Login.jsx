@@ -163,23 +163,23 @@ class Login extends Component {
             {/* ============================================================== */}
             {/* Preloader - style you can find in spinners.css */}
             {/* ============================================================== */}
-            <div class="preloader">
-                <svg class="circular" viewBox="25 25 50 50">
-                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+            <div className="preloader">
+                <svg className="circular" viewBox="25 25 50 50">
+                    <circle className="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
             </div>
             {/* ============================================================== */}
             {/* Main wrapper - style you can find in pages.scss */}
             {/* ============================================================== */}
             <section id="wrapper">
-                <div class="login-register login_background">        
-                    <div class="login-box card">
-                    <div class="card-body">
-                        <form class="form-horizontal form-material" id="loginform" action="index.html" onSubmit={this.onLogin}>
-                            <h3 class="box-title m-b-20">Sign In</h3>
-                            <div class="form-group ">
-                                <div class="col-xs-12">
+                <div className="login-register login_background">        
+                    <div className="login-box card">
+                    <div className="card-body">
+                        <form className="form-horizontal form-material" id="loginform" action="index.html" onSubmit={this.onLogin}>
+                            <h3 className="box-title m-b-20">Sign In</h3>
+                            <div className="form-group ">
+                                <div className="col-xs-12">
                                     <input 
-                                        class="form-control" 
+                                        className="form-control" 
                                         type="text" 
                                         required="" 
                                         placeholder="Username"
@@ -187,10 +187,10 @@ class Login extends Component {
                                         onChange={e => this.onChangeUser(e.target.value)}
                                         /> </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-xs-12">
+                            <div className="form-group">
+                                <div className="col-xs-12">
                                     <input 
-                                        class="form-control" 
+                                        className="form-control" 
                                         ref='txtPassword' 
                                         type="password" 
                                         required="" 
@@ -198,50 +198,50 @@ class Login extends Component {
                                         value={this.state.txtPassword}
                                         onChange={e => this.onChangePass(e.target.value)}/> </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="checkbox checkbox-primary pull-left p-t-0">
+                            <div className="form-group">
+                                <div className="col-md-12">
+                                    <div className="checkbox checkbox-primary pull-left p-t-0">
                                         <input id="checkbox-signup" type="checkbox"/>
-                                        <label for="checkbox-signup"> Remember me </label>
-                                    </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot pwd?</a> </div>
+                                        <label htmlFor="checkbox-signup"> Remember me </label>
+                                    </div> <a href="javascript:void(0)" id="to-recover" className="text-dark pull-right"><i className="fa fa-lock m-r-5"></i> Forgot pwd?</a> </div>
                             </div>
-                            <div class="form-group text-center m-t-20">
-                                <div class="col-xs-12">
+                            <div className="form-group text-center m-t-20">
+                                <div className="col-xs-12">
                                     <button 
-                                        class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" 
+                                        className="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" 
                                         type="submit"
                                         // onClick = {e => this.onLogin()}
                                         >Log In</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                                    <div class="social">
-                                        <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a>
-                                        <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </a>
+                            <div className="row">
+                                <div className="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+                                    <div className="social">
+                                        <a href="javascript:void(0)" className="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" className="fa fa-facebook"></i> </a>
+                                        <a href="javascript:void(0)" className="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" className="fa fa-google-plus"></i> </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group m-b-0">
-                                <div class="col-sm-12 text-center">
-                                    <p>Don't have an account? <a href="register.html" class="text-info m-l-5"><b>Sign Up</b></a></p>
+                            <div className="form-group m-b-0">
+                                <div className="col-sm-12 text-center">
+                                    <p>Don't have an account? <a href="register.html" className="text-info m-l-5"><b>Sign Up</b></a></p>
                                 </div>
                             </div>
                         </form>
-                        <form class="form-horizontal" id="recoverform" action="index.html">
-                            <div class="form-group ">
-                                <div class="col-xs-12">
+                        <form className="form-horizontal" id="recoverform" action="index.html">
+                            <div className="form-group ">
+                                <div className="col-xs-12">
                                     <h3>Recover Password</h3>
-                                    <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
+                                    <p className="text-muted">Enter your Email and instructions will be sent to you! </p>
                                 </div>
                             </div>
-                            <div class="form-group ">
-                                <div class="col-xs-12">
-                                    <input class="form-control" type="text" required="" placeholder="Email"/> </div>
+                            <div className="form-group ">
+                                <div className="col-xs-12">
+                                    <input className="form-control" type="text" required="" placeholder="Email"/> </div>
                             </div>
-                            <div class="form-group text-center m-t-20">
-                                <div class="col-xs-12">
-                                    <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
+                            <div className="form-group text-center m-t-20">
+                                <div className="col-xs-12">
+                                    <button className="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
                                 </div>
                             </div>
                         </form>

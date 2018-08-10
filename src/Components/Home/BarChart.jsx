@@ -451,44 +451,44 @@ class LineGraph extends Component {
         var {startDate, endDate} = this.state
         return (
             <React.Fragment>
-            <div class="row">
+            <div className="row">
                 {/* Column */}
-                <div class="col-lg-4 col-xlg-3 col-md-5">
-                    {/* <div class="card blog-widget">
-                            <div class="card-body">
-                                <div class="blog-image"><img src="../assets/images/big/img1.jpg" alt="img" class="img-responsive" /></div>
+                <div className="col-lg-4 col-xlg-3 col-md-5">
+                    {/* <div className="card blog-widget">
+                            <div className="card-body">
+                                <div className="blog-image"><img src="../assets/images/big/img1.jpg" alt="img" className="img-responsive" /></div>
                                 <h3>Business development new rules for 2017</h3>
-                                <label class="label label-rounded label-success">Technology</label>
-                                <p class="m-t-20 m-b-20">
+                                <label className="label label-rounded label-success">Technology</label>
+                                <p className="m-t-20 m-b-20">
                                     Lorem ipsum dolor sit amet, this is a consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
                                 </p>
-                                <div class="d-flex">
-                                    <div class="read"><a href="javascript:void(0)" class="link font-medium">Read More</a></div>
-                                    <div class="ml-auto">
-                                        <a href="javascript:void(0)" class="link m-r-10 " data-toggle="tooltip" title="Like"><i class="mdi mdi-heart-outline"></i></a> <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="Share"><i class="mdi mdi-share-variant"></i></a>
+                                <div className="d-flex">
+                                    <div className="read"><a href="javascript:void(0)" className="link font-medium">Read More</a></div>
+                                    <div className="ml-auto">
+                                        <a href="javascript:void(0)" className="link m-r-10 " data-toggle="tooltip" title="Like"><i className="mdi mdi-heart-outline"></i></a> <a href="javascript:void(0)" className="link" data-toggle="tooltip" title="Share"><i className="mdi mdi-share-variant"></i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>   */}
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-actions">
-                                <a class="" data-action="collapse"><i class="ti-minus"></i></a>
-                                <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
-                                <a class="btn-close" data-action="close"><i class="ti-close"></i></a>
+                    <div className="card">
+                        <div className="card-header">
+                            <div className="card-actions">
+                                <a className="" data-action="collapse"><i className="ti-minus"></i></a>
+                                <a className="btn-minimize" data-action="expand"><i className="mdi mdi-arrow-expand"></i></a>
+                                <a className="btn-close" data-action="close"><i className="ti-close"></i></a>
                             </div>
-                            <h4 class="card-title m-b-0">Date</h4>
+                            <h4 className="card-title m-b-0">Date</h4>
                         </div>
-                        <div class="card-body">
-                            <from className="form-horizontal form-material">
+                        <div className="card-body">
+                            <form className="form-horizontal form-material">
 
                                             <div className="form-group">
                                                 {/* <div className="col-md-12 m-b-20"> */}
-                                                 <span class="bar"></span>
-                                                    <label for="input1">From Date</label>
+                                                 <span className="bar"></span>
+                                                    <label htmlFor="input1">From Date</label>
                                                     {/* <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkName"
                                                         // value={txtDrinkName}
@@ -496,7 +496,7 @@ class LineGraph extends Component {
                                                     /> */}
                                                     {/* <input 
                                                     type="text" 
-                                                    class="form-control" 
+                                                    className="form-control" 
                                                     placeholder="2018-06-04" 
                                                     id="mdate"/>
                                                     */}
@@ -508,11 +508,11 @@ class LineGraph extends Component {
                                                 {/* </div> */}
 
                                                 {/* <div className="col-md-12 m-b-20">*/}
-                                                 <span class="bar"></span> 
-                                                    <label for="input1">To Day</label>
+                                                 <span className="bar"></span> 
+                                                    <label htmlFor="input1">To Day</label>
                                                     {/* <input 
                                                     type="text" 
-                                                    class="form-control" 
+                                                    className="form-control" 
                                                     placeholder="2018-08-04" 
                                                     id="mdate"/> */}
                                                      <DatePicker
@@ -528,37 +528,37 @@ class LineGraph extends Component {
                                                     onClick={ () => this.clickRenderGraph(startDate, endDate)}    
                                                 >Click</button>
                                             </div>
-                                        </from>
+                                        </form>
                                        
                         </div>
                     </div>
                   
                 </div>
-                <div class="col-lg-8 col-xlg-9 col-md-7">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-wrap">
+                <div className="col-lg-8 col-xlg-9 col-md-7">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="d-flex flex-wrap">
                                 <div>
-                                    <h3 class="card-title">Total Drink</h3>
-                                    <h6 class="card-subtitle">Overview of Total Drink</h6>
+                                    <h3 className="card-title">Total Drink</h3>
+                                    <h6 className="card-subtitle">Overview of Total Drink</h6>
                                 </div>
-                                <div class="ml-auto align-self-center">
-                                    <ul class="list-inline m-b-0">
+                                <div className="ml-auto align-self-center">
+                                    <ul className="list-inline m-b-0">
                                         {/* <li>
-                                            <h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10 "></i>Total  Money</h6> </li> */}
+                                            <h6 className="text-muted text-success"><i className="fa fa-circle font-10 m-r-10 "></i>Total  Money</h6> </li> */}
                                         {/* <li>
-                                                                        <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Recurring Payments</h6> </li> */}
+                                                                        <h6 className="text-muted text-info"><i className="fa fa-circle font-10 m-r-10"></i>Recurring Payments</h6> </li> */}
 
                                     </ul>
                                 </div>
 
                             </div>
-                            {/* <div class="campaign ct-charts"></div> */}
+                            {/* <div className="campaign ct-charts"></div> */}
                             <canvas id="myChart" height="100%" />
-                            {/* <div class="row text-center">
-                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
-                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
-                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
+                            {/* <div className="row text-center">
+                                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
+                                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
+                                <div className="col-lg-4 col-md-4 m-t-20"><h1 className="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
                             </div> */}
                         </div>
                     </div>
@@ -566,7 +566,7 @@ class LineGraph extends Component {
                 
             </div> 
             {/* Modal Add */}
-                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">
+                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -574,35 +574,35 @@ class LineGraph extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkName"
                                                         // value={txtDrinkName}
                                                         // onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Drink Name</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Drink Name</label>
                                                 </div>
 
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkPrice"
                                                         // value={txtDrinkPrice}
                                                         // onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Price</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Price</label>
                                                 </div>
                                             </div>
-                                        </from>
+                                        </form>
                                        
                                     </div>
                                     <div className="modal-footer">

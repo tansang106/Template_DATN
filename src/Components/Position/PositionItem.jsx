@@ -213,7 +213,7 @@ class PositionItem extends Component {
                                         <h4 className="modal-title" id="myModalLabel">Add Position</h4>
                                     </div>
                                     <div className="modal-body" onSubmit={this.onSave}>
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
                                                     <input
@@ -224,7 +224,7 @@ class PositionItem extends Component {
                                                         value={txtPositionName}
                                                         onChange={this.onChange} /> </div>
                                             </div>
-                                        </from>
+                                        </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="submit" className="btn btn-info waves-effect" data-dismiss="modal" onClick={this.onSave}>Save</button>
@@ -246,7 +246,7 @@ class PositionItem extends Component {
                                         <h4 className="modal-title" id="myModalLabel">Add Position</h4>
                                     </div>
                                     <div className="modal-body" onSubmit={this.onSave}>
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
                                                     <input
@@ -257,7 +257,7 @@ class PositionItem extends Component {
                                                         value={txtPositionName}
                                                         onChange={this.onChange} /> </div>
                                             </div>
-                                        </from>
+                                        </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="submit" className="btn btn-info waves-effect" data-dismiss="modal" onClick={this.onSave}>Save</button>
@@ -271,23 +271,23 @@ class PositionItem extends Component {
                         {/* End Modal Update */}
 
                          {/* Modal Delete */}
-                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">  
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 class="modal-title">Delete</h4>
+                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">  
+                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 className="modal-title">Delete</h4>
                                             </div>
-                                            <div class="modal-body">
+                                            <div className="modal-body">
                                                 <h1 className= "text-danger"> 
                                                     Are you sure delete?
                                                 </h1>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                                                 <button 
                                                     type="button" 
-                                                    class="btn btn-danger waves-effect waves-light" 
+                                                    className="btn btn-danger waves-effect waves-light" 
                                                     onClick={this.onDelete}
                                                     data-dismiss="modal">Delete</button>
                                             </div>

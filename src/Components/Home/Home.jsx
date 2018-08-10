@@ -121,34 +121,34 @@ class Home extends Component {
 
         return (
             <React.Fragment>
-                <div class="row page-titles">
-                    <div class="col-md-5 col-8 align-self-center">
-                        <h3 class="text-themecolor">Home</h3>
-                        <ol class="breadcrumb">
-                            {/* <a class="breadcrumb-item"><a href="javascript:void(0)">Home</a></a> */}
-                            {/* <li class="breadcrumb-item active">Dashboard2</li> */}
+                <div className="row page-titles">
+                    <div className="col-md-5 col-8 align-self-center">
+                        <h3 className="text-themecolor">Home</h3>
+                        <ol className="breadcrumb">
+                            {/* <a className="breadcrumb-item"><a href="javascript:void(0)">Home</a></a> */}
+                            {/* <li className="breadcrumb-item active">Dashboard2</li> */}
                         </ol>
                     </div>
-                    {/* <div class="col-md-7 col-4 align-self-center">
-                        <div class="d-flex m-t-10 justify-content-end">
-                            <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                                <div class="chart-text m-r-10">
-                                    <h6 class="m-b-0"><small>THIS MONTH</small></h6>
-                                    <h4 class="m-t-0 text-info">$58,356</h4></div>
-                                <div class="spark-chart">
+                    {/* <div className="col-md-7 col-4 align-self-center">
+                        <div className="d-flex m-t-10 justify-content-end">
+                            <div className="d-flex m-r-20 m-l-10 hidden-md-down">
+                                <div className="chart-text m-r-10">
+                                    <h6 className="m-b-0"><small>THIS MONTH</small></h6>
+                                    <h4 className="m-t-0 text-info">$58,356</h4></div>
+                                <div className="spark-chart">
                                     <div id="monthchart"></div>
                                 </div>
                             </div>
-                            <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                                <div class="chart-text m-r-10">
-                                    <h6 class="m-b-0"><small>LAST MONTH</small></h6>
-                                    <h4 class="m-t-0 text-primary">$48,356</h4></div>
-                                <div class="spark-chart">
+                            <div className="d-flex m-r-20 m-l-10 hidden-md-down">
+                                <div className="chart-text m-r-10">
+                                    <h6 className="m-b-0"><small>LAST MONTH</small></h6>
+                                    <h4 className="m-t-0 text-primary">$48,356</h4></div>
+                                <div className="spark-chart">
                                     <div id="lastmonthchart"></div>
                                 </div>
                             </div>
-                            <div class="">
-                                <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                            <div className="">
+                                <button className="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i className="ti-settings text-white"></i></button>
                             </div>
                         </div>
                     </div> */}
@@ -159,60 +159,60 @@ class Home extends Component {
                 {/* ============================================================== */}
                 {/* Start Page Content */}
                 {/* ============================================================== */}
-                <div class="row">
+                <div className="row">
                     {/* Column */}
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex flex-row">
-                                    <div class="round round-lg align-self-center round-info"><i class="ti-wallet"></i></div>
-                                    <div class="m-l-10 align-self-center">
-                                        <h3 class="m-b-0 font-light">{this.state.totalDay}</h3>
-                                        <h5 class="text-muted m-b-0">{this.state.toatalCountDay} Product / Day</h5></div>
+                    <div className="col-lg-3 col-md-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex flex-row">
+                                    <div className="round round-lg align-self-center round-info"><i className="ti-wallet"></i></div>
+                                    <div className="m-l-10 align-self-center">
+                                        <h3 className="m-b-0 font-light">{this.state.totalDay}</h3>
+                                        <h5 className="text-muted m-b-0">{this.state.toatalCountDay} Product / Day</h5></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex flex-row">
-                                    <div class="round round-lg align-self-center round-warning"><i class="mdi mdi-cellphone-link"></i></div>
-                                    <div class="m-l-10 align-self-center">
-                                        <h3 class="m-b-0 font-lgiht">{this.state.totalWeek}</h3>
-                                        <h5 class="text-muted m-b-0">{this.state.totalCountWeek} PROD / Week</h5></div>
+                    <div className="col-lg-3 col-md-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex flex-row">
+                                    <div className="round round-lg align-self-center round-warning"><i className="mdi mdi-cellphone-link"></i></div>
+                                    <div className="m-l-10 align-self-center">
+                                        <h3 className="m-b-0 font-lgiht">{this.state.totalWeek}</h3>
+                                        <h5 className="text-muted m-b-0">{this.state.totalCountWeek} PROD / Week</h5></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex flex-row">
-                                    <div class="round round-lg align-self-center round-primary"><i class="mdi mdi-cart-outline"></i></div>
-                                    <div class="m-l-10 align-self-center">
-                                        <h3 class="m-b-0 font-lgiht">{this.state.totalMonth}</h3>
-                                        <h5 class="text-muted m-b-0">{this.state.totalCountMonth} PROD / Month</h5></div>
+                    <div className="col-lg-3 col-md-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex flex-row">
+                                    <div className="round round-lg align-self-center round-primary"><i className="mdi mdi-cart-outline"></i></div>
+                                    <div className="m-l-10 align-self-center">
+                                        <h3 className="m-b-0 font-lgiht">{this.state.totalMonth}</h3>
+                                        <h5 className="text-muted m-b-0">{this.state.totalCountMonth} PROD / Month</h5></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Column */}
                     {/* Column */}
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex flex-row">
-                                    <div class="round round-lg align-self-center round-danger"><i class="mdi mdi-bullseye"></i></div>
-                                    <div class="m-l-10 align-self-center">
-                                        {/* <h3 class="m-b-0 font-lgiht">{this.state.totalHaftYear}</h3> */}
-                                        <h3 class="m-b-0 font-lgiht">1232000</h3>
-                                        {/* <h5 class="text-muted m-b-0">{this.state.totalCountHaftYear} PROD / Year</h5></div> */}
-                                        <h5 class="text-muted m-b-0">12 PROD / Year</h5>
+                    <div className="col-lg-3 col-md-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex flex-row">
+                                    <div className="round round-lg align-self-center round-danger"><i className="mdi mdi-bullseye"></i></div>
+                                    <div className="m-l-10 align-self-center">
+                                        {/* <h3 className="m-b-0 font-lgiht">{this.state.totalHaftYear}</h3> */}
+                                        <h3 className="m-b-0 font-lgiht">1232000</h3>
+                                        {/* <h5 className="text-muted m-b-0">{this.state.totalCountHaftYear} PROD / Year</h5></div> */}
+                                        <h5 className="text-muted m-b-0">12 PROD / Year</h5>
                                     </div>
                                 </div>
                             </div>

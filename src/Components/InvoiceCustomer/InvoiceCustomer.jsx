@@ -117,8 +117,10 @@ class InvoiceCustomer extends Component {
         })
         return (
             <div className="row">
+              {/* Table Info */}
                 <div className="col-md-6">
-                    {/* Table Info */}
+                {/* Table Info  */}
+                    {/*                   
                     <div className="card earning-widget">
                         <div className="card-header">
                             <div className="card-actions">
@@ -136,7 +138,7 @@ class InvoiceCustomer extends Component {
                         </div>
 
                         <div className="card-body">
-                            {/* <h4 className="card-title">Info Customer</h4> */}
+                           
                             <form className="form-horizontal form-control-line m-t-10">
                                 <div className="form-group has-success m-b-20">
                                     <span className="bar"></span>
@@ -144,13 +146,12 @@ class InvoiceCustomer extends Component {
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        // id="input11" 
+                                    
                                         name="txtName"
                                         value={txtName}
                                         onChange={this.onChange}
                                     />
-                                    {/* <span className="bar"></span>
-                                    <label for="input11">Name</label> */}
+                                   
                                 </div>
                                 <div className="form-group has-warning m-b-20">
                                     <span className="bar"></span>
@@ -158,12 +159,11 @@ class InvoiceCustomer extends Component {
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        // id="input11" 
+                                       
                                         name="txtPhone"
                                         value={txtPhone}
                                         onChange={this.onChange}/>
-                                    {/* <span className="bar"></span>
-                                    <label for="input11">Phone</label> */}
+                                  
                                 </div>
                                 <div className="form-group has-error has-danger m-b-20">
                                     <span className="bar"></span>
@@ -171,18 +171,17 @@ class InvoiceCustomer extends Component {
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        // id="input12" 
+                                      
                                         name="txtAddress"
                                         value={txtAddress}
                                         onChange={this.onChange}
                                     />
-                                    {/* <span className="bar"></span>
-                                    <label for="input12">Address</label> */}
+                                   
                                 </div>
                             </form>
                         </div>
 
-                    </div>
+                    </div> */}
                     {/* End Table Info */}
 
                     {/* Table Product */}
@@ -209,41 +208,7 @@ class InvoiceCustomer extends Component {
                                 <option value="3">Wooden</option>
                             </select> */}
                             <div className="row">
-                                <div className="col-md-6">
-                                    <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            // id="exampleInputuname2"
-                                            placeholder="VAT"
-                                            name="txtVAT"
-                                            value={txtVAT}
-                                            onChange={this.onChange}
-                                            pattern="[0-9]*"
-                                        />
-                                        <div className="input-group-addon">
-                                            <i className="fa fa-percent"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/*/span*/}
-                                <div className="col-md-6">
-                                    <div className="input-group">
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            // id="exampleInputuname2" 
-                                            placeholder="Discount" 
-                                             name="txtDiscount"
-                                            value={txtDiscount}
-                                            onChange={this.onChange}
-                                            pattern="[0-9]*"
-                                        />
-                                        <div className="input-group-addon">
-                                            <i className="fa fa-percent"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                                 {/*/span*/}
                             </div>
                                 <DrinkCartContainerCustomer />

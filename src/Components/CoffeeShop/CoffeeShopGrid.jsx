@@ -8,6 +8,8 @@ import axios from 'axios';
 import callApi from '../../Utils/apiCaller';
 import { actFetchShopRequest } from '../../Actions/index';
 import InvoiceCustomer from '../InvoiceCustomer/InvoiceCustomer';
+import * as dataStorage from '../../Constants/localStorage';
+import * as Config from '../../Constants/Config';
 
 const Child = ({ match }) => (
         <InvoiceCustomer/>
@@ -41,7 +43,7 @@ class CoffeeShopGrid extends Component {
         <Redirect to="/invoice"/>
     }
     
-    showShops = (shops, url) => {
+    showShops = (shops) => {
         // let { match } = this.props; // this.props.match
         // let url = match.url;
         let result = null;
@@ -53,7 +55,7 @@ class CoffeeShopGrid extends Component {
                                 <div className="row">
                                 <div className="col-md-4 col-lg-3 text-center">
                                     {/* <NavLink to={`${url}/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></NavLink> */}
-                                    <Link to={`invoicecs/${shop.shop_id}`}><img src="../assets/images/users/1.jpg" alt="user" className="img-circle img-responsive" /></Link>
+                                    <Link to={`invoicecs/${shop.shop_id}`}><img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" className="img-circle img-responsive" /></Link>
                                     </div>
                                     <div className="col-md-8 col-lg-9">
                                     <h3 className="box-title m-b-0" onClick={this.onClick}>{shop.shop_name}</h3> <small>{shop.shop_email}</small>
@@ -88,14 +90,14 @@ class CoffeeShopGrid extends Component {
             
         // })
 
-        // var { shops } = this.props
-        // console.log(shops)
+        var { shopData } = this.props
+        console.log(shopData)
        
-        var { match } = this.props; // this.props.match
-        var url = match.url;
+        // var { match } = this.props; // this.props.match
+        // var url = match.url;
 
-        var {shopData} = this.props;
-        // var result = items.map((item, index) => {
+        // var {shopData} = this.props;
+        // // var result = items.map((item, index) => {
         //     return (
         //         <div className="col-md-6 col-lg-6 col-xlg-4" key={index}>
         //                 <div className="card card-body">
@@ -145,12 +147,12 @@ class CoffeeShopGrid extends Component {
         //     )
         // })
 
-        var {location} = this.props;
-        console.log(location); 
+        // var {location} = this.props;
+        // console.log(location); 
 
         return (
             <div className="row">
-                {this.showShops(shopData, url)}
+                {this.showShops(shopData)}
                 {/* <div className="card card-body">
                     <Route path="/coffeegrid/:slug" component={CoffeeDetail} />
                 </div> */}

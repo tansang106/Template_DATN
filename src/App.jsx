@@ -8,7 +8,7 @@ import Loadable from 'react-loadable';
 // import Login from './Components/Login/Login';
 import Home from './Components/Home/Home';
 import Main from './Components/Main';
-
+import CoffeeShopGrid from './Components/CoffeeShop/CoffeeShopGrid';
 const LazyLogin = Loadable({
     loader: () => import("./Components/Login/Login"),
     loading: () => null
@@ -85,6 +85,7 @@ class App extends Component {
                             return <LazyLogin />;
                         }}
                     />
+                    <Route path="/payment" render = {() => <CoffeeShopGrid/> }/>
                     <Route render={() => <Main />} />
                 </Switch>
 

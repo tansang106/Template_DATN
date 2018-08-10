@@ -234,11 +234,11 @@ class CartResultCustomer extends Component {
                     {" "}
                     Proceed to payment{" "}
                     </button>
-                    <button id="print" className="btn btn-default btn-outline" type="button">
+                    {/* <button id="print" className="btn btn-default btn-outline" type="button">
                     <span>
                         <i className="fa fa-print" /> Print
                     </span>
-                    </button>
+                    </button> */}
                 </div>
         </React.Fragment>;
     }

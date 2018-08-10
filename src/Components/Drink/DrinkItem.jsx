@@ -314,7 +314,7 @@ class DrinkItem extends Component {
                             <td>{index + 1}</td>
                             <td className="text_left">
                                 <a >
-                                    <img src={`${Config.API_URL}/uploads/imgDrink/${drink.drink_avatar}`} alt="shop" width="40" className="img-circle" />
+                                    <img src={`${Config.API_URL}/uploads/imgDrink/${drink.drink_avatar}`} alt="drink" width="40" className="img-circle" />
                                     {drink.drink_name}</a>
                                 {/* <img src={drink.drink_avatar} alt="drink" width="40" className="img-circle"
                                 /> {drink.drink_name}</a> */}

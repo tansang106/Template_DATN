@@ -124,91 +124,78 @@ class CartResultCustomer extends Component {
     }
 
     onPay = async (cart, discount, vat) => {
-        console.log('cart', cart)
+        console.log('viết code ở đây'
         // let user_id = dataStorage.DATA_USER.user_id
         // let total = this.showTotalAmount(cart);
-        let totalBill = await this.showTotal(cart, vat, discount)
-        console.log(totalBill)
-        // console.log('total', total, user_id)
-        let array = [
-            {
-                "Date": "01/12",
-                "Data": 225000,
-                "Count": 2
-            },
-            {
-                "Date": "06/12",
-                "Data": 33000,
-                "Count": 1
-            }
-        ]
-        let date = [];
-        let data = [];
-        let count = [];
-        for (let j = 0; j < array.length; j++){
-            console.log(array[j])
-            date.push(array[j].Date);
-            data.push(array[j].Data);
-            count.push(array[j].Count)
-            // data.push(array[j].Count)
-        }
-        console.log(date, data, count)
-        console.log('log', array)
-        // return;
-        //Test
-        //=====================
-        let bill = {
-            bill_user_id: dataStorage.DATA_USER.user_id,
-            bill_shop_id: dataStorage.DATA_USER.user_shop_id,
-            bill_total: totalBill,
-        }
-        console.log(bill)
-        callApi('bills/create', 'POST', bill, {
-            'token': dataStorage.TOKEN
-        }).then(res => {
-            console.log('res', res);
-            if (res.data.status == 'success') {
+        // let totalBill = await this.showTotal(cart, vat, discount)
+        // console.log(totalBill)
+        // let date = [];
+        // let data = [];
+        // let count = [];
+        // for (let j = 0; j < array.length; j++){
+        //     console.log(array[j])
+        //     date.push(array[j].Date);
+        //     data.push(array[j].Data);
+        //     count.push(array[j].Count)
+        //     // data.push(array[j].Count)
+        // }
+        // console.log(date, data, count)
+        // console.log('log', array)
+        // // return;
+        // //Test
+        // //=====================
+        // let bill = {
+        //     bill_user_id: dataStorage.DATA_USER.user_id,
+        //     bill_shop_id: dataStorage.DATA_USER.user_shop_id,
+        //     bill_total: totalBill,
+        // }
+        // console.log(bill)
+        // callApi('bills/create', 'POST', bill, {
+        //     'token': dataStorage.TOKEN
+        // }).then(res => {
+        //     console.log('res', res);
+        //     if (res.data.status == 'success') {
 
-                let bill_id = res.data.bill.bill_id;
-                // let detail_bill = {
-                //     detail_bill_id: res.data.bill.bill_id,
-                //     detail_drink_id: 
-                // }
-                let i = 0;
-                let length = cart.length;
-                for (i; i < length; i++) {
-                    let product = cart[i].product;
-                    let quantity = cart[i].quantity;
-                    let total = quantity * product.drink_price;
-                    let detail_bill = {
-                        detail_bill_id: bill_id,
-                        detail_drink_id: product.drink_id,
-                        detail_drink_name: product.drink_name,
-                        detail_number: quantity,
-                        detail_price: product.drink_price,
-                        detail_toalMoney_drink: total
-                    }
-                    callApi('detail-bill/create', 'POST', detail_bill, {
-                        'token': dataStorage.TOKEN
-                    }).then(res => {
-                        console.log(res);
-                        if (res.data.status == 'success') {
-                            if (i == length - 1) {
-                                toastr.success('Payment Success', 'Success')
-                            }
-                            this.props.removeCart();
-                            // this.get();
-                        } else {
-                            toastr.error(res.data.message, 'Error')
-                        }
-                    })
-                }
-                // localStorage.removeItem('CART')
-                // this.props.removeCart();
-            } else {
-                toastr.error(res.data.message, 'Error')
-            }
-        })
+        //         let bill_id = res.data.bill.bill_id;
+        //         // let detail_bill = {
+        //         //     detail_bill_id: res.data.bill.bill_id,
+        //         //     detail_drink_id: 
+        //         // }
+        //         let i = 0;
+        //         let length = cart.length;
+        //         for (i; i < length; i++) {
+        //             let product = cart[i].product;
+        //             let quantity = cart[i].quantity;
+        //             let total = quantity * product.drink_price;
+        //             let detail_bill = {
+        //                 detail_bill_id: bill_id,
+        //                 detail_drink_id: product.drink_id,
+        //                 detail_drink_name: product.drink_name,
+        //                 detail_number: quantity,
+        //                 detail_price: product.drink_price,
+        //                 detail_toalMoney_drink: total
+        //             }
+        //             callApi('detail-bill/create', 'POST', detail_bill, {
+        //                 'token': dataStorage.TOKEN
+        //             }).then(res => {
+        //                 console.log(res);
+        //                 if (res.data.status == 'success') {
+        //                     if (i == length - 1) {
+        //                         toastr.success('Payment Success', 'Success')
+        //                     }
+        //                     this.props.removeCart();
+        //                     // this.get();
+        //                 } else {
+        //                     toastr.error(res.data.message, 'Error')
+        //                 }
+        //             })
+        //         }
+        //         // localStorage.removeItem('CART')
+        //         // this.props.removeCart();
+        //     } else {
+        //         toastr.error(res.data.message, 'Error')
+        //     }
+        // })
     }
     
 

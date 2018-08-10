@@ -379,7 +379,7 @@ class DrinkItem extends Component {
                             <button type="button" className="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-drink" onClick={this.onSetState}>Add New Drink</button>
                         </td>
                         {/* Modal Add */}
-                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">
+                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="add-drink">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -387,17 +387,17 @@ class DrinkItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h4 class="card-title text_center">Avatar</h4>
-                                                            {/* <label for="input-file-max-fs">Upload Avatar</label> */}
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title text_center">Avatar</h4>
+                                                            {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
                                                             {/* <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             name="txtDrinkAvatar"
                                                             value={txtDrinkAvatar}
@@ -406,7 +406,7 @@ class DrinkItem extends Component {
                                                             <input
                                                                 type="file"
                                                                 id="input-file-max-fs"
-                                                                class="dropify"
+                                                                className="dropify"
                                                                 data-max-file-size="2M"
                                                                 // ref="refAvatar"
                                                                 // name="txtDrinkAvatar"
@@ -421,43 +421,43 @@ class DrinkItem extends Component {
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkName"
                                                         value={txtDrinkName}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Drink Name</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Drink Name</label>
                                                 </div>
 
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkPrice"
                                                         value={txtDrinkPrice}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Price</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Price</label>
                                                 </div>
 
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtETH"
                                                         value={txtETH}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Price ETH</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Price ETH</label>
                                                 </div>
                                             </div>
-                                        </from>
+                                        </form>
                                        
                                     </div>
                                     <div className="modal-footer">
@@ -471,7 +471,7 @@ class DrinkItem extends Component {
                         {/* End Modal Add */}
 
                         {/* Modal Update */}
-                        <div className="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-drink">
+                        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style={{ display: "none" }} id="update-drink">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -479,17 +479,17 @@ class DrinkItem extends Component {
                                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h4 class="card-title text_center">Avatar</h4>
-                                                            {/* <label for="input-file-max-fs">Upload Avatar</label> */}
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title text_center">Avatar</h4>
+                                                            {/* <label htmlFor="input-file-max-fs">Upload Avatar</label> */}
                                                             {/* <input
                                                             type="file"
                                                             id="input-file-max-fs"
-                                                            class="dropify"
+                                                            className="dropify"
                                                             data-max-file-size="2M"
                                                             name="txtDrinkAvatar"
                                                             value={txtDrinkAvatar}
@@ -498,7 +498,7 @@ class DrinkItem extends Component {
                                                             <input
                                                                 type="file"
                                                                 id="input-file-max-fs"
-                                                                class="dropify"
+                                                                className="dropify"
                                                                 data-max-file-size="2M"
                                                                 onChange={this.onChangeImage} 
                                                                 // data-default-file="../assets/plugins/dropify/src/images/test-image-1.jpg"
@@ -513,43 +513,43 @@ class DrinkItem extends Component {
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkName"
                                                         value={txtDrinkName}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Drink Name</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Drink Name</label>
                                                 </div>
 
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtDrinkPrice"
                                                         value={txtDrinkPrice}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Price</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Price</label>
                                                 </div>
 
                                                 <div className="col-md-12 m-b-20">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="input1"
                                                         name="txtETH"
                                                         value={txtETH}
                                                         onChange={this.onChange}
                                                     />
-                                                    <span class="bar"></span>
-                                                    <label for="input1">Price ETH</label>
+                                                    <span className="bar"></span>
+                                                    <label htmlFor="input1">Price ETH</label>
                                                 </div>
                                             </div>
-                                        </from>
+                                        </form>
 
                                     </div>
                                     <div className="modal-footer">
@@ -563,21 +563,21 @@ class DrinkItem extends Component {
                         {/* End Modal Update */}
 
                         {/* Modal Delete */}
-                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">  
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 class="modal-title">Delete</h4>
+                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{display: "none"}}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">  
+                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 className="modal-title">Delete</h4>
                                             </div>
-                                            <div class="modal-body">
+                                            <div className="modal-body">
                                                 <h1 className= "text-danger"> 
                                                     Are you sure delete?
                                                 </h1>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                                <button type="button" className="btn btn-danger waves-effect waves-light"
                                                 onClick={this.onDelete}
                                                 data-dismiss="modal"
                                                 >Delete</button>

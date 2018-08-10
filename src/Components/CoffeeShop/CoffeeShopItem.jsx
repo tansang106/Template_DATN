@@ -297,23 +297,23 @@ class CoffeeShopItem extends Component {
                                 <td>{index + 1}</td>
                                 <td className="text_left">
                                     {/* <a >
-                                <span class="mytooltip tooltip-effect-4 ">
+                                <span className="mytooltip tooltip-effect-4 ">
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
-                                    <span class="tooltip-content clearfix">
+                                    <span className="tooltip-content clearfix">
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
                                     </span>
                                 </span> 
                                     {shop.shop_name}
                             </a> */}
 
-                                    {/* <span class="mytooltip tooltip-effect-4 "> */}
+                                    {/* <span className="mytooltip tooltip-effect-4 "> */}
 
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle" />
-                                    {/* <span class="tooltip-content clearfix"> */}
+                                    {/* <span className="tooltip-content clearfix"> */}
                                     {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
                                     {/* </span> */}
                                     {/* </span>  */}
                                     {shop.shop_name}
@@ -380,23 +380,23 @@ class CoffeeShopItem extends Component {
                         <td>{index + 1}</td>
                         <td className="text_left">
                             {/* <a >
-                                <span class="mytooltip tooltip-effect-4 ">
+                                <span className="mytooltip tooltip-effect-4 ">
                                   
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="user" width="40" className="img-circle"/>
-                                    <span class="tooltip-content clearfix">
+                                    <span className="tooltip-content clearfix">
                                     <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span>
                                     </span>
                                 </span> 
                                     {shop.shop_name}
                             </a> */}
 
-                            {/* <span class="mytooltip tooltip-effect-4 "> */}
+                            {/* <span className="mytooltip tooltip-effect-4 "> */}
 
                             <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`} alt="shop" width="40" className="img-circle" />
-                            {/* <span class="tooltip-content clearfix"> */}
+                            {/* <span className="tooltip-content clearfix"> */}
                             {/* <img src={`${Config.API_URL}/uploads/imgShop/${shop.shop_avatar}`}/>
-                                        <span class="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
+                                        <span className="tooltip-text">Also known as Euclid of andria, was a Greek mathematician, often referred</span> */}
                             {/* </span> */}
                             {/* </span>  */}
                             {shop.shop_name}
@@ -453,16 +453,16 @@ class CoffeeShopItem extends Component {
                                         <h4 className="modal-title" id="myModalLabel">Add New Coffee Shop</h4>
                                     </div>
                                     <div className="modal-body" >
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h4 class="card-title text_center">Avatar</h4>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title text_center">Avatar</h4>
                                                             <input
                                                                 type="file"
                                                                 id="input-file-max-fs"
-                                                                class="dropify"
+                                                                className="dropify"
                                                                 data-max-file-size="2M"
                                                                 onChange={this.onChangeImage}
                                                             />
@@ -485,7 +485,7 @@ class CoffeeShopItem extends Component {
                                                         value={txtShopSystemID}
                                                         onChange={this.onChange} /> */}
                                                         <select
-                                                            class="form-control custom-select"
+                                                            className="form-control custom-select"
                                                             data-placeholder="Choose system"
                                                             ref='idSystem'>
                                                             {this.props.systems.map((system, index) => {
@@ -555,7 +555,7 @@ class CoffeeShopItem extends Component {
 
                                                 </div>
                                             </div>
-                                        </from>
+                                        </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button
@@ -583,16 +583,16 @@ class CoffeeShopItem extends Component {
                                         <h4 className="modal-title" id="myModalLabel">Edit Coffee Shop</h4>
                                     </div>
                                     <div className="modal-body" >
-                                        <from className="form-horizontal form-material">
+                                        <form className="form-horizontal form-material">
                                             <div className="form-group">
                                                 <div className="col-md-12 m-b-20">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h4 class="card-title text_center">Avatar</h4>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title text_center">Avatar</h4>
                                                             <input
                                                                 type="file"
                                                                 id="input-file-max-fs"
-                                                                class="dropify"
+                                                                className="dropify"
                                                                 data-max-file-size="2M"
                                                                 onChange={this.onChangeImage}
                                                             />
@@ -615,7 +615,7 @@ class CoffeeShopItem extends Component {
                                                         value={txtShopSystemID}
                                                         onChange={this.onChange} /> */}
                                                         <select
-                                                            class="form-control custom-select"
+                                                            className="form-control custom-select"
                                                             data-placeholder="Choose system"
                                                             ref='idSystem'>
                                                             {this.props.systems.map((system, index) => {
@@ -685,7 +685,7 @@ class CoffeeShopItem extends Component {
 
                                                 </div>
                                             </div>
-                                        </from>
+                                        </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button
@@ -705,23 +705,23 @@ class CoffeeShopItem extends Component {
                         {/* End Modal Update */}
 
                         {/* Modal Delete */}
-                        <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{ display: "none" }}>
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h4 class="modal-title">Delete</h4>
+                        <div id="delete-modal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style={{ display: "none" }}>
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 className="modal-title">Delete</h4>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <h1 className="text-danger">
                                             Are you sure delete?
                                                 </h1>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                                         <button
                                             type="button"
-                                            class="btn btn-danger waves-effect waves-light"
+                                            className="btn btn-danger waves-effect waves-light"
                                             onClick={this.onDelete}
                                             data-dismiss="modal">Delete</button>
                                     </div>

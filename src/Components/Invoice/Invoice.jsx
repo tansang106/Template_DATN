@@ -148,7 +148,7 @@ class Invoice extends Component {
                                         onChange={this.onChange}
                                     />
                                     {/* <span className="bar"></span>
-                                    <label for="input11">Name</label> */}
+                                    <label htmlFor="input11">Name</label> */}
                                 </div>
                                 <div className="form-group has-warning m-b-20">
                                     <span className="bar"></span>
@@ -161,7 +161,7 @@ class Invoice extends Component {
                                         value={txtPhone}
                                         onChange={this.onChange}/>
                                     {/* <span className="bar"></span>
-                                    <label for="input11">Phone</label> */}
+                                    <label htmlFor="input11">Phone</label> */}
                                 </div>
                                 <div className="form-group has-error has-danger m-b-20">
                                     <span className="bar"></span>
@@ -175,7 +175,7 @@ class Invoice extends Component {
                                         onChange={this.onChange}
                                     />
                                     {/* <span className="bar"></span>
-                                    <label for="input12">Address</label> */}
+                                    <label htmlFor="input12">Address</label> */}
                                 </div>
                             </form>
                         </div>

@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 const [Home] = [
-    () => import("../Home/Home")
+    () => import("../Home/Home").then(module => module.default)
 ].map(item =>
     Loadable({
         loader: item,
         loading: () => null,
-        render: loaded => React.createElement(loaded.default)
+        // render: loaded => React.createElement(loaded.default)
+
     })
 );
 

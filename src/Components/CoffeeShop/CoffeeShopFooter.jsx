@@ -15,7 +15,7 @@ class CoffeeShopFooter extends Component {
                                 <h4 className="modal-title" id="myModalLabel">Add New Coffee Shop</h4>
                             </div>
                             <div className="modal-body">
-                                <from className="form-horizontal form-material">
+                                <form className="form-horizontal form-material">
                                     <div className="form-group">
                                         <div className="col-md-12 m-b-20">
                                             <input type="text" className="form-control" placeholder="Type name" /> </div>
@@ -38,7 +38,7 @@ class CoffeeShopFooter extends Component {
                                                 <input type="file" className="upload" /> </div>
                                         </div>
                                     </div>
-                                </from>
+                                </form>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-info waves-effect" data-dismiss="modal">Save</button>

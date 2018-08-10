@@ -5,6 +5,10 @@ import DrinkItem from './DrinkItem';
 // import $ from 'jquery';
 
 class Drink extends Component {
+
+    componentDidMount() {
+	    window.jQuery('.table').footable();
+    }
  
     render() {
         var { children } = this.props;
